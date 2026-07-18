@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,13 +20,12 @@ import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseSurface
 
-/**
- * Stub de panel por rol hasta PRP-04 / 11 / 12.
- */
 @Composable
 fun RoleHomeStubScreen(
     roleTitle: String,
-    upcomingPrp: String
+    upcomingPrp: String,
+    displayName: String? = null,
+    onLogout: (() -> Unit)? = null
 ) {
     Column(
         modifier = Modifier
@@ -42,6 +42,14 @@ fun RoleHomeStubScreen(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
+        if (!displayName.isNullOrBlank()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Hola, $displayName",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = "Panel en construcción.\nSe implementa en $upcomingPrp.",
@@ -49,5 +57,11 @@ fun RoleHomeStubScreen(
             color = CseMuted,
             textAlign = TextAlign.Center
         )
+        if (onLogout != null) {
+            Spacer(modifier = Modifier.height(24.dp))
+            OutlinedButton(onClick = onLogout) {
+                Text("Cerrar sesión")
+            }
+        }
     }
 }

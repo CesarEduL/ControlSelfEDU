@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
  * Contador mock. PRP-05 lo reemplazará con UsageStatsManager.
  */
 class FakeScreenTimeRepository(
-    initialMinutes: Int = 0
+    initialMinutes: Int = 18
 ) : ScreenTimeRepository {
 
     private val _minutes = MutableStateFlow(initialMinutes)

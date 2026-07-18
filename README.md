@@ -25,6 +25,10 @@ Orden de implementación: **PRP-00 → 01 → 02 → 03 → … → 13**.
 
 - **PRP-01** arquitectura ✅
 - **PRP-02** bienvenida + tema ✅
-- Siguiente: **[PRP-03 — Autenticación y roles](prps/PRP-03-autenticacion-roles.md)**
+- **PRP-03** autenticación y roles ✅
+- **PRP-04** panel estudiante ✅
+- Siguiente: **[PRP-05 — Monitoreo de uso](prps/PRP-05-monitoreo-uso.md)**
+
+Demo login: `estudiante` / `docente` / `padre` — clave `123456` (elige el rol correcto).
 
 Detalle de capas: [`docs/arquitectura.md`](docs/arquitectura.md)
