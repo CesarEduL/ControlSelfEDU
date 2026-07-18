@@ -1,0 +1,16 @@
+R_DEF: Internal format may change without notice
+local
+color cse_blue
+color cse_blue_dark
+color cse_danger
+color cse_green
+color cse_warning
+color cse_white
+color ic_launcher_background
+drawable ic_logo_placeholder
+drawable splash_background
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Theme.ControlSelfEDU
+style Theme.ControlSelfEDU.Splash

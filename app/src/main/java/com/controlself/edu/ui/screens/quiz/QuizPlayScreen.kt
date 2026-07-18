@@ -30,11 +30,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.controlself.edu.data.quiz.QuizBank
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.Course
 import com.controlself.edu.domain.model.quiz.AnswerRecord
+import com.controlself.edu.domain.model.quiz.Question
 import com.controlself.edu.domain.model.quiz.QuizAttempt
+import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseSurface
@@ -51,12 +55,39 @@ fun QuizPlayScreen(
     val questions = remember(course.id) {
         container.quizRepository.questionsFor(course.id)
     }
-    val selections = remember { mutableStateListOf<Int?>().apply {
-        repeat(questions.size) { add(null) }
-    } }
+
+    QuizPlayContent(
+        course = course,
+        questions = questions,
+        onFinished = { attempt ->
+            container.quizAttemptRepository.save(attempt)
+            container.achievementRepository.onQuizAttempt(attempt)
+            container.statsRepository.recordAttempt(attempt)
+            if (attempt.passed) {
+                container.lockRepository.unlockForRestOfDay()
+            }
+            onFinished(attempt.id)
+        },
+        onAbort = onAbort
+    )
+}
+
+@Composable
+private fun QuizPlayContent(
+    course: Course,
+    questions: List<Question>,
+    onFinished: suspend (QuizAttempt) -> Unit,
+    onAbort: () -> Unit
+) {
+    val selections = remember {
+        mutableStateListOf<Int?>().apply {
+            repeat(questions.size) { add(null) }
+        }
+    }
     var index by remember { mutableIntStateOf(0) }
     var showExitDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val startedAtMillis = remember { System.currentTimeMillis() }
 
     val current = questions[index]
     val selected = selections[index]
@@ -166,13 +197,10 @@ fun QuizPlayScreen(
                             courseId = course.id,
                             courseTitle = course.title,
                             answers = answers,
-                            correctCount = correct
+                            correctCount = correct,
+                            durationMillis = System.currentTimeMillis() - startedAtMillis
                         )
-                        container.quizAttemptRepository.save(attempt)
-                        if (attempt.passed) {
-                            container.lockRepository.unlockForRestOfDay()
-                        }
-                        onFinished(attempt.id)
+                        onFinished(attempt)
                     }
                 }
             },
@@ -181,5 +209,18 @@ fun QuizPlayScreen(
         ) {
             Text(if (index < questions.lastIndex) "Siguiente" else "Finalizar")
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun QuizPlayScreenPreview() {
+    ControlSelfEDUTheme {
+        QuizPlayContent(
+            course = Course.MATH,
+            questions = QuizBank.questionsFor(Course.MATH.id),
+            onFinished = {},
+            onAbort = {}
+        )
     }
 }

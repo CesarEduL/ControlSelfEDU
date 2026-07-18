@@ -27,8 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.di.LocalAppContainer
+import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseGreen
 import com.controlself.edu.ui.theme.CseMuted
@@ -45,6 +47,46 @@ fun ForgotPasswordScreen(onBack: () -> Unit) {
     var error by remember { mutableStateOf<String?>(null) }
     var loading by remember { mutableStateOf(false) }
 
+    ForgotPasswordContent(
+        username = username,
+        onUsernameChange = {
+            username = it
+            error = null
+            message = null
+        },
+        message = message,
+        error = error,
+        loading = loading,
+        onBack = onBack,
+        onSubmit = {
+            loading = true
+            error = null
+            message = null
+            scope.launch {
+                val result = auth.requestPasswordReset(username)
+                loading = false
+                result.fold(
+                    onSuccess = {
+                        message =
+                            "Listo. En producción enviaríamos un enlace a tu correo."
+                    },
+                    onFailure = { error = it.message }
+                )
+            }
+        }
+    )
+}
+
+@Composable
+private fun ForgotPasswordContent(
+    username: String,
+    onUsernameChange: (String) -> Unit,
+    message: String?,
+    error: String?,
+    loading: Boolean,
+    onBack: () -> Unit,
+    onSubmit: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -74,11 +116,7 @@ fun ForgotPasswordScreen(onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(24.dp))
             OutlinedTextField(
                 value = username,
-                onValueChange = {
-                    username = it
-                    error = null
-                    message = null
-                },
+                onValueChange = onUsernameChange,
                 label = { Text("Usuario o correo") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
@@ -94,27 +132,28 @@ fun ForgotPasswordScreen(onBack: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(24.dp))
             Button(
-                onClick = {
-                    loading = true
-                    error = null
-                    message = null
-                    scope.launch {
-                        val result = auth.requestPasswordReset(username)
-                        loading = false
-                        result.fold(
-                            onSuccess = {
-                                message =
-                                    "Listo. En producción enviaríamos un enlace a tu correo."
-                            },
-                            onFailure = { error = it.message }
-                        )
-                    }
-                },
+                onClick = onSubmit,
                 enabled = !loading,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Enviar instrucciones")
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ForgotPasswordScreenPreview() {
+    ControlSelfEDUTheme {
+        ForgotPasswordContent(
+            username = "",
+            onUsernameChange = {},
+            message = null,
+            error = null,
+            loading = false,
+            onBack = {},
+            onSubmit = {}
+        )
     }
 }

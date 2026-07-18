@@ -18,9 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.quiz.QuizAttempt
+import com.controlself.edu.ui.preview.PreviewSamples
+import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseDanger
 import com.controlself.edu.ui.theme.CseGreen
@@ -39,7 +42,23 @@ fun QuizResultScreen(
     onBackToLock: () -> Unit
 ) {
     val attempt = LocalAppContainer.current.quizAttemptRepository.getById(attemptId)
+    QuizResultContent(
+        attempt = attempt,
+        onReview = onReview,
+        onRetry = onRetry,
+        onHome = onHome,
+        onBackToLock = onBackToLock
+    )
+}
 
+@Composable
+private fun QuizResultContent(
+    attempt: QuizAttempt?,
+    onReview: (attemptId: String) -> Unit,
+    onRetry: (courseId: String) -> Unit,
+    onHome: () -> Unit,
+    onBackToLock: () -> Unit
+) {
     BackHandler {
         if (attempt?.passed == true) onHome() else onBackToLock()
     }
@@ -149,6 +168,34 @@ fun QuizResultScreen(
             color = CseMuted,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Resultado aprobado")
+@Composable
+private fun QuizResultScreenPassedPreview() {
+    ControlSelfEDUTheme {
+        QuizResultContent(
+            attempt = PreviewSamples.quizAttemptPassed,
+            onReview = {},
+            onRetry = {},
+            onHome = {},
+            onBackToLock = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Resultado reprobado")
+@Composable
+private fun QuizResultScreenFailedPreview() {
+    ControlSelfEDUTheme {
+        QuizResultContent(
+            attempt = PreviewSamples.quizAttemptFailed,
+            onReview = {},
+            onRetry = {},
+            onHome = {},
+            onBackToLock = {}
         )
     }
 }

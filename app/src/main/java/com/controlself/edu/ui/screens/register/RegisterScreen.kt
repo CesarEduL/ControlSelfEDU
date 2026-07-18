@@ -34,12 +34,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.data.auth.LocalAuthRepository
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.Session
 import com.controlself.edu.domain.model.UserRole
 import com.controlself.edu.ui.screens.auth.RoleSelector
+import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseSurface
@@ -61,6 +63,52 @@ fun RegisterScreen(
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
 
+    RegisterContent(
+        displayName = displayName,
+        onDisplayNameChange = { displayName = it; error = null },
+        username = username,
+        onUsernameChange = { username = it; error = null },
+        password = password,
+        onPasswordChange = { password = it; error = null },
+        role = role,
+        onRoleChange = { role = it },
+        passwordVisible = passwordVisible,
+        onPasswordVisibleChange = { passwordVisible = it },
+        loading = loading,
+        error = error,
+        onBack = onBack,
+        onSubmit = {
+            loading = true
+            error = null
+            scope.launch {
+                val result = auth.register(displayName, username, password, role)
+                loading = false
+                result.fold(
+                    onSuccess = onRegistered,
+                    onFailure = { error = it.message ?: "No se pudo registrar" }
+                )
+            }
+        }
+    )
+}
+
+@Composable
+private fun RegisterContent(
+    displayName: String,
+    onDisplayNameChange: (String) -> Unit,
+    username: String,
+    onUsernameChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    role: UserRole,
+    onRoleChange: (UserRole) -> Unit,
+    passwordVisible: Boolean,
+    onPasswordVisibleChange: (Boolean) -> Unit,
+    loading: Boolean,
+    error: String?,
+    onBack: () -> Unit,
+    onSubmit: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -84,7 +132,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(24.dp))
             OutlinedTextField(
                 value = displayName,
-                onValueChange = { displayName = it; error = null },
+                onValueChange = onDisplayNameChange,
                 label = { Text("Nombre") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
@@ -92,7 +140,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedTextField(
                 value = username,
-                onValueChange = { username = it; error = null },
+                onValueChange = onUsernameChange,
                 label = { Text("Usuario o correo") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
@@ -101,7 +149,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it; error = null },
+                onValueChange = onPasswordChange,
                 label = {
                     Text("Contraseña (mín. ${LocalAuthRepository.MIN_PASSWORD_LENGTH})")
                 },
@@ -113,7 +161,7 @@ fun RegisterScreen(
                     PasswordVisualTransformation()
                 },
                 trailingIcon = {
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    IconButton(onClick = { onPasswordVisibleChange(!passwordVisible) }) {
                         Icon(
                             imageVector = if (passwordVisible) {
                                 Icons.Filled.VisibilityOff
@@ -132,7 +180,7 @@ fun RegisterScreen(
                 color = CseMuted
             )
             Spacer(modifier = Modifier.height(8.dp))
-            RoleSelector(selected = role, onSelected = { role = it })
+            RoleSelector(selected = role, onSelected = onRoleChange)
 
             error?.let {
                 Spacer(modifier = Modifier.height(12.dp))
@@ -146,18 +194,7 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
             Button(
-                onClick = {
-                    loading = true
-                    error = null
-                    scope.launch {
-                        val result = auth.register(displayName, username, password, role)
-                        loading = false
-                        result.fold(
-                            onSuccess = onRegistered,
-                            onFailure = { error = it.message ?: "No se pudo registrar" }
-                        )
-                    }
-                },
+                onClick = onSubmit,
                 enabled = !loading,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -172,5 +209,28 @@ fun RegisterScreen(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun RegisterScreenPreview() {
+    ControlSelfEDUTheme {
+        RegisterContent(
+            displayName = "Ana",
+            onDisplayNameChange = {},
+            username = "",
+            onUsernameChange = {},
+            password = "",
+            onPasswordChange = {},
+            role = UserRole.STUDENT,
+            onRoleChange = {},
+            passwordVisible = false,
+            onPasswordVisibleChange = {},
+            loading = false,
+            error = null,
+            onBack = {},
+            onSubmit = {}
+        )
     }
 }

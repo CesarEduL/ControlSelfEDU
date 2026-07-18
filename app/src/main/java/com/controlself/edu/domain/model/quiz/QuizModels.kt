@@ -30,9 +30,14 @@ data class QuizAttempt(
     val answers: List<AnswerRecord>,
     val correctCount: Int,
     val total: Int = TOTAL_QUESTIONS,
-    val timestampMillis: Long = System.currentTimeMillis()
+    val timestampMillis: Long = System.currentTimeMillis(),
+    /** Duración de la sesión de quiz (PRP-10). */
+    val durationMillis: Long = 0L
 ) {
     val passed: Boolean get() = correctCount >= PASS_THRESHOLD
+
+    val durationMinutes: Int
+        get() = ((durationMillis + 59_999L) / 60_000L).toInt().coerceAtLeast(0)
 
     companion object {
         const val TOTAL_QUESTIONS = 20

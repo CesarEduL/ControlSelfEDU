@@ -17,9 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.domain.model.Course
 import com.controlself.edu.domain.model.quiz.QuizAttempt
+import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseSurface
@@ -67,5 +69,17 @@ fun CourseIntroScreen(
                 Text("Comenzar evaluación")
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CourseIntroScreenPreview() {
+    ControlSelfEDUTheme {
+        CourseIntroScreen(
+            course = Course.MATH,
+            onStartQuiz = {},
+            onBack = {}
+        )
     }
 }

@@ -10,20 +10,23 @@ Registrar y presentar con gráficos fáciles de interpretar: tiempo de uso, tiem
 
 | Métrica | Fuente |
 |---------|--------|
-| Tiempo de uso del teléfono (entretenimiento) | PRP-05 |
-| Tiempo dedicado al estudio | Duración de sesiones de quiz / timer |
-| Nº de evaluaciones realizadas | Intentos (PRP-07/08) |
-| Promedio de calificaciones | Media de scores |
-| Cursos completados | Lecciones aprobadas por curso |
+| Tiempo de uso (entretenimiento hoy) | PRP-05 `ScreenTimeRepository` |
+| Tiempo dedicado al estudio | Duración de sesiones de quiz (`QuizAttempt.durationMillis`) |
+| Nº de evaluaciones realizadas | Intentos (PRP-09 agregados + historial stats) |
+| Promedio de calificaciones | Media de scores (PRP-09) |
+| Cursos con al menos una aprobación | Historial de intentos |
 | Logros obtenidos | PRP-09 |
-| Rachas alcanzadas | Máxima y actual (PRP-09) |
+| Rachas actual / máxima | PRP-09 (`maxStreakDays`) |
 
 ### Visualización (estudiante)
 
-Sección “Mi progreso” (PRP-04) y/o pantalla `student/stats`:
+Sección **Mi progreso** en el home:
 
-- Barras o líneas simples: notas en el tiempo, minutos estudio vs redes, distribución por curso.
-- Evitar dashboards saturados: **una idea por gráfico**.
+1. **Notas recientes** — barras de los últimos intentos (sobre 20).
+2. **Estudio vs redes** — minutos de estudio acumulados vs redes hoy.
+3. **Aprobadas por curso** — barras Mate / Comms / CyT.
+
+Estado vacío: “Aún no hay datos” si no hay intentos.
 
 ### Visualización (otros roles)
 
@@ -34,6 +37,8 @@ Sección “Mi progreso” (PRP-04) y/o pantalla `student/stats`:
 
 - Export CSV/PDF (salvo “Descargar reportes” docente en PRP-11).
 - Analytics de terceros (Firebase Analytics opcional más adelante).
+- Pantalla dedicada `student/stats` (métricas viven en “Mi progreso”).
+- Librería Vico (charts Compose ligeros propios).
 
 ## Dependencias con otros PRPs
 
@@ -44,11 +49,21 @@ Sección “Mi progreso” (PRP-04) y/o pantalla `student/stats`:
 
 ## Criterios de aceptación
 
-- [ ] Al menos 3 gráficos legibles en el panel estudiante.
-- [ ] Datos coherentes con intentos y tiempo reales (o mock etiquetado).
-- [ ] Vacío con estado empty (“Aún no hay datos”).
+- [x] Al menos 3 gráficos legibles en el panel estudiante.
+- [x] Datos coherentes con intentos y tiempo reales.
+- [x] Vacío con estado empty (“Aún no hay datos”).
+
+## Implementación
+
+| Área | Ubicación |
+|------|-----------|
+| Modelos | `domain/model/stats/StudentStats.kt` |
+| Historial | `data/stats/PersistentStatsRepository.kt` |
+| Agregador | `domain/stats/StatsAggregator.kt` |
+| UI | `ProgressSection` (métricas + 3 charts) |
+| Duración quiz | `QuizAttempt.durationMillis` en `QuizPlayScreen` |
 
 ## Notas técnicas
 
-- Librería sugerida: Vico, o charts Compose ligeros.
-- Agregar `StatsAggregator` que lea repositorios existentes (no duplicar verdad)
+- `StatsAggregator` combina `StatsRepository` + screen time + achievements (no duplica verdad).
+- Siguiente: [PRP-11](PRP-11-panel-docente.md) o [PRP-12](PRP-12-panel-padre.md).

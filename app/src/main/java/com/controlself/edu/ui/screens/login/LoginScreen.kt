@@ -39,11 +39,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.Session
 import com.controlself.edu.domain.model.UserRole
 import com.controlself.edu.ui.screens.auth.RoleSelector
+import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseGreen
 import com.controlself.edu.ui.theme.CseMuted
@@ -67,6 +69,54 @@ fun LoginScreen(
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
 
+    LoginContent(
+        username = username,
+        onUsernameChange = { username = it; error = null },
+        password = password,
+        onPasswordChange = { password = it; error = null },
+        rememberSession = rememberSession,
+        onRememberSessionChange = { rememberSession = it },
+        role = role,
+        onRoleChange = { role = it },
+        passwordVisible = passwordVisible,
+        onPasswordVisibleChange = { passwordVisible = it },
+        loading = loading,
+        error = error,
+        onCreateAccount = onCreateAccount,
+        onForgotPassword = onForgotPassword,
+        onSubmit = {
+            loading = true
+            error = null
+            scope.launch {
+                val result = auth.login(username, password, role, rememberSession)
+                loading = false
+                result.fold(
+                    onSuccess = onLoggedIn,
+                    onFailure = { error = it.message ?: "Error al iniciar sesión" }
+                )
+            }
+        }
+    )
+}
+
+@Composable
+private fun LoginContent(
+    username: String,
+    onUsernameChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    rememberSession: Boolean,
+    onRememberSessionChange: (Boolean) -> Unit,
+    role: UserRole,
+    onRoleChange: (UserRole) -> Unit,
+    passwordVisible: Boolean,
+    onPasswordVisibleChange: (Boolean) -> Unit,
+    loading: Boolean,
+    error: String?,
+    onCreateAccount: () -> Unit,
+    onForgotPassword: () -> Unit,
+    onSubmit: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +141,7 @@ fun LoginScreen(
 
         OutlinedTextField(
             value = username,
-            onValueChange = { username = it; error = null },
+            onValueChange = onUsernameChange,
             label = { Text("Usuario o correo electrónico") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -100,7 +150,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(12.dp))
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it; error = null },
+            onValueChange = onPasswordChange,
             label = { Text("Contraseña") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -110,7 +160,7 @@ fun LoginScreen(
                 PasswordVisualTransformation()
             },
             trailingIcon = {
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                IconButton(onClick = { onPasswordVisibleChange(!passwordVisible) }) {
                     Icon(
                         imageVector = if (passwordVisible) {
                             Icons.Filled.VisibilityOff
@@ -135,7 +185,7 @@ fun LoginScreen(
             Text("Recordar sesión", style = MaterialTheme.typography.bodyMedium)
             Switch(
                 checked = rememberSession,
-                onCheckedChange = { rememberSession = it },
+                onCheckedChange = onRememberSessionChange,
                 colors = SwitchDefaults.colors(checkedTrackColor = CseGreen)
             )
         }
@@ -152,18 +202,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = {
-                loading = true
-                error = null
-                scope.launch {
-                    val result = auth.login(username, password, role, rememberSession)
-                    loading = false
-                    result.fold(
-                        onSuccess = onLoggedIn,
-                        onFailure = { error = it.message ?: "Error al iniciar sesión" }
-                    )
-                }
-            },
+            onClick = onSubmit,
             enabled = !loading,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -198,13 +237,37 @@ fun LoginScreen(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(8.dp))
-        RoleSelector(selected = role, onSelected = { role = it })
+        RoleSelector(selected = role, onSelected = onRoleChange)
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Demo: estudiante / docente / padre — clave 123456",
             style = MaterialTheme.typography.bodySmall,
             color = CseMuted,
             textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoginScreenPreview() {
+    ControlSelfEDUTheme {
+        LoginContent(
+            username = "estudiante",
+            onUsernameChange = {},
+            password = "",
+            onPasswordChange = {},
+            rememberSession = true,
+            onRememberSessionChange = {},
+            role = UserRole.STUDENT,
+            onRoleChange = {},
+            passwordVisible = false,
+            onPasswordVisibleChange = {},
+            loading = false,
+            error = null,
+            onCreateAccount = {},
+            onForgotPassword = {},
+            onSubmit = {}
         )
     }
 }

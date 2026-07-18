@@ -15,7 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseSurface
@@ -63,5 +65,18 @@ fun RoleHomeStubScreen(
                 Text("Cerrar sesión")
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun RoleHomeStubScreenPreview() {
+    ControlSelfEDUTheme {
+        RoleHomeStubScreen(
+            roleTitle = "Panel docente",
+            upcomingPrp = "PRP-11",
+            displayName = "María",
+            onLogout = {}
+        )
     }
 }

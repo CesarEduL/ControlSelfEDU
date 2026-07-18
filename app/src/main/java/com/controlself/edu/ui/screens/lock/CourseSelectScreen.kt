@@ -18,9 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.domain.model.Course
 import com.controlself.edu.ui.screens.student.components.CoursesSection
+import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseSurface
@@ -69,5 +71,17 @@ fun CourseSelectScreen(
             Spacer(modifier = Modifier.height(20.dp))
             CoursesSection(onCourseClick = onCourseClick)
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CourseSelectScreenPreview() {
+    ControlSelfEDUTheme {
+        CourseSelectScreen(
+            fromLock = true,
+            onCourseClick = {},
+            onBack = {}
+        )
     }
 }
