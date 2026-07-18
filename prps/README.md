@@ -21,7 +21,7 @@ PRP-00 → PRP-01 → PRP-02 → PRP-03 → PRP-04
 | Orden | PRP | Dominio | Depende de | Estado código |
 |-------|-----|---------|------------|---------------|
 | 1 | [PRP-00](PRP-00-vision-y-alcance.md) | Visión y alcance | — | 📄 |
-| 2 | [PRP-01](PRP-01-arquitectura-android.md) | Arquitectura Android | 00 | 📄 + ⏳ scaffold |
+| 2 | [PRP-01](PRP-01-arquitectura-android.md) | Arquitectura Android | 00 | ✅ |
 | 3 | [PRP-02](PRP-02-bienvenida-tema.md) | Splash, tema, nav base | 00, 01 | ✅ parcial |
 | 4 | [PRP-03](PRP-03-autenticacion-roles.md) | Login, registro, roles | 00–02 | 📄 |
 | 5 | [PRP-04](PRP-04-panel-estudiante.md) | Dashboard estudiante | 03 | 📄 |

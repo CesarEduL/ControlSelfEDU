@@ -86,12 +86,23 @@ Rutas públicas: `welcome`, `login`, `register`, `forgot-password`.
 
 ## Criterios de aceptación
 
-- [ ] Diagrama de capas documentado.
-- [ ] Paquetes y rutas por rol definidos.
-- [ ] Permisos mapeados a PRPs.
-- [ ] Scaffold Gradle existente abre en Android Studio.
+- [x] Diagrama de capas documentado.
+- [x] Paquetes y rutas por rol definidos.
+- [x] Permisos mapeados a PRPs.
+- [x] Scaffold Gradle existente abre en Android Studio.
+
+## Implementación
+
+| Área | Ubicación | Estado |
+|------|-----------|--------|
+| Capas / paquetes | `domain/`, `data/`, `system/`, `di/` | ✅ |
+| DI manual | `AppContainer`, `ControlSelfApplication` | ✅ |
+| Rutas por rol | `navigation/Routes.kt` / `Screen.kt` | ✅ |
+| Stubs paneles | `RoleHomeStubScreen` | ✅ |
+| Doc | [docs/arquitectura.md](../docs/arquitectura.md) | ✅ |
 
 ## Notas técnicas
 
 - `minSdk 26`, `targetSdk 35`, `applicationId com.controlself.edu`
-- Scaffold actual en raíz del repo (`app/`, Compose, Navigation)
+- Monolito `:app` (sin multi-módulo Gradle)
+- Siguiente: [PRP-02](PRP-02-bienvenida-tema.md) (parcial) → [PRP-03](PRP-03-autenticacion-roles.md)

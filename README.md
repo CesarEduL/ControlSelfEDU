@@ -23,6 +23,8 @@ Orden de implementación: **PRP-00 → 01 → 02 → 03 → … → 13**.
 
 ## Estado actual
 
-- Scaffold Android + tema azul/blanco/verde
-- Splash / bienvenida → placeholder de login (**PRP-02** parcial ✅)
-- Siguiente a implementar: **[PRP-03 — Autenticación y roles](prps/PRP-03-autenticacion-roles.md)**
+- **PRP-01** arquitectura ✅ (`domain` / `data` / `system` / DI manual / rutas por rol)
+- **PRP-02** splash + tema ✅ parcial
+- Siguiente: **[PRP-03 — Autenticación y roles](prps/PRP-03-autenticacion-roles.md)**
+
+Detalle de capas: [`docs/arquitectura.md`](docs/arquitectura.md)
