@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cse_blue">#1565C0</color>
+    <color name="cse_blue_dark">#0D47A1</color>
+    <color name="cse_green">#2E7D32</color>
+    <color name="cse_white">#FFFFFF</color>
+    <color name="ic_launcher_background">#1565C0</color>
+</resources>
