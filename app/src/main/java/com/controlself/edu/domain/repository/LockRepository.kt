@@ -3,7 +3,7 @@ package com.controlself.edu.domain.repository
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Estado de bloqueo de entretenimiento (PRP-06). Stub hasta monitoreo real.
+ * Bloqueo de entretenimiento (PRP-06). Se levanta en PRP-08 al aprobar.
  */
 interface LockRepository {
     fun observeLocked(): Flow<Boolean>

@@ -6,17 +6,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * Contador mock. PRP-05 lo reemplazará con UsageStatsManager.
+ * Mock para previews / tests. Producción usa [UsageScreenTimeRepository].
  */
 class FakeScreenTimeRepository(
-    initialMinutes: Int = 18
+    initialMinutes: Int = 18,
+    permissionGranted: Boolean = false
 ) : ScreenTimeRepository {
 
     private val _minutes = MutableStateFlow(initialMinutes)
+    private val _permission = MutableStateFlow(permissionGranted)
 
     override fun observeTodayMinutes(): Flow<Int> = _minutes.asStateFlow()
 
-    /** Solo para demos / tests hasta PRP-05. */
+    override fun observeUsagePermissionGranted(): Flow<Boolean> = _permission.asStateFlow()
+
+    override suspend fun refresh() = Unit
+
     fun setTodayMinutes(minutes: Int) {
         _minutes.value = minutes.coerceAtLeast(0)
     }

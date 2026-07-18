@@ -2,63 +2,75 @@
 
 ## Objetivo
 
-Registrar el tiempo que el estudiante dedica a redes sociales y videojuegos, y exponer un contador diario con límite de **30 minutos**.
+Registrar el tiempo acumulado del día en redes/videojuegos (límite **30 min**) vía `UsageStatsManager`, con permiso Usage Access y sync periódico.
 
 ## Alcance
 
+### Decisión de producto (fijada)
+
+| Tema | Decisión MVP |
+|------|--------------|
+| Límite | **30 min acumulados del día** (00:00–23:59 local) |
+| Continuo | Mejora futura (no MVP) |
+| Sin permiso | Contador 0 + CTA onboarding; no inventar minutos |
+
 ### Fuente de datos
 
-- `UsageStatsManager` + permiso especial **Usage Access** (`PACKAGE_USAGE_STATS`).
-- Pantalla de onboarding que explique por qué se pide el permiso y abra ajustes del sistema.
+- `UsageStatsManager` + AppOps `GET_USAGE_STATS`.
+- Onboarding in-app → `Settings.ACTION_USAGE_ACCESS_SETTINGS`.
 
-### Catálogo de apps monitoreadas
+### Catálogo (MVP fijo)
 
-Lista configurable (MVP: lista fija embebida), por ejemplo:
+- Redes: Instagram, TikTok, Facebook, Messenger, WhatsApp, X, YouTube, Snapchat, Reddit.
+- Juegos: paquetes con `CATEGORY_GAME` que tengan uso hoy.
 
-- Redes: Instagram, TikTok, Facebook, WhatsApp (opcional), X, YouTube
-- Juegos: paquetes comunes o categoría “game” vía `ApplicationInfo.FLAG` / categoría
+### Persistencia y sync
 
-Docente/padre podrán ampliar la lista en fases posteriores.
+- DataStore: `dayKey` + `minutesCached`.
+- Refresh: al abrir panel estudiante, al volver a foreground, y **WorkManager** cada ~15 min.
+- Al cambiar el día civil → reset a 0 (o nueva query del día).
+- Si minutos ≥ 30 → `LockRepository.setLocked(true)` (UI de bloqueo = PRP-06).
 
-### Contador diario
+### API
 
-| Regla | Spec |
-|-------|------|
-| Ventana | Día civil local (00:00–23:59) |
-| Límite | 30 minutos |
-| Qué suma | Foreground time de apps del catálogo |
-| Persistencia | Room/DataStore: minutos del día, última sync |
-
-**Decisión a fijar en implementación:** ¿30 min *continuos* o *acumulados del día*? El brief dice “30 minutos de uso continuo”; el dashboard dice “de 30 disponibles” (acumulado). **Recomendación MVP:** acumulado diario de 30 min (más alineado al copy del panel); documentar la alternativa continua como mejora.
-
-### Servicio / worker
-
-- Sync periódico (WorkManager o foreground service ligero) mientras la app tiene permiso.
-- Exponer `ScreenTimeRepository.observeTodayMinutes(): Flow<Int>`.
+- `ScreenTimeRepository.observeTodayMinutes()`
+- `observeUsagePermissionGranted()`
+- `refresh()` / abrir ajustes de permiso
 
 ## Fuera de alcance (por ahora)
 
-- Bloqueo en sí (PRP-06).
-- Monitoreo de Chrome/webs sueltas.
-- Root / VPN filtering.
+- Pantalla fullscreen de bloqueo (PRP-06).
+- Chrome/webs, VPN, root.
+- Catálogo editable por padre/docente.
 
 ## Dependencias con otros PRPs
 
 | PRP | Relación |
 |-----|----------|
-| 01 | Capa `system` |
+| 01 | `system.usage` |
 | 04 | Tarjeta de tiempo |
-| 06 | Dispara bloqueo al llegar a 30 |
-| 10, 12 | Estadísticas y panel padre |
+| 06 | Consume `LockRepository` cuando ≥ 30 |
+| 10, 12 | Estadísticas |
 
 ## Criterios de aceptación
 
-- [ ] Onboarding de permiso Usage Access.
-- [ ] Contador refleja uso de al menos 1–2 apps de prueba.
-- [ ] Reseteo correcto al cambiar de día.
-- [ ] Dashboard estudiante consume el Flow de minutos.
+- [x] Onboarding / CTA de Usage Access.
+- [x] Con permiso, contador suma apps del catálogo (dispositivo real).
+- [x] Reset al cambiar de día.
+- [x] Dashboard consume el Flow; sync periódico.
+
+## Implementación
+
+| Área | Ubicación |
+|------|-----------|
+| Catálogo | `system/usage/EntertainmentAppCatalog.kt` |
+| Gateway | `AndroidUsageStatsGateway.kt` |
+| Repo | `data/screentime/UsageScreenTimeRepository.kt` |
+| Worker | `system/usage/ScreenTimeSyncWorker.kt` |
+| UI | banner en `StudentHomeScreen` |
 
 ## Notas técnicas
 
-- API 26+; probar en dispositivo real (emulador limita UsageStats).
-- No confundir con `QUERY_ALL_PACKAGES` innecesariamente.
+- Emulador: UsageStats suele ser pobre; probar en físico.
+- `PACKAGE_USAGE_STATS` es permiso especial (no runtime dialog estándar).
+- Siguiente: [PRP-06](PRP-06-bloqueo-automatico.md).

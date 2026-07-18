@@ -27,8 +27,11 @@ Orden de implementación: **PRP-00 → 01 → 02 → 03 → … → 13**.
 - **PRP-02** bienvenida + tema ✅
 - **PRP-03** autenticación y roles ✅
 - **PRP-04** panel estudiante ✅
-- Siguiente: **[PRP-05 — Monitoreo de uso](prps/PRP-05-monitoreo-uso.md)**
+- **PRP-05** monitoreo de uso ✅
+- **PRP-06** bloqueo automático ✅
+- Siguiente: **[PRP-07 — Evaluaciones](prps/PRP-07-evaluaciones.md)**
 
-Demo login: `estudiante` / `docente` / `padre` — clave `123456` (elige el rol correcto).
+Demo login: `estudiante` / `docente` / `padre` — clave `123456`.  
+Bloqueo QA: en el panel estudiante → **Simular tiempo agotado**.
 
 Detalle de capas: [`docs/arquitectura.md`](docs/arquitectura.md)

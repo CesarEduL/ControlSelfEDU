@@ -13,6 +13,9 @@ object Routes {
     const val TEACHER_HOME = "teacher/home"
     const val PARENT_HOME = "parent/home"
 
+    const val LOCK = "lock"
+    const val COURSE_SELECT = "course/select/{fromLock}"
+
     fun homeFor(role: UserRole): String = when (role) {
         UserRole.STUDENT -> STUDENT_HOME
         UserRole.TEACHER -> TEACHER_HOME
@@ -20,6 +23,8 @@ object Routes {
     }
 
     fun studentCourse(courseId: String): String = "student/course/$courseId"
+
+    fun courseSelect(fromLock: Boolean): String = "course/select/$fromLock"
 }
 
 sealed class Screen(val route: String) {
@@ -31,4 +36,6 @@ sealed class Screen(val route: String) {
     data object StudentCourse : Screen(Routes.STUDENT_COURSE)
     data object TeacherHome : Screen(Routes.TEACHER_HOME)
     data object ParentHome : Screen(Routes.PARENT_HOME)
+    data object Lock : Screen(Routes.LOCK)
+    data object CourseSelect : Screen(Routes.COURSE_SELECT)
 }

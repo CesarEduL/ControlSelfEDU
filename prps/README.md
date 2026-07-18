@@ -25,8 +25,8 @@ PRP-00 → PRP-01 → PRP-02 → PRP-03 → PRP-04
 | 3 | [PRP-02](PRP-02-bienvenida-tema.md) | Bienvenida y tema visual | 00, 01 | ✅ |
 | 4 | [PRP-03](PRP-03-autenticacion-roles.md) | Login, registro, roles | 00–02 | ✅ |
 | 5 | [PRP-04](PRP-04-panel-estudiante.md) | Dashboard estudiante | 03 | ✅ |
-| 6 | [PRP-05](PRP-05-monitoreo-uso.md) | Tiempo en redes/juegos | 01, 04 | 📄 |
-| 7 | [PRP-06](PRP-06-bloqueo-automatico.md) | Overlay a los 30 min | 05, 07 | 📄 |
+| 6 | [PRP-05](PRP-05-monitoreo-uso.md) | Tiempo en redes/juegos | 01, 04 | ✅ |
+| 7 | [PRP-06](PRP-06-bloqueo-automatico.md) | Overlay a los 30 min | 05, 07 | ✅ |
 | 8 | [PRP-07](PRP-07-evaluaciones.md) | Cursos y 20 preguntas | 04, 06 | 📄 |
 | 9 | [PRP-08](PRP-08-resultados-feedback.md) | Éxito / reintento | 07 | 📄 |
 | 10 | [PRP-09](PRP-09-motivacion.md) | Rachas, logros, medallas | 04, 08 | 📄 |

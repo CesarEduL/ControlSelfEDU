@@ -3,11 +3,15 @@ package com.controlself.edu.domain.repository
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Minutos de entretenimiento del día. Fuente real: UsageStats (PRP-05).
+ * Minutos de entretenimiento acumulados hoy (límite 30). Fuente: UsageStats (PRP-05).
  */
 interface ScreenTimeRepository {
-    /** Minutos acumulados hoy (límite de producto: 30). */
     fun observeTodayMinutes(): Flow<Int>
+
+    fun observeUsagePermissionGranted(): Flow<Boolean>
+
+    /** Reconsulta UsageStats y actualiza caché / lock si aplica. */
+    suspend fun refresh()
 
     val dailyLimitMinutes: Int
         get() = DAILY_LIMIT_MINUTES
