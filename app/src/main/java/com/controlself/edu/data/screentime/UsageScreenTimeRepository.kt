@@ -74,7 +74,9 @@ class UsageScreenTimeRepository(
         _minutes.value = queried
         persist(today, queried)
 
-        if (queried >= ScreenTimeRepository.DAILY_LIMIT_MINUTES) {
+        if (queried >= ScreenTimeRepository.DAILY_LIMIT_MINUTES &&
+            !lockRepository.hasRestOfDayPass()
+        ) {
             lockRepository.setLocked(true)
         }
     }

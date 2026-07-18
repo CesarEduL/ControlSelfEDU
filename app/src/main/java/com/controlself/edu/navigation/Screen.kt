@@ -12,6 +12,7 @@ object Routes {
     const val STUDENT_COURSE = "student/course/{courseId}"
     const val QUIZ_PLAY = "quiz/{courseId}/play"
     const val QUIZ_RESULT = "quiz/result/{attemptId}"
+    const val QUIZ_REVIEW = "quiz/review/{attemptId}"
     const val TEACHER_HOME = "teacher/home"
     const val PARENT_HOME = "parent/home"
 
@@ -29,6 +30,8 @@ object Routes {
     fun quizPlay(courseId: String): String = "quiz/$courseId/play"
 
     fun quizResult(attemptId: String): String = "quiz/result/$attemptId"
+
+    fun quizReview(attemptId: String): String = "quiz/review/$attemptId"
 
     fun courseSelect(fromLock: Boolean): String = "course/select/$fromLock"
 }

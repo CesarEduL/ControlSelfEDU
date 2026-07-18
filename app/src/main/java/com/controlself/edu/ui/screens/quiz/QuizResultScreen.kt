@@ -15,10 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,17 +28,17 @@ import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseSurface
 
 /**
- * Resultado mínimo (PRP-07). Copy/detalle enriquecidos en PRP-08.
+ * Resultado de evaluación (PRP-08): copy del brief, desbloqueo / reintento.
  */
 @Composable
 fun QuizResultScreen(
     attemptId: String,
+    onReview: (attemptId: String) -> Unit,
     onRetry: (courseId: String) -> Unit,
     onHome: () -> Unit,
     onBackToLock: () -> Unit
 ) {
     val attempt = LocalAppContainer.current.quizAttemptRepository.getById(attemptId)
-    var showDetail by remember { mutableStateOf(false) }
 
     BackHandler {
         if (attempt?.passed == true) onHome() else onBackToLock()
@@ -57,10 +53,12 @@ fun QuizResultScreen(
         ) {
             Text("Intento no encontrado", color = CseDanger)
             Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = onHome) { Text("Volver al inicio") }
+            Button(onClick = onBackToLock) { Text("Volver") }
         }
         return
     }
+
+    val wrongCount = attempt.answers.count { !it.isCorrect }
 
     Column(
         modifier = Modifier
@@ -76,17 +74,23 @@ fun QuizResultScreen(
                 color = CseGreen,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = "Has obtenido ${attempt.correctCount}/${attempt.total} respuestas correctas",
+                text = "Has obtenido ${attempt.correctCount}/20 respuestas correctas",
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Aplicaciones desbloqueadas.",
+                text = "Aplicaciones desbloqueadas",
                 style = MaterialTheme.typography.bodyLarge,
                 color = CseBlue,
                 fontWeight = FontWeight.SemiBold
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Puedes usar redes y juegos el resto del día.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = CseMuted
             )
         } else {
             Text(
@@ -95,47 +99,32 @@ fun QuizResultScreen(
                 color = CseDanger,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = "Obtuviste ${attempt.correctCount}/${attempt.total} respuestas correctas",
+                text = "Obtuviste ${attempt.correctCount}/20",
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Necesitas al menos ${QuizAttempt.PASS_THRESHOLD} correctas. " +
-                    "Revisa tus errores y vuelve a intentarlo.",
+                    "Erraste $wrongCount pregunta${if (wrongCount == 1) "" else "s"}. " +
+                    "Revisa las respuestas correctas y vuelve a resolver la misma evaluación.",
                 style = MaterialTheme.typography.bodyLarge,
                 color = CseMuted
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(28.dp))
+
         OutlinedButton(
-            onClick = { showDetail = !showDetail },
+            onClick = { onReview(attempt.id) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(if (showDetail) "Ocultar resultados" else "Ver resultados")
+            Text("Ver resultados")
         }
 
-        if (showDetail) {
-            Spacer(modifier = Modifier.height(16.dp))
-            attempt.answers.forEachIndexed { i, a ->
-                Text(
-                    text = "${i + 1}. ${a.prompt}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = "Tu respuesta: ${a.userAnswerLabel}" +
-                        if (a.isCorrect) " ✓" else " ✗ (correcta: ${a.correctAnswerLabel})",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (a.isCorrect) CseGreen else CseDanger
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-            }
-        }
+        Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(24.dp))
         if (attempt.passed) {
             Button(onClick = onHome, modifier = Modifier.fillMaxWidth()) {
                 Text("Volver al inicio")
@@ -152,7 +141,8 @@ fun QuizResultScreen(
                 Text("Volver al bloqueo")
             }
         }
-        Spacer(modifier = Modifier.height(12.dp))
+
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = attempt.courseTitle,
             style = MaterialTheme.typography.bodySmall,

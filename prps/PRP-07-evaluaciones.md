@@ -29,7 +29,7 @@ Completar una lección de **20 preguntas** (opción múltiple y V/F) por curso, 
 
 - Score = correctas / 20.
 - `QuizAttempt` en memoria (lista reciente) para feedback PRP-08.
-- Si ≥ 15 → `LockRepository.setLocked(false)` al terminar.
+- Si ≥ 15 → `LockRepository.unlockForRestOfDay()` al terminar (detalle en PRP-08).
 - Si &lt; 15 → lock se mantiene; reintento de la misma lección.
 
 ### Resultado (mínimo en este PRP)

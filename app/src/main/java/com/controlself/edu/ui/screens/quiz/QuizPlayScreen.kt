@@ -170,7 +170,7 @@ fun QuizPlayScreen(
                         )
                         container.quizAttemptRepository.save(attempt)
                         if (attempt.passed) {
-                            container.lockRepository.setLocked(false)
+                            container.lockRepository.unlockForRestOfDay()
                         }
                         onFinished(attempt.id)
                     }

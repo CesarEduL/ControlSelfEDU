@@ -27,6 +27,7 @@ import com.controlself.edu.ui.screens.login.LoginScreen
 import com.controlself.edu.ui.screens.quiz.CourseIntroScreen
 import com.controlself.edu.ui.screens.quiz.QuizPlayScreen
 import com.controlself.edu.ui.screens.quiz.QuizResultScreen
+import com.controlself.edu.ui.screens.quiz.QuizReviewScreen
 import com.controlself.edu.ui.screens.register.RegisterScreen
 import com.controlself.edu.ui.screens.student.StudentHomeScreen
 import com.controlself.edu.ui.screens.welcome.WelcomeScreen
@@ -201,6 +202,9 @@ fun ControlSelfNavHost() {
             val attemptId = entry.arguments?.getString("attemptId").orEmpty()
             QuizResultScreen(
                 attemptId = attemptId,
+                onReview = { id ->
+                    navController.navigate(Routes.quizReview(id))
+                },
                 onRetry = { courseId ->
                     navController.navigate(Routes.quizPlay(courseId)) {
                         popUpTo(Routes.QUIZ_RESULT) { inclusive = true }
@@ -212,6 +216,16 @@ fun ControlSelfNavHost() {
                         popUpTo(navController.graph.id) { inclusive = true }
                     }
                 }
+            )
+        }
+        composable(
+            route = Routes.QUIZ_REVIEW,
+            arguments = listOf(navArgument("attemptId") { type = NavType.StringType })
+        ) { entry ->
+            val attemptId = entry.arguments?.getString("attemptId").orEmpty()
+            QuizReviewScreen(
+                attemptId = attemptId,
+                onBack = { navController.popBackStack() }
             )
         }
         composable(Routes.TEACHER_HOME) {
