@@ -14,6 +14,13 @@ object Routes {
     const val QUIZ_RESULT = "quiz/result/{attemptId}"
     const val QUIZ_REVIEW = "quiz/review/{attemptId}"
     const val TEACHER_HOME = "teacher/home"
+    const val TEACHER_BANK = "teacher/bank"
+    const val TEACHER_BANK_COURSE = "teacher/bank/{courseId}"
+    const val TEACHER_QUESTION_EDIT = "teacher/bank/{courseId}/edit/{questionId}"
+    const val TEACHER_STUDENTS = "teacher/students"
+    const val TEACHER_STUDENT = "teacher/students/{studentId}"
+    const val TEACHER_STATS = "teacher/stats"
+    const val TEACHER_REPORTS = "teacher/reports"
     const val PARENT_HOME = "parent/home"
 
     const val LOCK = "lock"
@@ -34,4 +41,11 @@ object Routes {
     fun quizReview(attemptId: String): String = "quiz/review/$attemptId"
 
     fun courseSelect(fromLock: Boolean): String = "course/select/$fromLock"
+
+    fun teacherBankCourse(courseId: String): String = "teacher/bank/$courseId"
+
+    fun teacherQuestionEdit(courseId: String, questionId: String): String =
+        "teacher/bank/$courseId/edit/$questionId"
+
+    fun teacherStudent(studentId: String): String = "teacher/students/$studentId"
 }

@@ -30,6 +30,14 @@ import com.controlself.edu.ui.screens.quiz.QuizResultScreen
 import com.controlself.edu.ui.screens.quiz.QuizReviewScreen
 import com.controlself.edu.ui.screens.register.RegisterScreen
 import com.controlself.edu.ui.screens.student.StudentHomeScreen
+import com.controlself.edu.ui.screens.teacher.TeacherBankScreen
+import com.controlself.edu.ui.screens.teacher.TeacherHomeScreen
+import com.controlself.edu.ui.screens.teacher.TeacherQuestionEditScreen
+import com.controlself.edu.ui.screens.teacher.TeacherQuestionListScreen
+import com.controlself.edu.ui.screens.teacher.TeacherReportsScreen
+import com.controlself.edu.ui.screens.teacher.TeacherStatsScreen
+import com.controlself.edu.ui.screens.teacher.TeacherStudentDetailScreen
+import com.controlself.edu.ui.screens.teacher.TeacherStudentsScreen
 import com.controlself.edu.ui.screens.welcome.WelcomeScreen
 import com.controlself.edu.ui.theme.CseBlue
 import kotlinx.coroutines.launch
@@ -229,10 +237,12 @@ fun ControlSelfNavHost() {
             )
         }
         composable(Routes.TEACHER_HOME) {
-            RoleHomeStubScreen(
-                roleTitle = "Panel docente",
-                upcomingPrp = "PRP-11",
-                displayName = session?.displayName,
+            TeacherHomeScreen(
+                displayName = session?.displayName.orEmpty(),
+                onOpenBank = { navController.navigate(Routes.TEACHER_BANK) },
+                onOpenStudents = { navController.navigate(Routes.TEACHER_STUDENTS) },
+                onOpenStats = { navController.navigate(Routes.TEACHER_STATS) },
+                onOpenReports = { navController.navigate(Routes.TEACHER_REPORTS) },
                 onLogout = {
                     scope.launch {
                         auth.logout()
@@ -240,6 +250,70 @@ fun ControlSelfNavHost() {
                     }
                 }
             )
+        }
+        composable(Routes.TEACHER_BANK) {
+            TeacherBankScreen(
+                onBack = { navController.popBackStack() },
+                onOpenCourse = { courseId ->
+                    navController.navigate(Routes.teacherBankCourse(courseId))
+                }
+            )
+        }
+        composable(
+            route = Routes.TEACHER_BANK_COURSE,
+            arguments = listOf(navArgument("courseId") { type = NavType.StringType })
+        ) { entry ->
+            val courseId = entry.arguments?.getString("courseId").orEmpty()
+            TeacherQuestionListScreen(
+                courseId = courseId,
+                onBack = { navController.popBackStack() },
+                onEdit = { questionId ->
+                    navController.navigate(Routes.teacherQuestionEdit(courseId, questionId))
+                },
+                onAdd = {
+                    navController.navigate(Routes.teacherQuestionEdit(courseId, "new"))
+                }
+            )
+        }
+        composable(
+            route = Routes.TEACHER_QUESTION_EDIT,
+            arguments = listOf(
+                navArgument("courseId") { type = NavType.StringType },
+                navArgument("questionId") { type = NavType.StringType }
+            )
+        ) { entry ->
+            val courseId = entry.arguments?.getString("courseId").orEmpty()
+            val questionId = entry.arguments?.getString("questionId").orEmpty()
+            TeacherQuestionEditScreen(
+                courseId = courseId,
+                questionId = questionId.takeIf { it != "new" },
+                onDone = { navController.popBackStack() },
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Routes.TEACHER_STUDENTS) {
+            TeacherStudentsScreen(
+                onBack = { navController.popBackStack() },
+                onOpenStudent = { id ->
+                    navController.navigate(Routes.teacherStudent(id))
+                }
+            )
+        }
+        composable(
+            route = Routes.TEACHER_STUDENT,
+            arguments = listOf(navArgument("studentId") { type = NavType.StringType })
+        ) { entry ->
+            val studentId = entry.arguments?.getString("studentId").orEmpty()
+            TeacherStudentDetailScreen(
+                studentId = studentId,
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Routes.TEACHER_STATS) {
+            TeacherStatsScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Routes.TEACHER_REPORTS) {
+            TeacherReportsScreen(onBack = { navController.popBackStack() })
         }
         composable(Routes.PARENT_HOME) {
             RoleHomeStubScreen(

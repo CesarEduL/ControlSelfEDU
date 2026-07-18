@@ -4,13 +4,17 @@ import android.content.Context
 import com.controlself.edu.data.auth.LocalAuthRepository
 import com.controlself.edu.data.lock.PersistentLockRepository
 import com.controlself.edu.data.motivation.PersistentAchievementRepository
+import com.controlself.edu.data.quiz.EditableQuizRepository
 import com.controlself.edu.data.quiz.InMemoryQuizAttemptRepository
-import com.controlself.edu.data.quiz.QuizBank
 import com.controlself.edu.data.screentime.UsageScreenTimeRepository
 import com.controlself.edu.data.stats.PersistentStatsRepository
+import com.controlself.edu.data.teacher.LocalClassroomRepository
+import com.controlself.edu.data.teacher.PersistentQuestionAnalyticsRepository
 import com.controlself.edu.domain.repository.AchievementRepository
 import com.controlself.edu.domain.repository.AuthRepository
+import com.controlself.edu.domain.repository.ClassroomRepository
 import com.controlself.edu.domain.repository.LockRepository
+import com.controlself.edu.domain.repository.QuestionAnalyticsRepository
 import com.controlself.edu.domain.repository.QuizAttemptRepository
 import com.controlself.edu.domain.repository.QuizRepository
 import com.controlself.edu.domain.repository.ScreenTimeRepository
@@ -38,6 +42,8 @@ class AppContainer(
     private val persistentLock = PersistentLockRepository(app)
     private val persistentAchievements = PersistentAchievementRepository(app)
     private val persistentStats = PersistentStatsRepository(app)
+    private val editableQuiz = EditableQuizRepository(app)
+    private val questionAnalytics = PersistentQuestionAnalyticsRepository(app)
     val usageStatsGateway: UsageStatsGateway = AndroidUsageStatsGateway(app)
 
     private val usageScreenTime = UsageScreenTimeRepository(
@@ -49,10 +55,18 @@ class AppContainer(
     val authRepository: AuthRepository = localAuth
     val screenTimeRepository: ScreenTimeRepository = usageScreenTime
     val lockRepository: LockRepository = persistentLock
-    val quizRepository: QuizRepository = QuizBank
+    val quizRepository: QuizRepository = editableQuiz
     val quizAttemptRepository: QuizAttemptRepository = InMemoryQuizAttemptRepository()
     val achievementRepository: AchievementRepository = persistentAchievements
     val statsRepository: StatsRepository = persistentStats
+    val questionAnalyticsRepository: QuestionAnalyticsRepository = questionAnalytics
+    val classroomRepository: ClassroomRepository = LocalClassroomRepository(
+        statsRepository = persistentStats,
+        achievementRepository = persistentAchievements,
+        lockRepository = persistentLock,
+        quizRepository = editableQuiz,
+        analyticsRepository = questionAnalytics
+    )
     val statsAggregator = StatsAggregator(
         statsRepository = persistentStats,
         screenTimeRepository = usageScreenTime,
@@ -69,6 +83,8 @@ class AppContainer(
             persistentLock.restore()
             persistentAchievements.restore()
             persistentStats.restore()
+            editableQuiz.restore()
+            questionAnalytics.restore()
             usageScreenTime.bootstrap()
         }
         ScreenTimeSyncWorker.enqueue(app)

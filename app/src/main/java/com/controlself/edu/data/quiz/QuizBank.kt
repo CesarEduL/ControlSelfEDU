@@ -4,14 +4,13 @@ import com.controlself.edu.domain.model.Course
 import com.controlself.edu.domain.model.quiz.Question
 import com.controlself.edu.domain.model.quiz.QuestionType
 import com.controlself.edu.domain.model.quiz.QuizAttempt
-import com.controlself.edu.domain.repository.QuizRepository
 
 /**
- * Banco embebido MVP (20 preguntas / curso). Editable por docente en PRP-11.
+ * Semilla embebida MVP (20 preguntas / curso). Overrides del docente → [EditableQuizRepository].
  */
-object QuizBank : QuizRepository {
+object QuizBank {
 
-    override fun questionsFor(courseId: String): List<Question> {
+    fun seedQuestions(courseId: String): List<Question> {
         val course = Course.fromId(courseId) ?: Course.MATH
         val list = when (course) {
             Course.MATH -> mathQuestions()
@@ -23,6 +22,9 @@ object QuizBank : QuizRepository {
         }
         return list
     }
+
+    /** @deprecated Usar [seedQuestions]; se mantiene por previews. */
+    fun questionsFor(courseId: String): List<Question> = seedQuestions(courseId)
 
     private fun mc(
         id: String,

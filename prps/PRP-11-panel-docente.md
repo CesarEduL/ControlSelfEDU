@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Dar a los profesores un panel exclusivo para crear y editar evaluaciones, administrar el banco de preguntas, revisar resultados, ver estadísticas e identificar temas difíciles.
+Dar a los profesores un panel exclusivo para administrar el banco de preguntas por curso, revisar resultados del salón, ver estadísticas, identificar temas difíciles y exportar un reporte básico.
 
 ## Alcance
 
@@ -10,58 +10,67 @@ Dar a los profesores un panel exclusivo para crear y editar evaluaciones, admini
 
 | Widget / acción | Spec |
 |-----------------|------|
-| Número de estudiantes | Conteo del salón (mock o lista local) |
-| Promedio del salón | Media de calificaciones |
-| Crear evaluación | CTA → editor |
-| Administrar banco de preguntas | Lista CRUD |
-| Estadísticas | Resumen + temas con más error |
-| Descargar reportes | Export simple (CSV/JSON MVP) |
+| Número de estudiantes | Conteo del salón (lista local / mock + demo) |
+| Promedio del salón | Media de calificaciones disponibles |
+| Administrar banco | CTA → banco por curso |
+| Estadísticas / temas difíciles | Ranking por % de error |
+| Ver estudiantes | Lista con últimas notas |
+| Descargar reportes | Export CSV compartible (MVP) |
 
 ### Lista de estudiantes
 
 - Nombre, últimas calificaciones, estado (activo / en bloqueo si aplica).
-- Drill-down a historial de intentos.
+- Drill-down a resumen de intentos (solo lectura).
 
-### Crear / editar evaluación
+### Banco de preguntas (evaluación = banco del curso)
 
-- Curso, título, dificultad.
-- Agregar hasta N preguntas (lección estándar = 20).
-- Tipos: opción múltiple, verdadero/falso.
-- Publicar / guardar borrador.
+En este MVP la “evaluación” publicada es el banco de **20 preguntas** por curso que ya consume el estudiante (PRP-07).
 
-### Banco de preguntas
-
-- CRUD, filtro por curso/tema.
-- Reutilizar preguntas en varias evaluaciones.
+- Editar / agregar / eliminar preguntas (MC y V/F).
+- Al publicar / guardar, el curso debe quedar con exactamente 20 preguntas.
+- Semilla inicial: `QuizBank` embebido; overrides en DataStore.
 
 ### Temas con mayor dificultad
 
-- Ranking de preguntas o tags con menor % de acierto.
+- Ranking de preguntas con menor % de acierto (agregado desde intentos reales).
 
 ## Fuera de alcance (por ahora)
 
 - LMS completo, rúbricas, calificaciones parciales.
 - Multisalón institucional con SSO.
+- Editor de “nueva evaluación” independiente del banco del curso (fase posterior).
+- Room / backend remoto.
 
 ## Dependencias con otros PRPs
 
 | PRP | Relación |
 |-----|----------|
-| 03 | Rol docente |
-| 07–08 | Consumo de evaluaciones por estudiantes |
-| 10 | Gráficos del salón |
-| 13 | Puede configurar contraseña admin institucional |
+| 03 | Rol docente (`docente` / `123456`) |
+| 07–08 | Estudiante lee el mismo banco |
+| 10 | Historial de intentos / promedios |
+| 13 | Contraseña admin institucional |
 
 ## Criterios de aceptación
 
-- [ ] Home con métricas y CTAs del brief.
-- [ ] Crear evaluación con 20 preguntas y publicarla.
-- [ ] Editar / eliminar preguntas del banco.
-- [ ] Ver lista de estudiantes con resultados.
-- [ ] Identificar al menos un “tema difícil” a partir de errores.
-- [ ] Export de reporte básico.
+- [x] Home con métricas y CTAs del brief.
+- [x] Editar banco de un curso y que el estudiante reciba las preguntas actualizadas.
+- [x] Agregar / eliminar preguntas (publicar con 20).
+- [x] Ver lista de estudiantes con resultados.
+- [x] Identificar al menos un “tema difícil” a partir de errores.
+- [x] Export de reporte básico (CSV vía share).
+
+## Implementación
+
+| Área | Ubicación |
+|------|-----------|
+| Banco editable | `EditableQuizRepository` |
+| Analytics errores | `PersistentQuestionAnalyticsRepository` |
+| Salón | `LocalClassroomRepository` |
+| UI | `ui/screens/teacher/*` |
+| Rutas | `teacher/home`, `teacher/bank`, `teacher/students`, `teacher/stats`, `teacher/reports` |
 
 ## Notas técnicas
 
-- Rutas: `teacher/home`, `teacher/quizzes`, `teacher/questions`, `teacher/students`, `teacher/reports`
-- Misma fuente de verdad Room que el estudiante lee en modo local
+- Persistencia: DataStore (mismo patrón que PRP-03/09/10), no Room.
+- Demo: login `docente` / `123456`.
+- Siguiente: [PRP-12](PRP-12-panel-padre.md).

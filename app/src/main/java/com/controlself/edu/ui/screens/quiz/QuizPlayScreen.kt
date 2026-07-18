@@ -63,6 +63,7 @@ fun QuizPlayScreen(
             container.quizAttemptRepository.save(attempt)
             container.achievementRepository.onQuizAttempt(attempt)
             container.statsRepository.recordAttempt(attempt)
+            container.questionAnalyticsRepository.recordAttemptAnswers(attempt)
             if (attempt.passed) {
                 container.lockRepository.unlockForRestOfDay()
             }
