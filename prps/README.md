@@ -32,7 +32,7 @@ PRP-00 → PRP-01 → PRP-02 → PRP-03 → PRP-04
 | 10 | [PRP-09](PRP-09-motivacion.md) | Rachas, logros, medallas | 04, 08 | ✅ |
 | 11 | [PRP-10](PRP-10-estadisticas.md) | Gráficos y métricas | 05, 08, 09 | ✅ |
 | 12 | [PRP-11](PRP-11-panel-docente.md) | Panel profesor | 03, 07 | ✅ |
-| 13 | [PRP-12](PRP-12-panel-padre.md) | Panel padre/madre | 03, 05, 09 | 📄 |
+| 13 | [PRP-12](PRP-12-panel-padre.md) | Panel padre/madre | 03, 05, 09 | ✅ |
 | 14 | [PRP-13](PRP-13-anti-desinstalacion.md) | Protección desinstalación | 03, 11, 12 | 📄 |
 
 Leyenda: ✅ hecho · ⏳ parcial · 📄 solo spec

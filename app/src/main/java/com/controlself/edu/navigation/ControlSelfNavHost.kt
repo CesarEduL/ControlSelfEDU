@@ -19,11 +19,12 @@ import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.Course
 import com.controlself.edu.domain.model.Session
 import com.controlself.edu.domain.model.UserRole
-import com.controlself.edu.ui.screens.common.RoleHomeStubScreen
 import com.controlself.edu.ui.screens.forgot.ForgotPasswordScreen
 import com.controlself.edu.ui.screens.lock.CourseSelectScreen
 import com.controlself.edu.ui.screens.lock.LockScreen
 import com.controlself.edu.ui.screens.login.LoginScreen
+import com.controlself.edu.ui.screens.parent.ParentAttemptDetailScreen
+import com.controlself.edu.ui.screens.parent.ParentHomeScreen
 import com.controlself.edu.ui.screens.quiz.CourseIntroScreen
 import com.controlself.edu.ui.screens.quiz.QuizPlayScreen
 import com.controlself.edu.ui.screens.quiz.QuizResultScreen
@@ -316,15 +317,29 @@ fun ControlSelfNavHost() {
             TeacherReportsScreen(onBack = { navController.popBackStack() })
         }
         composable(Routes.PARENT_HOME) {
-            RoleHomeStubScreen(
-                roleTitle = "Panel padre / madre",
-                upcomingPrp = "PRP-12",
-                displayName = session?.displayName,
+            ParentHomeScreen(
+                displayName = session?.displayName.orEmpty(),
+                onOpenAttempt = { attemptId ->
+                    navController.navigate(Routes.parentAttempt(attemptId))
+                },
                 onLogout = {
                     scope.launch {
                         auth.logout()
                         goLoginClearingBackStack()
                     }
+                }
+            )
+        }
+        composable(
+            route = Routes.PARENT_ATTEMPT,
+            arguments = listOf(navArgument("attemptId") { type = NavType.StringType })
+        ) { entry ->
+            val attemptId = entry.arguments?.getString("attemptId").orEmpty()
+            ParentAttemptDetailScreen(
+                attemptId = attemptId,
+                onBack = { navController.popBackStack() },
+                onOpenAnswers = { id ->
+                    navController.navigate(Routes.quizReview(id))
                 }
             )
         }

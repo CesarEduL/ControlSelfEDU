@@ -22,6 +22,7 @@ object Routes {
     const val TEACHER_STATS = "teacher/stats"
     const val TEACHER_REPORTS = "teacher/reports"
     const val PARENT_HOME = "parent/home"
+    const val PARENT_ATTEMPT = "parent/attempt/{attemptId}"
 
     const val LOCK = "lock"
     const val COURSE_SELECT = "course/select/{fromLock}"
@@ -48,4 +49,6 @@ object Routes {
         "teacher/bank/$courseId/edit/$questionId"
 
     fun teacherStudent(studentId: String): String = "teacher/students/$studentId"
+
+    fun parentAttempt(attemptId: String): String = "parent/attempt/$attemptId"
 }

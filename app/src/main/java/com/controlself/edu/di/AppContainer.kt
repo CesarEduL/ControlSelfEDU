@@ -19,6 +19,7 @@ import com.controlself.edu.domain.repository.QuizAttemptRepository
 import com.controlself.edu.domain.repository.QuizRepository
 import com.controlself.edu.domain.repository.ScreenTimeRepository
 import com.controlself.edu.domain.repository.StatsRepository
+import com.controlself.edu.domain.parent.ParentDashboardAggregator
 import com.controlself.edu.domain.stats.StatsAggregator
 import com.controlself.edu.system.admin.DeviceAdminGateway
 import com.controlself.edu.system.admin.NoOpDeviceAdminGateway
@@ -68,6 +69,11 @@ class AppContainer(
         analyticsRepository = questionAnalytics
     )
     val statsAggregator = StatsAggregator(
+        statsRepository = persistentStats,
+        screenTimeRepository = usageScreenTime,
+        achievementRepository = persistentAchievements
+    )
+    val parentDashboardAggregator = ParentDashboardAggregator(
         statsRepository = persistentStats,
         screenTimeRepository = usageScreenTime,
         achievementRepository = persistentAchievements
