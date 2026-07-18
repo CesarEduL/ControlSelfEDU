@@ -29,9 +29,9 @@ Orden de implementación: **PRP-00 → 01 → 02 → 03 → … → 13**.
 - **PRP-04** panel estudiante ✅
 - **PRP-05** monitoreo de uso ✅
 - **PRP-06** bloqueo automático ✅
-- Siguiente: **[PRP-07 — Evaluaciones](prps/PRP-07-evaluaciones.md)**
+- **PRP-07** evaluaciones ✅
+- Siguiente: **[PRP-08 — Resultados y feedback](prps/PRP-08-resultados-feedback.md)** (pulir copy/detalle)
 
-Demo login: `estudiante` / `docente` / `padre` — clave `123456`.  
-Bloqueo QA: en el panel estudiante → **Simular tiempo agotado**.
+Demo: `estudiante` / `123456` → Simular tiempo agotado → Comenzar lección → quiz (≥15 para desbloquear).
 
 Detalle de capas: [`docs/arquitectura.md`](docs/arquitectura.md)

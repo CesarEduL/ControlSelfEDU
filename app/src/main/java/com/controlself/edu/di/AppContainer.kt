@@ -3,9 +3,13 @@ package com.controlself.edu.di
 import android.content.Context
 import com.controlself.edu.data.auth.LocalAuthRepository
 import com.controlself.edu.data.lock.PersistentLockRepository
+import com.controlself.edu.data.quiz.InMemoryQuizAttemptRepository
+import com.controlself.edu.data.quiz.QuizBank
 import com.controlself.edu.data.screentime.UsageScreenTimeRepository
 import com.controlself.edu.domain.repository.AuthRepository
 import com.controlself.edu.domain.repository.LockRepository
+import com.controlself.edu.domain.repository.QuizAttemptRepository
+import com.controlself.edu.domain.repository.QuizRepository
 import com.controlself.edu.domain.repository.ScreenTimeRepository
 import com.controlself.edu.system.admin.DeviceAdminGateway
 import com.controlself.edu.system.admin.NoOpDeviceAdminGateway
@@ -38,6 +42,8 @@ class AppContainer(
     val authRepository: AuthRepository = localAuth
     val screenTimeRepository: ScreenTimeRepository = usageScreenTime
     val lockRepository: LockRepository = persistentLock
+    val quizRepository: QuizRepository = QuizBank
+    val quizAttemptRepository: QuizAttemptRepository = InMemoryQuizAttemptRepository()
 
     val entertainmentLockController: EntertainmentLockController =
         NoOpEntertainmentLockController()

@@ -24,8 +24,10 @@ import com.controlself.edu.ui.screens.forgot.ForgotPasswordScreen
 import com.controlself.edu.ui.screens.lock.CourseSelectScreen
 import com.controlself.edu.ui.screens.lock.LockScreen
 import com.controlself.edu.ui.screens.login.LoginScreen
+import com.controlself.edu.ui.screens.quiz.CourseIntroScreen
+import com.controlself.edu.ui.screens.quiz.QuizPlayScreen
+import com.controlself.edu.ui.screens.quiz.QuizResultScreen
 import com.controlself.edu.ui.screens.register.RegisterScreen
-import com.controlself.edu.ui.screens.student.CoursePlaceholderScreen
 import com.controlself.edu.ui.screens.student.StudentHomeScreen
 import com.controlself.edu.ui.screens.welcome.WelcomeScreen
 import com.controlself.edu.ui.theme.CseBlue
@@ -66,6 +68,12 @@ fun ControlSelfNavHost() {
         }
     }
 
+    fun goStudentHomeClearing() {
+        navController.navigate(Routes.STUDENT_HOME) {
+            popUpTo(navController.graph.id) { inclusive = true }
+        }
+    }
+
     fun goLoginClearingBackStack() {
         navController.navigate(Routes.LOGIN) {
             popUpTo(navController.graph.id) { inclusive = true }
@@ -77,7 +85,8 @@ fun ControlSelfNavHost() {
         val route = navController.currentBackStackEntry?.destination?.route.orEmpty()
         val onLockFlow = route == Routes.LOCK ||
             route.startsWith("course/select") ||
-            route.startsWith("student/course")
+            route.startsWith("student/course") ||
+            route.startsWith("quiz/")
         if (isStudent && locked && !onLockFlow) {
             navController.navigate(Routes.LOCK) {
                 launchSingleTop = true
@@ -123,9 +132,7 @@ fun ControlSelfNavHost() {
         }
         composable(
             route = Routes.COURSE_SELECT,
-            arguments = listOf(
-                navArgument("fromLock") { type = NavType.BoolType }
-            )
+            arguments = listOf(navArgument("fromLock") { type = NavType.BoolType })
         ) { entry ->
             val fromLock = entry.arguments?.getBoolean("fromLock") == true
             CourseSelectScreen(
@@ -165,9 +172,46 @@ fun ControlSelfNavHost() {
         ) { entry ->
             val courseId = entry.arguments?.getString("courseId").orEmpty()
             val course = Course.fromId(courseId) ?: Course.MATH
-            CoursePlaceholderScreen(
+            CourseIntroScreen(
                 course = course,
+                onStartQuiz = { navController.navigate(Routes.quizPlay(course.id)) },
                 onBack = { navController.popBackStack() }
+            )
+        }
+        composable(
+            route = Routes.QUIZ_PLAY,
+            arguments = listOf(navArgument("courseId") { type = NavType.StringType })
+        ) { entry ->
+            val courseId = entry.arguments?.getString("courseId").orEmpty()
+            val course = Course.fromId(courseId) ?: Course.MATH
+            QuizPlayScreen(
+                course = course,
+                onFinished = { attemptId ->
+                    navController.navigate(Routes.quizResult(attemptId)) {
+                        popUpTo(Routes.quizPlay(course.id)) { inclusive = true }
+                    }
+                },
+                onAbort = { navController.popBackStack() }
+            )
+        }
+        composable(
+            route = Routes.QUIZ_RESULT,
+            arguments = listOf(navArgument("attemptId") { type = NavType.StringType })
+        ) { entry ->
+            val attemptId = entry.arguments?.getString("attemptId").orEmpty()
+            QuizResultScreen(
+                attemptId = attemptId,
+                onRetry = { courseId ->
+                    navController.navigate(Routes.quizPlay(courseId)) {
+                        popUpTo(Routes.QUIZ_RESULT) { inclusive = true }
+                    }
+                },
+                onHome = { goStudentHomeClearing() },
+                onBackToLock = {
+                    navController.navigate(Routes.LOCK) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                    }
+                }
             )
         }
         composable(Routes.TEACHER_HOME) {

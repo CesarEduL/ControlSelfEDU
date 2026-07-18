@@ -1,4 +1,4 @@
-package com.controlself.edu.ui.screens.student
+package com.controlself.edu.ui.screens.quiz
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -19,16 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.domain.model.Course
+import com.controlself.edu.domain.model.quiz.QuizAttempt
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseSurface
 
-/**
- * Puente hasta PRP-07 (evaluación real).
- */
 @Composable
-fun CoursePlaceholderScreen(
+fun CourseIntroScreen(
     course: Course,
+    onStartQuiz: () -> Unit,
     onBack: () -> Unit
 ) {
     Column(
@@ -54,17 +53,18 @@ fun CoursePlaceholderScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "La lección de 20 preguntas se implementa en PRP-07. " +
-                    "Desde aquí podrás comenzar la evaluación y desbloquear apps si apruebas.",
+                text = "Esta lección tiene ${QuizAttempt.TOTAL_QUESTIONS} preguntas " +
+                    "(opción múltiple y verdadero/falso).\n\n" +
+                    "Necesitas al menos ${QuizAttempt.PASS_THRESHOLD} correctas para desbloquear.",
                 style = MaterialTheme.typography.bodyLarge,
                 color = CseMuted
             )
             Spacer(modifier = Modifier.height(28.dp))
             Button(
-                onClick = onBack,
+                onClick = onStartQuiz,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Volver al panel")
+                Text("Comenzar evaluación")
             }
         }
     }

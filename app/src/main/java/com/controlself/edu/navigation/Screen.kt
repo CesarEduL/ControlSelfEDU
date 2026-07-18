@@ -10,6 +10,8 @@ object Routes {
 
     const val STUDENT_HOME = "student/home"
     const val STUDENT_COURSE = "student/course/{courseId}"
+    const val QUIZ_PLAY = "quiz/{courseId}/play"
+    const val QUIZ_RESULT = "quiz/result/{attemptId}"
     const val TEACHER_HOME = "teacher/home"
     const val PARENT_HOME = "parent/home"
 
@@ -24,18 +26,9 @@ object Routes {
 
     fun studentCourse(courseId: String): String = "student/course/$courseId"
 
-    fun courseSelect(fromLock: Boolean): String = "course/select/$fromLock"
-}
+    fun quizPlay(courseId: String): String = "quiz/$courseId/play"
 
-sealed class Screen(val route: String) {
-    data object Welcome : Screen(Routes.WELCOME)
-    data object Login : Screen(Routes.LOGIN)
-    data object Register : Screen(Routes.REGISTER)
-    data object ForgotPassword : Screen(Routes.FORGOT_PASSWORD)
-    data object StudentHome : Screen(Routes.STUDENT_HOME)
-    data object StudentCourse : Screen(Routes.STUDENT_COURSE)
-    data object TeacherHome : Screen(Routes.TEACHER_HOME)
-    data object ParentHome : Screen(Routes.PARENT_HOME)
-    data object Lock : Screen(Routes.LOCK)
-    data object CourseSelect : Screen(Routes.COURSE_SELECT)
+    fun quizResult(attemptId: String): String = "quiz/result/$attemptId"
+
+    fun courseSelect(fromLock: Boolean): String = "course/select/$fromLock"
 }

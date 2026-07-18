@@ -2,70 +2,62 @@
 
 ## Objetivo
 
-Permitir al estudiante elegir un curso y completar una lección de **20 preguntas** (opción múltiple y verdadero/falso) para intentar desbloquear el entretenimiento.
+Completar una lección de **20 preguntas** (opción múltiple y V/F) por curso, calcular el score y guardar el intento. Umbral de desbloqueo: **≥ 15/20** (UI de resultado enriquecida en PRP-08).
 
 ## Alcance
 
-### Selección de curso
+### Entrada
 
-Tarjetas:
+- Selección de curso ya existe (PRP-04/06): `course/select` y cursos del home.
+- Tap en curso → intro breve → **Comenzar evaluación** → `quiz/{courseId}/play`.
 
-| Curso | Muestra |
-|-------|---------|
-| Matemática | Ícono + nivel de dificultad |
-| Comunicación | Ícono + nivel de dificultad |
-| Ciencia y Tecnología | Ícono + nivel de dificultad |
-
-Entrada desde panel estudiante o desde “Comenzar lección” (PRP-06).
-
-### Estructura de una lección / evaluación
+### Lección
 
 | Campo | Spec |
 |-------|------|
 | Preguntas | Exactamente 20 |
-| Tipos | Opción múltiple (3–4 opciones) y Verdadero/Falso |
-| Orden | Secuencial; una pregunta visible a la vez (recomendado MVP) |
-| Progreso | Indicador “Pregunta k de 20” |
+| Tipos | Opción múltiple (3–4) + Verdadero/Falso |
+| UI | Una pregunta a la vez · “Pregunta k de 20” |
+| Salida | Diálogo de confirmación si intenta salir |
 
-### Banco de preguntas (MVP)
+### Banco MVP
 
-- JSON/assets embebidos por curso **o** Room seed.
-- Docente edita/crea en PRP-11; hasta entonces contenido fijo de calidad razonable.
+- Contenido embebido en código por curso (`QuizBank`).
+- CRUD docente → PRP-11.
 
-### Calificación (lógica)
+### Calificación y persistencia
 
-- Contar correctas al finalizar.
-- Umbral de desbloqueo: **≥ 15 / 20**.
-- Persistencia del intento: curso, score, fecha, detalle de respuestas (para PRP-08).
+- Score = correctas / 20.
+- `QuizAttempt` en memoria (lista reciente) para feedback PRP-08.
+- Si ≥ 15 → `LockRepository.setLocked(false)` al terminar.
+- Si &lt; 15 → lock se mantiene; reintento de la misma lección.
 
-### UI durante la evaluación
+### Resultado (mínimo en este PRP)
 
-- Enunciado claro, opciones tappable.
-- Botón Siguiente / Finalizar en la última.
-- Evitar salir accidentalmente (diálogo de confirmación).
+- Pantalla score + aprobar/reprobar + Reintentar / Ir al inicio.
+- Detalle “Ver resultados” y copy exacto del brief → se pulen en [PRP-08](PRP-08-resultados-feedback.md).
 
-## Fuera de alcance (por ahora)
+## Fuera de alcance
 
-- Preguntas abiertas, multimedia pesada, temporizador por pregunta.
-- Generación con IA.
-- Adaptive learning avanzado.
-
-## Dependencias con otros PRPs
-
-| PRP | Relación |
-|-----|----------|
-| 04, 06 | Entradas al flujo |
-| 08 | Pantallas de resultado |
-| 11 | CRUD de evaluaciones (docente) |
+- IA, multimedia, timer por pregunta, adaptive learning.
 
 ## Criterios de aceptación
 
-- [ ] Tres cursos seleccionables con ícono y dificultad.
-- [ ] Flujo de 20 preguntas mixtas MC / V-F.
-- [ ] Score calculado correctamente.
-- [ ] Intento guardado para feedback y estadísticas.
+- [x] Tres cursos con ícono/dificultad llevan al quiz.
+- [x] 20 preguntas mixtas MC / V-F.
+- [x] Score correcto.
+- [x] Intento guardado y desbloqueo si ≥ 15.
+
+## Implementación
+
+| Área | Ubicación |
+|------|-----------|
+| Modelos | `domain/model/quiz/*` |
+| Banco | `data/quiz/QuizBank.kt` |
+| Repo | `QuizAttemptRepository` |
+| UI | `ui/screens/quiz/*` |
+| Rutas | `quiz/{courseId}/play`, `quiz/result/{attemptId}` |
 
 ## Notas técnicas
 
-- Modelos: `Question`, `Choice`, `Quiz`, `QuizAttempt`
-- Rutas: `quiz/select`, `quiz/{courseId}/play`
+- Siguiente: [PRP-08](PRP-08-resultados-feedback.md) (feedback detallado / copy brief).
