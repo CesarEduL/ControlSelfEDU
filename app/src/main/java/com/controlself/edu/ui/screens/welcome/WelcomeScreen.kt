@@ -2,6 +2,7 @@ package com.controlself.edu.ui.screens.welcome
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,14 +23,15 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.controlself.edu.R
 import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseBlueDark
-import com.controlself.edu.ui.theme.CseGreen
 import com.controlself.edu.ui.theme.CseWhite
 import kotlinx.coroutines.delay
 
@@ -66,16 +68,15 @@ fun WelcomeScreen(onFinished: () -> Unit) {
         ) {
             Box(
                 modifier = Modifier
-                    .size(112.dp)
+                    .size(120.dp)
                     .clip(CircleShape)
                     .background(CseWhite),
                 contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(56.dp)
-                        .clip(CircleShape)
-                        .background(CseGreen)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_logo_placeholder),
+                    contentDescription = "Logo ControlSelf EDU",
+                    modifier = Modifier.size(72.dp)
                 )
             }
             Spacer(modifier = Modifier.height(28.dp))

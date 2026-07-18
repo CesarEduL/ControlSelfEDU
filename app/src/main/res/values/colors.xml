@@ -4,5 +4,7 @@
     <color name="cse_blue_dark">#0D47A1</color>
     <color name="cse_green">#2E7D32</color>
     <color name="cse_white">#FFFFFF</color>
+    <color name="cse_warning">#F9A825</color>
+    <color name="cse_danger">#C62828</color>
     <color name="ic_launcher_background">#1565C0</color>
 </resources>

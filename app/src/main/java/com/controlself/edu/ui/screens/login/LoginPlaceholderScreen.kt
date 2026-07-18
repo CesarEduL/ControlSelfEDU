@@ -23,8 +23,8 @@ import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseSurface
 
 /**
- * Placeholder de login. La UI completa (campos, roles, recordar sesión)
- * se implementará en el PR de autenticación.
+ * Destino post-bienvenida (PRP-02).
+ * Formulario, roles y sesión → PRP-03.
  */
 @Composable
 fun LoginPlaceholderScreen() {
@@ -50,8 +50,8 @@ fun LoginPlaceholderScreen() {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "El formulario de autenticación y la selección de rol " +
-                "(Estudiante / Docente / Padre) llegarán en el siguiente PR.",
+            text = "El formulario (usuario, contraseña, recordar sesión) " +
+                "y los roles Estudiante / Docente / Padre se implementan en PRP-03.",
             style = MaterialTheme.typography.bodyMedium,
             color = CseMuted,
             textAlign = TextAlign.Center,

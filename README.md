@@ -23,8 +23,8 @@ Orden de implementación: **PRP-00 → 01 → 02 → 03 → … → 13**.
 
 ## Estado actual
 
-- **PRP-01** arquitectura ✅ (`domain` / `data` / `system` / DI manual / rutas por rol)
-- **PRP-02** splash + tema ✅ parcial
+- **PRP-01** arquitectura ✅
+- **PRP-02** bienvenida + tema ✅
 - Siguiente: **[PRP-03 — Autenticación y roles](prps/PRP-03-autenticacion-roles.md)**
 
 Detalle de capas: [`docs/arquitectura.md`](docs/arquitectura.md)
