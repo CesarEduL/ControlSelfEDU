@@ -3,7 +3,8 @@
 /local.properties
 /.idea/
 .DS_Store
-/build/
+Thumbs.db
+build/
 /captures/
 .externalNativeBuild/
 .cxx/
@@ -23,3 +24,6 @@ out/
 !debug.keystore
 app/release/
 .kotlin/
+google-services.json
+.cursor/*
+!.cursor/skills/
