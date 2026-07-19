@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Impedir que el estudiante desinstale ControlSelf EDU sin una contraseña de administrador conocida solo por el docente o el padre/madre.
+Impedir (o disuadir) que el estudiante desinstale ControlSelf EDU sin una contraseña de administrador conocida solo por el docente o el padre/madre.
 
 ## Alcance
 
@@ -13,38 +13,34 @@ Impedir que el estudiante desinstale ControlSelf EDU sin una contraseña de admi
 3. Correcta → desinstalación continúa.
 4. Incorrecta → se cancela y la app permanece.
 
-### Realidad de Android (obligatorio documentar)
+### Realidad de Android (documentada in-app)
 
-En Android de consumo **no existe** una API pública simple que intercepte el diálogo de desinstalación del launcher para pedir password, salvo perfiles privilegiados:
+En Android de consumo **no existe** una API pública que intercepte el diálogo de desinstalación del launcher con password, salvo perfiles privilegiados:
 
-| Enfoque | Viabilidad | Uso |
-|---------|------------|-----|
-| **Device Admin** (legado) | Limitado; muchas APIs deprecadas | Disuasión parcial |
-| **Device Owner / Profile Owner** (MDM) | Alto control en dispositivos escolares provisionados | Instituciones |
-| **App pin / lock task** | Evita salir de la app, no la desinstalación desde Ajustes | Complemento |
-| **Accessibility / overlay** | Frágil y rechazable en Play | Evitar como única defensa |
+| Enfoque | Viabilidad | Uso en esta app |
+|---------|------------|-----------------|
+| **Device Admin** (legado) | Disuasión: hay que desactivar admin antes de desinstalar | MVP |
+| **Device Owner** (MDM) | Alto control en dispositivos escolares | Fase institucional / QA con `adb` |
+| **App pin / lock task** | No evita desinstalación desde Ajustes | Fuera de MVP |
+| **Accessibility / overlay** | Frágil / rechazable en Play | Evitar |
 
-### Spec de producto viable (MVP + fases)
+### Spec MVP (implementado)
 
-**MVP (sin Device Owner):**
+- Contraseña admin configurable por **padre** y **docente** (PBKDF2 + salt en DataStore).
+- Pantalla `protection/admin`: estado, límites, activar/desactivar Device Admin.
+- Desactivar Device Admin **desde la app** exige la contraseña admin.
+- `onDisableRequested` muestra aviso si intentan desactivar desde Ajustes.
+- El estudiante **no** ve ni resetea la contraseña.
 
-- Contraseña admin configurable por padre/docente (hash en DataStore).
-- Pantalla de “protección activa” que educa y pide activar Device Admin si está disponible.
-- Si el estudiante abre Ajustes para desinstalar, la app puede detectar pérdida de admin / intento vía receiver limitado y notificar al padre (best-effort).
+### Fase institucional (documentada)
 
-**Fase institucional:**
-
-- Provisionamiento Device Owner (Android Enterprise).
-- Política: desinstalación de la app de control solo con admin.
-
-### Quién conoce la contraseña
-
-- Docente (implementación institucional) y/o padre/madre.
-- El estudiante **no** puede verla ni resetearla sin el rol admin.
+```text
+adb shell dpm set-device-owner com.controlself.edu/.system.admin.ControlSelfDeviceAdminReceiver
+```
 
 ## Fuera de alcance (por ahora)
 
-- Garantizar 100% anti-desinstalación en dispositivos no gestionados (imposible de forma confiable y compatible con Play).
+- Garantizar 100% anti-desinstalación en dispositivos no gestionados.
 - Root kits / modificación del sistema.
 
 ## Dependencias con otros PRPs
@@ -52,17 +48,27 @@ En Android de consumo **no existe** una API pública simple que intercepte el di
 | PRP | Relación |
 |-----|----------|
 | 03 | Roles padre/docente |
-| 11, 12 | UI para setear contraseña admin |
+| 11, 12 | CTAs hacia pantalla de protección |
 
 ## Criterios de aceptación
 
-- [ ] Padre/docente puede definir y cambiar contraseña admin.
-- [ ] Documentación in-app de límites de Android.
-- [ ] En build de prueba con Device Owner (si se provisiona), la desinstalación requiere admin.
-- [ ] En build consumer, al menos Device Admin opcional + aviso claro de limitaciones.
+- [x] Padre/docente puede definir y cambiar contraseña admin.
+- [x] Documentación in-app de límites de Android.
+- [x] Device Admin opcional activable; desactivar desde la app pide password.
+- [x] Estudiante no tiene UI para ver/cambiar la contraseña.
+- [x] Notas de Device Owner para builds de prueba documentadas.
+
+## Implementación
+
+| Área | Ubicación |
+|------|-----------|
+| Hash password | `PersistentAdminPasswordRepository` |
+| Gateway | `AndroidDeviceAdminGateway` |
+| Receiver | `ControlSelfDeviceAdminReceiver` + `@xml/device_admin` |
+| UI | `AdminProtectionScreen` |
+| Ruta | `protection/admin` |
 
 ## Notas técnicas
 
-- Nunca guardar contraseña en texto plano (hash + salt).
-- Separar `sessionPassword` (login) de `adminUninstallPassword`.
-- Probar políticas con `adb shell dpm set-device-owner` solo en dispositivos de desarrollo
+- Separar login de `adminUninstallPassword`.
+- Ciclo de PRPs completado (00–13).

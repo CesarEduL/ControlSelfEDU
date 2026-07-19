@@ -39,6 +39,7 @@ fun TeacherHomeScreen(
     onOpenStudents: () -> Unit,
     onOpenStats: () -> Unit,
     onOpenReports: () -> Unit,
+    onOpenProtection: () -> Unit,
     onLogout: () -> Unit
 ) {
     val dashboard by LocalAppContainer.current.classroomRepository.observeDashboard()
@@ -51,6 +52,7 @@ fun TeacherHomeScreen(
         onOpenStudents = onOpenStudents,
         onOpenStats = onOpenStats,
         onOpenReports = onOpenReports,
+        onOpenProtection = onOpenProtection,
         onLogout = onLogout
     )
 }
@@ -63,6 +65,7 @@ private fun TeacherHomeContent(
     onOpenStudents: () -> Unit,
     onOpenStats: () -> Unit,
     onOpenReports: () -> Unit,
+    onOpenProtection: () -> Unit,
     onLogout: () -> Unit
 ) {
     Column(
@@ -164,6 +167,10 @@ private fun TeacherHomeContent(
             Spacer(modifier = Modifier.height(10.dp))
             OutlinedButton(onClick = onOpenReports, modifier = Modifier.fillMaxWidth()) {
                 Text("Descargar reportes")
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            OutlinedButton(onClick = onOpenProtection, modifier = Modifier.fillMaxWidth()) {
+                Text("Protección anti-desinstalación")
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.controlself.edu.di
 
 import android.content.Context
+import com.controlself.edu.data.admin.PersistentAdminPasswordRepository
 import com.controlself.edu.data.auth.LocalAuthRepository
 import com.controlself.edu.data.lock.PersistentLockRepository
 import com.controlself.edu.data.motivation.PersistentAchievementRepository
@@ -10,7 +11,9 @@ import com.controlself.edu.data.screentime.UsageScreenTimeRepository
 import com.controlself.edu.data.stats.PersistentStatsRepository
 import com.controlself.edu.data.teacher.LocalClassroomRepository
 import com.controlself.edu.data.teacher.PersistentQuestionAnalyticsRepository
+import com.controlself.edu.domain.parent.ParentDashboardAggregator
 import com.controlself.edu.domain.repository.AchievementRepository
+import com.controlself.edu.domain.repository.AdminPasswordRepository
 import com.controlself.edu.domain.repository.AuthRepository
 import com.controlself.edu.domain.repository.ClassroomRepository
 import com.controlself.edu.domain.repository.LockRepository
@@ -19,10 +22,9 @@ import com.controlself.edu.domain.repository.QuizAttemptRepository
 import com.controlself.edu.domain.repository.QuizRepository
 import com.controlself.edu.domain.repository.ScreenTimeRepository
 import com.controlself.edu.domain.repository.StatsRepository
-import com.controlself.edu.domain.parent.ParentDashboardAggregator
 import com.controlself.edu.domain.stats.StatsAggregator
+import com.controlself.edu.system.admin.AndroidDeviceAdminGateway
 import com.controlself.edu.system.admin.DeviceAdminGateway
-import com.controlself.edu.system.admin.NoOpDeviceAdminGateway
 import com.controlself.edu.system.lock.EntertainmentLockController
 import com.controlself.edu.system.lock.NoOpEntertainmentLockController
 import com.controlself.edu.system.usage.AndroidUsageStatsGateway
@@ -45,6 +47,7 @@ class AppContainer(
     private val persistentStats = PersistentStatsRepository(app)
     private val editableQuiz = EditableQuizRepository(app)
     private val questionAnalytics = PersistentQuestionAnalyticsRepository(app)
+    private val persistentAdminPassword = PersistentAdminPasswordRepository(app)
     val usageStatsGateway: UsageStatsGateway = AndroidUsageStatsGateway(app)
 
     private val usageScreenTime = UsageScreenTimeRepository(
@@ -61,6 +64,7 @@ class AppContainer(
     val achievementRepository: AchievementRepository = persistentAchievements
     val statsRepository: StatsRepository = persistentStats
     val questionAnalyticsRepository: QuestionAnalyticsRepository = questionAnalytics
+    val adminPasswordRepository: AdminPasswordRepository = persistentAdminPassword
     val classroomRepository: ClassroomRepository = LocalClassroomRepository(
         statsRepository = persistentStats,
         achievementRepository = persistentAchievements,
@@ -81,7 +85,7 @@ class AppContainer(
 
     val entertainmentLockController: EntertainmentLockController =
         NoOpEntertainmentLockController()
-    val deviceAdminGateway: DeviceAdminGateway = NoOpDeviceAdminGateway()
+    val deviceAdminGateway: DeviceAdminGateway = AndroidDeviceAdminGateway(app)
 
     init {
         scope.launch {

@@ -19,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -60,6 +61,7 @@ import java.util.Locale
 fun ParentHomeScreen(
     displayName: String,
     onOpenAttempt: (attemptId: String) -> Unit,
+    onOpenProtection: () -> Unit,
     onLogout: () -> Unit
 ) {
     val container = LocalAppContainer.current
@@ -82,6 +84,7 @@ fun ParentHomeScreen(
         displayName = displayName,
         dashboard = dashboard,
         onOpenAttempt = onOpenAttempt,
+        onOpenProtection = onOpenProtection,
         onLogout = onLogout
     )
 }
@@ -92,6 +95,7 @@ private fun ParentHomeContent(
     displayName: String,
     dashboard: ParentDashboard,
     onOpenAttempt: (attemptId: String) -> Unit,
+    onOpenProtection: () -> Unit,
     onLogout: () -> Unit
 ) {
     val stats = dashboard.stats
@@ -248,11 +252,18 @@ private fun ParentHomeContent(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = "La contraseña de administrador anti-desinstalación se configura en PRP-13. " +
+                        text = "Define la contraseña admin y activa Device Admin. " +
                             "No se muestra en pantallas del estudiante.",
                         style = MaterialTheme.typography.bodySmall,
                         color = CseMuted
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    OutlinedButton(
+                        onClick = onOpenProtection,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Configurar protección")
+                    }
                 }
             }
         }

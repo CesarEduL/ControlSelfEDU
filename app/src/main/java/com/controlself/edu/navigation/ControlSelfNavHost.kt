@@ -25,6 +25,7 @@ import com.controlself.edu.ui.screens.lock.LockScreen
 import com.controlself.edu.ui.screens.login.LoginScreen
 import com.controlself.edu.ui.screens.parent.ParentAttemptDetailScreen
 import com.controlself.edu.ui.screens.parent.ParentHomeScreen
+import com.controlself.edu.ui.screens.protection.AdminProtectionScreen
 import com.controlself.edu.ui.screens.quiz.CourseIntroScreen
 import com.controlself.edu.ui.screens.quiz.QuizPlayScreen
 import com.controlself.edu.ui.screens.quiz.QuizResultScreen
@@ -244,6 +245,7 @@ fun ControlSelfNavHost() {
                 onOpenStudents = { navController.navigate(Routes.TEACHER_STUDENTS) },
                 onOpenStats = { navController.navigate(Routes.TEACHER_STATS) },
                 onOpenReports = { navController.navigate(Routes.TEACHER_REPORTS) },
+                onOpenProtection = { navController.navigate(Routes.ADMIN_PROTECTION) },
                 onLogout = {
                     scope.launch {
                         auth.logout()
@@ -322,6 +324,7 @@ fun ControlSelfNavHost() {
                 onOpenAttempt = { attemptId ->
                     navController.navigate(Routes.parentAttempt(attemptId))
                 },
+                onOpenProtection = { navController.navigate(Routes.ADMIN_PROTECTION) },
                 onLogout = {
                     scope.launch {
                         auth.logout()
@@ -342,6 +345,9 @@ fun ControlSelfNavHost() {
                     navController.navigate(Routes.quizReview(id))
                 }
             )
+        }
+        composable(Routes.ADMIN_PROTECTION) {
+            AdminProtectionScreen(onBack = { navController.popBackStack() })
         }
     }
 }

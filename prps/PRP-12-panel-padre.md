@@ -64,4 +64,4 @@ Permitir al padre/madre visualizar el progreso del hijo: tiempo en pantalla, est
 
 - Reutiliza `StatsAggregator.build` + motivación + stats de intentos.
 - Demo: login `padre` / `123456`.
-- Siguiente: [PRP-13](PRP-13-anti-desinstalacion.md).
+- Protección anti-desinstalación: [PRP-13](PRP-13-anti-desinstalacion.md).

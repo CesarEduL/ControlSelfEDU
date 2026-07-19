@@ -23,6 +23,7 @@ object Routes {
     const val TEACHER_REPORTS = "teacher/reports"
     const val PARENT_HOME = "parent/home"
     const val PARENT_ATTEMPT = "parent/attempt/{attemptId}"
+    const val ADMIN_PROTECTION = "protection/admin"
 
     const val LOCK = "lock"
     const val COURSE_SELECT = "course/select/{fromLock}"
