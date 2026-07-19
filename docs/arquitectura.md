@@ -21,7 +21,7 @@ system (UsageStats, overlay, Device Admin) — solo vía gateways
 | `domain.model` | `UserRole`, `Session` |
 | `domain.repository` | `AuthRepository`, `ScreenTimeRepository`, `LockRepository` |
 | `data.*` | Implementaciones in-memory / fake |
-| `system.*` | Gateways NoOp (PRP-05/06/13) |
+| `system.*` | UsageStats, Device Admin, lock gateways |
 | `di` | `AppContainer` + `LocalAppContainer` |
 
 ## DI
@@ -43,6 +43,6 @@ Helper: `Routes.homeFor(UserRole)`.
 
 | Capacidad | PRP | Estado en código |
 |-----------|-----|------------------|
-| Usage Access | 05 | `UsageStatsGateway` NoOp |
-| Overlay / bloqueo | 06 | `EntertainmentLockController` NoOp |
-| Device Admin | 13 | `DeviceAdminGateway` NoOp |
+| Usage Access | 05 | `AndroidUsageStatsGateway` |
+| Overlay / bloqueo UI | 06 | `LockScreen` + `LockRepository` |
+| Device Admin | 13 | `AndroidDeviceAdminGateway` + receiver |

@@ -102,7 +102,8 @@ fun LockScreen(
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = "MVP: este bloqueo aplica dentro de ControlSelf EDU. " +
-                    "El bloqueo de otras apps requiere control parental del sistema (PRP-13).",
+                    "El bloqueo forzado de otras apps en el sistema depende del Device Admin " +
+                    "y, en entornos escolares, de Device Owner.",
                 style = MaterialTheme.typography.bodySmall,
                 color = CseWhite.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center

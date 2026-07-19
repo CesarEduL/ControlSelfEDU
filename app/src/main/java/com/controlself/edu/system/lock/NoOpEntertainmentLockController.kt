@@ -1,6 +1,6 @@
 package com.controlself.edu.system.lock
 
-/** Stub hasta PRP-06. */
+/** Placeholder de overlay de sistema; el bloqueo UI real navega a `LockScreen` (PRP-06). */
 class NoOpEntertainmentLockController : EntertainmentLockController {
     override fun showLockScreen() = Unit
 }

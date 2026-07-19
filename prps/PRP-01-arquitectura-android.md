@@ -98,7 +98,7 @@ Rutas públicas: `welcome`, `login`, `register`, `forgot-password`.
 | Capas / paquetes | `domain/`, `data/`, `system/`, `di/` | ✅ |
 | DI manual | `AppContainer`, `ControlSelfApplication` | ✅ |
 | Rutas por rol | `navigation/Routes.kt` / `Screen.kt` | ✅ |
-| Stubs paneles | `RoleHomeStubScreen` | ✅ |
+| Paneles por rol | `TeacherHomeScreen`, `ParentHomeScreen`, `StudentHomeScreen` | ✅ |
 | Doc | [docs/arquitectura.md](../docs/arquitectura.md) | ✅ |
 
 ## Notas técnicas
