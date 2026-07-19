@@ -35,7 +35,13 @@ PRP-00 → PRP-01 → PRP-02 → PRP-03 → PRP-04
 | 13 | [PRP-12](PRP-12-panel-padre.md) | Panel padre/madre | 03, 05, 09 | ✅ |
 | 14 | [PRP-13](PRP-13-anti-desinstalacion.md) | Protección desinstalación | 03, 11, 12 | ✅ |
 
-Leyenda: ✅ hecho · ⏳ parcial · 📄 solo spec
+Leyenda: ✅ hecho · ⏳ parcial · 📄 solo spec (visión)
+
+## Estado del ciclo
+
+El orden recomendado **PRP-00 → PRP-13** está cubierto en código (01–13).  
+**PRP-00** es visión/alcance (documento de producto, no un módulo a implementar).  
+No hay PRP siguiente en el índice; cualquier ampliación sería un PRP-14+ nuevo.
 
 ## Convención de cada PRP
 
