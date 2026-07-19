@@ -1,3 +1,4 @@
+com.controlself.edu:xml/device_admin = 0x7f0d0000
 com.controlself.edu:styleable/Navigator = 0x7f0c000d
 com.controlself.edu:styleable/NavHost = 0x7f0c000b
 com.controlself.edu:styleable/NavGraphNavigator = 0x7f0c000a

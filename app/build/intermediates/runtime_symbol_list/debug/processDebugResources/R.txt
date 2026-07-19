@@ -415,3 +415,4 @@ int[] styleable Navigator { 0x01010001, 0x010100d0, 0x7f010023 }
 int styleable Navigator_android_label 0
 int styleable Navigator_android_id 1
 int styleable Navigator_route 2
+int xml device_admin 0x7f0d0000

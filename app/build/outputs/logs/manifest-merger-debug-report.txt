@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:2:1-27:12
-INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:2:1-27:12
-INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:2:1-27:12
-INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:2:1-27:12
+ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:2:1-39:12
 MERGED from [androidx.navigation:navigation-common:2.8.3] C:\Users\cesar\.gradle\caches\transforms-4\ab5637f82ce443006cdcfac1f69683ee\transformed\navigation-common-2.8.3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-runtime:2.8.3] C:\Users\cesar\.gradle\caches\transforms-4\869817f57016c8153d53258179a94c45\transformed\navigation-runtime-2.8.3\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-common-ktx:2.8.3] C:\Users\cesar\.gradle\caches\transforms-4\ce0fd44daf79f1e34604c77675009e70\transformed\navigation-common-ktx-2.8.3\AndroidManifest.xml:2:1-7:12
@@ -86,8 +86,8 @@ ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\Andr
 	android:name
 		ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:6:9-62
 application
-ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:9:5-26:19
-INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:9:5-26:19
+ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:9:5-38:19
+INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:9:5-38:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.7.5] C:\Users\cesar\.gradle\caches\transforms-4\11888db652730acfc7f5a2a965e5941b\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.compose.ui:ui-tooling-android:1.7.5] C:\Users\cesar\.gradle\caches\transforms-4\11888db652730acfc7f5a2a965e5941b\transformed\ui-tooling-release\AndroidManifest.xml:22:5-26:19
 MERGED from [androidx.work:work-runtime:2.9.1] C:\Users\cesar\.gradle\caches\transforms-4\1c5c2952213ed2f352c60e34da283404\transformed\work-runtime-2.9.1\AndroidManifest.xml:28:5-143:19
@@ -142,6 +142,26 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:23:17-77
 	android:name
 		ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:23:27-74
+receiver#com.controlself.edu.system.admin.ControlSelfDeviceAdminReceiver
+ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:27:9-37:20
+	android:exported
+		ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:29:13-36
+	android:permission
+		ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:30:13-70
+	android:name
+		ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:28:13-72
+meta-data#android.app.device_admin
+ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:31:13-33:56
+	android:resource
+		ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:33:17-53
+	android:name
+		ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:32:17-56
+intent-filter#action:name:android.app.action.DEVICE_ADMIN_ENABLED
+ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:34:13-36:29
+action#android.app.action.DEVICE_ADMIN_ENABLED
+ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:35:17-82
+	android:name
+		ADDED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml:35:25-79
 uses-sdk
 INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\cesar\AndroidStudioProjects\ControlSelfEDU\app\src\main\AndroidManifest.xml

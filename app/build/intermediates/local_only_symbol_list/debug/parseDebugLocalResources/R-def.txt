@@ -14,3 +14,4 @@ mipmap ic_launcher_round
 string app_name
 style Theme.ControlSelfEDU
 style Theme.ControlSelfEDU.Splash
+xml device_admin
