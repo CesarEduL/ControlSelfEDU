@@ -1,5 +1,6 @@
 package com.controlself.edu.ui.screens.teacher
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,8 +28,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.Course
 import com.controlself.edu.ui.theme.CseDanger
+import com.controlself.edu.ui.theme.CseOutlineVariant
 import com.controlself.edu.ui.theme.CseMuted
-import com.controlself.edu.ui.theme.CseSurface
+import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CsePrimary
 import com.controlself.edu.ui.theme.CseWhite
 
 @Composable
@@ -40,11 +43,11 @@ fun TeacherStatsScreen(onBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CseSurface)
+            .background(CseBackground)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = CsePrimary)
             }
             Text(
                 text = "Temas difíciles",
@@ -78,7 +81,8 @@ fun TeacherStatsScreen(onBack: () -> Unit) {
                             .padding(bottom = 8.dp),
                         shape = MaterialTheme.shapes.medium,
                         color = CseWhite,
-                        shadowElevation = 1.dp
+                        border = BorderStroke(1.dp, CseOutlineVariant),
+                        shadowElevation = 0.dp
                     ) {
                         Column(modifier = Modifier.padding(14.dp)) {
                             Text(

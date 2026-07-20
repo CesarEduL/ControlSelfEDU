@@ -1,25 +1,30 @@
 package com.controlself.edu.ui.screens.register
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,8 +32,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -40,11 +45,16 @@ import com.controlself.edu.data.auth.LocalAuthRepository
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.Session
 import com.controlself.edu.domain.model.UserRole
+import com.controlself.edu.ui.components.PrimaryFlatButton
+import com.controlself.edu.ui.components.roleActionColor
 import com.controlself.edu.ui.screens.auth.RoleSelector
 import com.controlself.edu.ui.theme.ControlSelfEDUTheme
-import com.controlself.edu.ui.theme.CseBlue
-import com.controlself.edu.ui.theme.CseMuted
-import com.controlself.edu.ui.theme.CseSurface
+import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CseOnSurface
+import com.controlself.edu.ui.theme.CseOnSurfaceVariant
+import com.controlself.edu.ui.theme.CseOutlineVariant
+import com.controlself.edu.ui.theme.CsePrimary
+import com.controlself.edu.ui.theme.CseWhite
 import kotlinx.coroutines.launch
 
 @Composable
@@ -109,52 +119,92 @@ private fun RegisterContent(
     onBack: () -> Unit,
     onSubmit: () -> Unit
 ) {
+    val actionColor = roleActionColor(
+        isStudent = role == UserRole.STUDENT,
+        isParent = role == UserRole.PARENT
+    )
+    val fieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = CsePrimary,
+        unfocusedBorderColor = CseOutlineVariant,
+        focusedContainerColor = CseBackground,
+        unfocusedContainerColor = CseBackground
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CseSurface)
+            .background(CseBackground)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .padding(horizontal = 16.dp)
+            .padding(top = 8.dp, bottom = 32.dp)
     ) {
         IconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
-        }
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Crear cuenta",
-                style = MaterialTheme.typography.headlineMedium,
-                color = CseBlue,
-                fontWeight = FontWeight.Bold
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Volver",
+                tint = CsePrimary
             )
-            Spacer(modifier = Modifier.height(24.dp))
+        }
+        Text(
+            text = "Crear cuenta",
+            style = MaterialTheme.typography.headlineLarge,
+            color = CsePrimary,
+            fontWeight = FontWeight.ExtraBold,
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
+        Text(
+            text = "Elige tu rol y completa tus datos.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = CseOnSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(CseWhite)
+                .border(1.dp, CseOutlineVariant, RoundedCornerShape(16.dp))
+                .padding(20.dp)
+        ) {
+            RoleSelector(selected = role, onSelected = onRoleChange)
+            Spacer(modifier = Modifier.height(20.dp))
+
+            FieldLabel("Nombre")
             OutlinedTextField(
                 value = displayName,
                 onValueChange = onDisplayNameChange,
-                label = { Text("Nombre") },
+                placeholder = { Text("Tu nombre") },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = fieldColors
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            FieldLabel("Usuario o correo")
             OutlinedTextField(
                 value = username,
                 onValueChange = onUsernameChange,
-                label = { Text("Usuario o correo") },
+                placeholder = { Text("nombre@ejemplo.com") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = fieldColors,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            FieldLabel("Contraseña (mín. ${LocalAuthRepository.MIN_PASSWORD_LENGTH})")
             OutlinedTextField(
                 value = password,
                 onValueChange = onPasswordChange,
-                label = {
-                    Text("Contraseña (mín. ${LocalAuthRepository.MIN_PASSWORD_LENGTH})")
-                },
+                placeholder = { Text("••••••••") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = fieldColors,
                 visualTransformation = if (passwordVisible) {
                     VisualTransformation.None
                 } else {
@@ -168,19 +218,12 @@ private fun RegisterContent(
                             } else {
                                 Icons.Filled.Visibility
                             },
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = CseOnSurfaceVariant
                         )
                     }
                 }
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Tipo de usuario",
-                style = MaterialTheme.typography.titleMedium,
-                color = CseMuted
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            RoleSelector(selected = role, onSelected = onRoleChange)
 
             error?.let {
                 Spacer(modifier = Modifier.height(12.dp))
@@ -188,28 +231,44 @@ private fun RegisterContent(
                     text = it,
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(
+            Spacer(modifier = Modifier.height(20.dp))
+            PrimaryFlatButton(
+                text = if (loading) "…" else "Crear cuenta",
                 onClick = onSubmit,
                 enabled = !loading,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                if (loading) {
+                containerColor = actionColor
+            )
+            if (loading) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     CircularProgressIndicator(
-                        modifier = Modifier.height(22.dp),
+                        modifier = Modifier.size(28.dp),
                         strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = actionColor
                     )
-                } else {
-                    Text("Crear cuenta")
                 }
             }
         }
     }
+}
+
+@Composable
+private fun FieldLabel(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelLarge,
+        color = CseOnSurface,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(bottom = 8.dp)
+    )
 }
 
 @Preview(showBackground = true)

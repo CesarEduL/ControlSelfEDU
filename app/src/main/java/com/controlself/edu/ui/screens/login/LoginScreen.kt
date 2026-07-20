@@ -1,7 +1,9 @@
 package com.controlself.edu.ui.screens.login
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,19 +11,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FamilyRestroom
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -34,6 +39,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -44,12 +50,19 @@ import androidx.compose.ui.unit.dp
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.Session
 import com.controlself.edu.domain.model.UserRole
+import com.controlself.edu.ui.components.PrimaryFlatButton
+import com.controlself.edu.ui.components.roleActionColor
 import com.controlself.edu.ui.screens.auth.RoleSelector
 import com.controlself.edu.ui.theme.ControlSelfEDUTheme
-import com.controlself.edu.ui.theme.CseBlue
-import com.controlself.edu.ui.theme.CseGreen
-import com.controlself.edu.ui.theme.CseMuted
-import com.controlself.edu.ui.theme.CseSurface
+import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CseOnSurface
+import com.controlself.edu.ui.theme.CseOnSurfaceVariant
+import com.controlself.edu.ui.theme.CseOutlineVariant
+import com.controlself.edu.ui.theme.CsePrimary
+import com.controlself.edu.ui.theme.CsePrimaryContainer
+import com.controlself.edu.ui.theme.CsePrimaryFixedDim
+import com.controlself.edu.ui.theme.CseSecondary
+import com.controlself.edu.ui.theme.CseWhite
 import kotlinx.coroutines.launch
 
 @Composable
@@ -117,132 +130,182 @@ private fun LoginContent(
     onForgotPassword: () -> Unit,
     onSubmit: () -> Unit
 ) {
+    val actionColor = roleActionColor(
+        isStudent = role == UserRole.STUDENT,
+        isParent = role == UserRole.PARENT
+    )
+    val fieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = CsePrimary,
+        unfocusedBorderColor = CseOutlineVariant,
+        focusedContainerColor = CseBackground,
+        unfocusedContainerColor = CseBackground
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CseSurface)
+            .background(CseBackground)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp, vertical = 32.dp),
+            .padding(horizontal = 16.dp)
+            .padding(top = 48.dp, bottom = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Box(
+            modifier = Modifier
+                .size(88.dp)
+                .clip(CircleShape)
+                .background(CsePrimaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                Icons.Filled.FamilyRestroom,
+                contentDescription = null,
+                tint = CsePrimaryFixedDim,
+                modifier = Modifier.size(44.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "ControlSelf EDU",
-            style = MaterialTheme.typography.headlineMedium,
-            color = CseBlue,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.headlineLarge,
+            color = CsePrimary,
+            fontWeight = FontWeight.ExtraBold,
+            textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Inicio de sesión",
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface
+            text = "Gestión educativa segura para todos.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = CseOnSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 8.dp)
         )
         Spacer(modifier = Modifier.height(28.dp))
 
-        OutlinedTextField(
-            value = username,
-            onValueChange = onUsernameChange,
-            label = { Text("Usuario o correo electrónico") },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        OutlinedTextField(
-            value = password,
-            onValueChange = onPasswordChange,
-            label = { Text("Contraseña") },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (passwordVisible) {
-                VisualTransformation.None
-            } else {
-                PasswordVisualTransformation()
-            },
-            trailingIcon = {
-                IconButton(onClick = { onPasswordVisibleChange(!passwordVisible) }) {
-                    Icon(
-                        imageVector = if (passwordVisible) {
-                            Icons.Filled.VisibilityOff
-                        } else {
-                            Icons.Filled.Visibility
-                        },
-                        contentDescription = if (passwordVisible) {
-                            "Ocultar contraseña"
-                        } else {
-                            "Mostrar contraseña"
-                        }
-                    )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(CseWhite)
+                .border(1.dp, CseOutlineVariant, RoundedCornerShape(16.dp))
+                .padding(20.dp)
+        ) {
+            RoleSelector(selected = role, onSelected = onRoleChange)
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = "Usuario o correo",
+                style = MaterialTheme.typography.labelLarge,
+                color = CseOnSurface,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = username,
+                onValueChange = onUsernameChange,
+                placeholder = { Text("nombre@ejemplo.com") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = fieldColors,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Contraseña",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = CseOnSurface,
+                    fontWeight = FontWeight.Bold
+                )
+                TextButton(onClick = onForgotPassword, enabled = !loading) {
+                    Text("¿Olvidaste tu contraseña?", color = CsePrimary)
                 }
             }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text("Recordar sesión", style = MaterialTheme.typography.bodyMedium)
-            Switch(
-                checked = rememberSession,
-                onCheckedChange = onRememberSessionChange,
-                colors = SwitchDefaults.colors(checkedTrackColor = CseGreen)
+            OutlinedTextField(
+                value = password,
+                onValueChange = onPasswordChange,
+                placeholder = { Text("••••••••") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = fieldColors,
+                visualTransformation = if (passwordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
+                trailingIcon = {
+                    IconButton(onClick = { onPasswordVisibleChange(!passwordVisible) }) {
+                        Icon(
+                            imageVector = if (passwordVisible) {
+                                Icons.Filled.VisibilityOff
+                            } else {
+                                Icons.Filled.Visibility
+                            },
+                            contentDescription = null,
+                            tint = CseOnSurfaceVariant
+                        )
+                    }
+                }
             )
-        }
-
-        error?.let {
             Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Recordar sesión", style = MaterialTheme.typography.bodyMedium)
+                Switch(
+                    checked = rememberSession,
+                    onCheckedChange = onRememberSessionChange,
+                    colors = SwitchDefaults.colors(checkedTrackColor = CseSecondary)
+                )
+            }
+            error?.let {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            PrimaryFlatButton(
+                text = if (loading) "…" else "Entrar",
+                onClick = onSubmit,
+                enabled = !loading,
+                containerColor = actionColor
+            )
+            if (loading) {
+                Spacer(modifier = Modifier.height(8.dp))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .align(Alignment.CenterHorizontally),
+                    strokeWidth = 2.dp,
+                    color = actionColor
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
             Text(
-                text = it,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyMedium,
+                text = "¿No tienes una cuenta?",
+                style = MaterialTheme.typography.labelMedium,
+                color = CseOnSurfaceVariant,
+                modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(
-            onClick = onSubmit,
-            enabled = !loading,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            if (loading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.height(22.dp),
-                    strokeWidth = 2.dp,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            } else {
-                Text("Iniciar sesión")
+            TextButton(
+                onClick = onCreateAccount,
+                enabled = !loading,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                Text("Regístrate ahora", color = CsePrimary, fontWeight = FontWeight.Bold)
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedButton(
-            onClick = onCreateAccount,
-            enabled = !loading,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Crear cuenta")
-        }
-        TextButton(onClick = onForgotPassword, enabled = !loading) {
-            Text("¿Olvidaste tu contraseña?", color = CseBlue)
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = "Tipo de usuario",
-            style = MaterialTheme.typography.titleMedium,
-            color = CseMuted,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        RoleSelector(selected = role, onSelected = onRoleChange)
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "Demo: estudiante / docente / padre — clave 123456",
-            style = MaterialTheme.typography.bodySmall,
-            color = CseMuted,
+            style = MaterialTheme.typography.labelMedium,
+            color = CseOnSurfaceVariant.copy(alpha = 0.7f),
             textAlign = TextAlign.Center
         )
     }

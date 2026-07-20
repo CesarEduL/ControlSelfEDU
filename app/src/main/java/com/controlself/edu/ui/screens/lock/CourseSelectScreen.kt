@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import com.controlself.edu.domain.model.Course
 import com.controlself.edu.ui.screens.student.components.CoursesSection
 import com.controlself.edu.ui.theme.ControlSelfEDUTheme
-import com.controlself.edu.ui.theme.CseBlue
-import com.controlself.edu.ui.theme.CseMuted
-import com.controlself.edu.ui.theme.CseSurface
+import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CseOnSurfaceVariant
+import com.controlself.edu.ui.theme.CsePrimary
 
 @Composable
 fun CourseSelectScreen(
@@ -40,23 +40,27 @@ fun CourseSelectScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CseSurface)
+            .background(CseBackground)
     ) {
         IconButton(onClick = onBack) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Volver",
+                tint = CsePrimary
+            )
         }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 16.dp)
                 .padding(bottom = 32.dp)
         ) {
             Text(
                 text = "Elige un curso",
-                style = MaterialTheme.typography.headlineMedium,
-                color = CseBlue,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.headlineLarge,
+                color = CsePrimary,
+                fontWeight = FontWeight.ExtraBold
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -66,7 +70,7 @@ fun CourseSelectScreen(
                     "Selecciona la materia que quieres practicar."
                 },
                 style = MaterialTheme.typography.bodyLarge,
-                color = CseMuted
+                color = CseOnSurfaceVariant
             )
             Spacer(modifier = Modifier.height(20.dp))
             CoursesSection(onCourseClick = onCourseClick)

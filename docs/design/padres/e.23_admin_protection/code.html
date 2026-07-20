@@ -1,0 +1,297 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Admin Protection | ControlSelf EDU</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Shared Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#001126",
+                    "inverse-on-surface": "#eff1f3",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#354862",
+                    "surface-bright": "#f7f9fb",
+                    "surface": "#f7f9fb",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#362100",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#12263f",
+                    "on-secondary-fixed-variant": "#00513d",
+                    "surface-tint": "#4d5f7b",
+                    "secondary": "#006c52",
+                    "surface-container-high": "#e6e8ea",
+                    "on-primary-container": "#7b8eac",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-secondary-fixed": "#002117",
+                    "surface-container-low": "#f2f4f6",
+                    "tertiary-fixed-dim": "#e6c08f",
+                    "surface-container": "#eceef0",
+                    "secondary-fixed-dim": "#5ddcb3",
+                    "secondary-fixed": "#7bf9ce",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#1a0e00",
+                    "on-secondary-container": "#007257",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#b4c8e8",
+                    "surface-dim": "#d8dadc",
+                    "secondary-container": "#7bf9ce",
+                    "on-background": "#191c1e",
+                    "outline": "#74777e",
+                    "on-tertiary-container": "#a8875a",
+                    "on-surface-variant": "#44474d",
+                    "background": "#f7f9fb",
+                    "outline-variant": "#c4c6ce",
+                    "primary-fixed": "#d4e3ff",
+                    "on-primary-fixed": "#061c35",
+                    "on-surface": "#191c1e",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#b4c8e8",
+                    "surface-variant": "#e0e3e5",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#2d3133",
+                    "on-tertiary-fixed-variant": "#5c421b",
+                    "on-tertiary-fixed": "#291800",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#ffddb3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "stack-lg": "32px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "margin-mobile": "16px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Nunito Sans"],
+                    "headline-lg-mobile": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "headline-xl": ["Nunito Sans"],
+                    "headline-lg": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"],
+                    "label-sm": ["Nunito Sans"],
+                    "label-bold": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "800"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #f7f9fb;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .bento-card {
+            background: white;
+            border: 1px solid #e0e3e5;
+            border-radius: 1rem;
+            padding: 24px;
+            transition: all 0.2s ease;
+        }
+        .bento-card:hover {
+            border-color: #001126;
+        }
+        /* Mobile adjustment for bento */
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface dark:bg-primary-container border-b border-outline-variant dark:border-primary">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed cursor-pointer">menu</span>
+<h1 class="font-headline-md text-headline-md font-extrabold text-primary dark:text-primary-fixed">ControlSelf EDU</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 items-center">
+<span class="text-on-surface-variant font-label-bold cursor-pointer hover:bg-surface-container-low transition-colors px-3 py-1 rounded-lg">Overview</span>
+<span class="text-primary dark:text-primary-fixed font-bold font-label-bold cursor-pointer hover:bg-surface-container-low transition-colors px-3 py-1 rounded-lg">Protection</span>
+<span class="text-on-surface-variant font-label-bold cursor-pointer hover:bg-surface-container-low transition-colors px-3 py-1 rounded-lg">Settings</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a mature teacher or parent, shot with soft studio lighting against a neutral light gray background. The subject is wearing business casual attire and looking directly at the camera with a confident and helpful expression. High-resolution corporate photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClRtd8Uw0DffjUBHP_sWGdoEQaholKe_9bnChIpfNSq7DAA3CFor8MGb4rNehRhD4BpU7--YIIbb6DzQCuygUAqXMoHxWBKaGRtzOFgom_xIWAsz5jzXXCcjmcAeqciXlaWxP35G6eK787bNeq6B4aADOXlLDsuk-R1qF3hRxrQkPSsXHw_JT4fKAB54M5bioYQ-_fFDmVOFkU2lFzRCgzn0E9Jm4Ad4c2pxbkqAFIdok9ytZVsMQY5g">
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Page Header -->
+<div class="mb-stack-lg">
+<div class="flex items-center gap-2 text-secondary mb-2">
+<span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+<span class="font-label-bold uppercase tracking-wider text-label-sm">Authorized Access Only</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Admin Protection Services</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-2">
+                Configure advanced security protocols to prevent unauthorized modifications to the educational environment. These settings ensure the integrity of focus-mode limits.
+            </p>
+</div>
+<div class="bento-grid">
+<!-- Status Card -->
+<div class="col-span-full md:col-span-4 bento-card relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<h3 class="font-headline-md text-headline-md text-primary mb-6">Security Status</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">password</span>
+<div>
+<p class="font-label-bold text-primary">Admin Password</p>
+<p class="text-label-sm text-on-surface-variant">Defined &amp; Encrypted</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-bold text-label-sm">YES</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error">security</span>
+<div>
+<p class="font-label-bold text-primary">Device Admin</p>
+<p class="text-label-sm text-on-surface-variant">Uninstallation Protection</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-error-container text-on-error-container rounded-full font-label-bold text-label-sm uppercase">Active</span>
+</div>
+</div>
+</div>
+<!-- Explanation & Technical Details -->
+<div class="col-span-full md:col-span-8 bento-card border-l-4 border-l-secondary">
+<h3 class="font-headline-md text-headline-md text-primary mb-4">How Protection Works</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="space-y-4">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            ControlSelf EDU utilizes Android's <strong>Device Administration API</strong> to provide deep-level protection. This prevents students from force-closing the app or clearing its cache to bypass time limits.
+                        </p>
+<div class="p-4 bg-primary-container/5 rounded-xl border border-primary/10">
+<h4 class="font-label-bold text-primary mb-1">Android System Limits</h4>
+<p class="text-label-sm text-on-surface-variant">Modern Android versions require explicit parental consent for accessibility and admin hooks. Disabling these will reset active monitoring sessions.</p>
+</div>
+</div>
+<div class="relative rounded-xl overflow-hidden min-h-[160px]">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A high-tech digital illustration of a secure mobile device surrounded by holographic shield icons and binary data streams. The aesthetic is clean, corporate, and minimalist, utilizing deep navy blues and vibrant teal accents. The image conveys a sense of impenetrable digital security and parental control." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBztGx6udz-VZIE2hpjag4swMu7W6BBwDcLEhOo1uNPA_rOc9ivY2HklL70fd1M1feXbuV6Il2cKMFIS59VwwhYxfboFkIeIRC4Cz2ZlU59REfOv3u6V8o8dGRdhFS6N9hY6MIkim8BUKo680AYbNr97k7kzK8ivXqJ3h5HWaVBBkoMNd5CkdxKhIC9aYZlOcz7rLaaEOV-thHAoy0G4ZU-1wJMoOe-fapfAegaaAMiAmyDgPQ2h-rkjw">
+</div>
+</div>
+</div>
+<!-- Action: Change Password -->
+<div class="col-span-full md:col-span-6 bento-card">
+<div class="flex items-start justify-between mb-4">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Admin Password</h3>
+<p class="text-body-md text-on-surface-variant">Update the master key used to unlock restricted settings.</p>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl">key</span>
+</div>
+<div class="mt-8">
+<button class="w-full py-3 bg-primary text-on-primary rounded-xl font-label-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                        Change Admin Password
+                    </button>
+</div>
+</div>
+<!-- Action: Toggle Admin -->
+<div class="col-span-full md:col-span-6 bento-card bg-surface-container-low border-dashed border-2 border-outline-variant">
+<div class="flex items-start justify-between mb-4">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Device Admin Access</h3>
+<p class="text-body-md text-on-surface-variant">Revoke or Grant system-level privileges for this device.</p>
+</div>
+<span class="material-symbols-outlined text-error text-3xl">gpp_maybe</span>
+</div>
+<div class="mt-4 p-3 bg-error-container/30 rounded-lg flex items-start gap-2 mb-6">
+<span class="material-symbols-outlined text-error text-[18px] mt-0.5">info</span>
+<p class="text-label-sm text-on-error-container"><strong>Security Note:</strong> Disabling Device Admin requires the master password and will immediately stop all active student tracking.</p>
+</div>
+<button class="w-full py-3 border-2 border-primary text-primary rounded-xl font-label-bold hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2">
+                    Deactivate Device Admin
+                </button>
+</div>
+</div>
+<!-- Role Restriction Footer -->
+<div class="mt-stack-lg p-6 bg-surface-container-highest rounded-2xl flex flex-col md:flex-row items-center gap-6">
+<div class="flex -space-x-3">
+<div class="w-12 h-12 rounded-full border-2 border-white bg-secondary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">supervisor_account</span>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-white bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">school</span>
+</div>
+</div>
+<div>
+<h4 class="font-label-bold text-primary">Parent &amp; Teacher Workspace</h4>
+<p class="text-label-sm text-on-surface-variant">You are currently in an elevated privilege zone. Student accounts are prohibited from viewing or interacting with this module through biometric verification.</p>
+</div>
+<div class="md:ml-auto">
+<button class="px-6 py-2 bg-white border border-outline-variant text-primary rounded-lg font-label-bold hover:bg-surface-container transition-colors">
+                    View Logs
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Visible on Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface dark:bg-primary-container pb-safe pt-2 px-2 border-t border-outline-variant dark:border-primary">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-sm text-label-sm">Courses</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl px-4 py-1">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-sm text-label-sm">Stats</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+<script>
+        // Simple micro-interaction for the password button
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.98)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

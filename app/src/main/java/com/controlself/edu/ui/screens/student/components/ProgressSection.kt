@@ -1,5 +1,6 @@
 package com.controlself.edu.ui.screens.student.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,6 +29,7 @@ import com.controlself.edu.domain.model.stats.ScorePoint
 import com.controlself.edu.domain.model.stats.StudentStatsDashboard
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseMuted
+import com.controlself.edu.ui.theme.CseOutlineVariant
 import com.controlself.edu.ui.theme.CseTeal
 import com.controlself.edu.ui.theme.CseWarning
 import com.controlself.edu.ui.theme.CseWhite
@@ -41,7 +44,8 @@ fun ProgressSection(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         color = CseWhite,
-        shadowElevation = 1.dp
+        border = BorderStroke(1.dp, CseOutlineVariant),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -267,6 +271,6 @@ private fun ProgressRow(
         )
     }
     if (showDivider) {
-        androidx.compose.material3.HorizontalDivider(color = CseMuted.copy(alpha = 0.15f))
+        HorizontalDivider(color = CseMuted.copy(alpha = 0.15f))
     }
 }

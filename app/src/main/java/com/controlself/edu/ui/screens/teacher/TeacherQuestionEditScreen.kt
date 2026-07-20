@@ -36,7 +36,8 @@ import com.controlself.edu.domain.model.quiz.Question
 import com.controlself.edu.domain.model.quiz.QuestionType
 import com.controlself.edu.ui.theme.CseDanger
 import com.controlself.edu.ui.theme.CseMuted
-import com.controlself.edu.ui.theme.CseSurface
+import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CsePrimary
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -78,11 +79,11 @@ fun TeacherQuestionEditScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CseSurface)
+            .background(CseBackground)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = CsePrimary)
             }
             Text(
                 text = if (isNew) "Nueva pregunta" else "Editar pregunta",

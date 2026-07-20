@@ -1,5 +1,6 @@
 package com.controlself.edu.ui.screens.teacher
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -28,9 +29,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.teacher.ClassroomStudent
 import com.controlself.edu.ui.theme.CseDanger
+import com.controlself.edu.ui.theme.CseOutlineVariant
 import com.controlself.edu.ui.theme.CseGreen
 import com.controlself.edu.ui.theme.CseMuted
-import com.controlself.edu.ui.theme.CseSurface
+import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CsePrimary
 import com.controlself.edu.ui.theme.CseWhite
 import java.util.Locale
 
@@ -45,11 +48,11 @@ fun TeacherStudentsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CseSurface)
+            .background(CseBackground)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = CsePrimary)
             }
             Text(
                 text = "Estudiantes",
@@ -84,11 +87,11 @@ fun TeacherStudentDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CseSurface)
+            .background(CseBackground)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = CsePrimary)
             }
             Text(
                 text = student?.displayName ?: "Estudiante",
@@ -145,7 +148,8 @@ private fun StudentRow(student: ClassroomStudent, onClick: () -> Unit) {
             .clickable(onClick = onClick),
         shape = MaterialTheme.shapes.large,
         color = CseWhite,
-        shadowElevation = 1.dp
+        border = BorderStroke(1.dp, CseOutlineVariant),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(

@@ -7,11 +7,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FamilyRestroom
+import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,80 +29,100 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.R
+import com.controlself.edu.ui.components.PrimaryFlatButton
+import com.controlself.edu.ui.components.SecondaryFlatButton
 import com.controlself.edu.ui.theme.ControlSelfEDUTheme
-import com.controlself.edu.ui.theme.CseBlue
-import com.controlself.edu.ui.theme.CseBlueDark
-import com.controlself.edu.ui.theme.CseWhite
-import kotlinx.coroutines.delay
+import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CseOnSurfaceVariant
+import com.controlself.edu.ui.theme.CsePrimary
+import com.controlself.edu.ui.theme.CsePrimaryContainer
 
-private const val SplashDurationMs = 2200L
-
+/**
+ * Welcome minimalista (Stitch a.1): marca + CTAs Empezar / Tengo una cuenta.
+ */
 @Composable
-fun WelcomeScreen(onFinished: () -> Unit) {
+fun WelcomeScreen(
+    onStart: () -> Unit,
+    onHaveAccount: () -> Unit
+) {
     val alpha = remember { Animatable(0f) }
-    val scale = remember { Animatable(0.85f) }
-
     LaunchedEffect(Unit) {
         alpha.animateTo(1f, animationSpec = tween(700))
-        scale.animateTo(1f, animationSpec = tween(700))
-        delay(SplashDurationMs)
-        onFinished()
     }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(CseBlue, CseBlueDark)
-                )
-            ),
-        contentAlignment = Alignment.Center
+            .background(CseBackground)
+            .padding(horizontal = 24.dp)
+            .alpha(alpha.value),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+        Spacer(modifier = Modifier.weight(0.35f))
+        Box(
             modifier = Modifier
-                .alpha(alpha.value)
-                .scale(scale.value)
+                .size(120.dp)
+                .clip(CircleShape)
+                .background(CsePrimaryContainer),
+            contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .background(CseWhite),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_logo_placeholder),
-                    contentDescription = "Logo ControlSelf EDU",
-                    modifier = Modifier.size(72.dp)
-                )
-            }
-            Spacer(modifier = Modifier.height(28.dp))
-            Text(
-                text = "ControlSelf EDU",
-                style = MaterialTheme.typography.displayLarge,
-                color = CseWhite,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "Aprende. Controla. Crece.",
-                style = MaterialTheme.typography.bodyLarge,
-                color = CseWhite.copy(alpha = 0.85f),
-                textAlign = TextAlign.Center
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo_placeholder),
+                contentDescription = "Logo ControlSelf EDU",
+                modifier = Modifier.size(64.dp)
             )
         }
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = "ControlSelf EDU",
+            style = MaterialTheme.typography.displayLarge,
+            color = CsePrimary,
+            fontWeight = FontWeight.ExtraBold,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Aprende para divertirte",
+            style = MaterialTheme.typography.bodyLarge,
+            color = CseOnSurfaceVariant,
+            fontStyle = FontStyle.Italic,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(40.dp))
+        PrimaryFlatButton(
+            text = "EMPEZAR",
+            onClick = onStart,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        SecondaryFlatButton(
+            text = "TENGO UNA CUENTA",
+            onClick = onHaveAccount,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.weight(0.45f))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(Icons.Filled.VerifiedUser, null, tint = CseOnSurfaceVariant.copy(alpha = 0.55f))
+            Icon(Icons.Filled.FamilyRestroom, null, tint = CseOnSurfaceVariant.copy(alpha = 0.55f))
+            Icon(Icons.Filled.School, null, tint = CseOnSurfaceVariant.copy(alpha = 0.55f))
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "© ControlSelf Educational Ecosystem",
+            style = MaterialTheme.typography.labelMedium,
+            color = CseOnSurfaceVariant.copy(alpha = 0.55f)
+        )
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
@@ -102,6 +130,6 @@ fun WelcomeScreen(onFinished: () -> Unit) {
 @Composable
 private fun WelcomeScreenPreview() {
     ControlSelfEDUTheme {
-        WelcomeScreen(onFinished = {})
+        WelcomeScreen(onStart = {}, onHaveAccount = {})
     }
 }

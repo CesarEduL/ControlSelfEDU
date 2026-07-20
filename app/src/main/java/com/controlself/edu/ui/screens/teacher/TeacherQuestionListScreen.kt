@@ -1,5 +1,6 @@
 package com.controlself.edu.ui.screens.teacher
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -35,10 +36,12 @@ import com.controlself.edu.domain.model.quiz.QuestionType
 import com.controlself.edu.domain.model.quiz.QuizAttempt
 import com.controlself.edu.domain.model.teacher.CourseBankStatus
 import com.controlself.edu.ui.theme.CseBlue
+import com.controlself.edu.ui.theme.CseOutlineVariant
 import com.controlself.edu.ui.theme.CseDanger
 import com.controlself.edu.ui.theme.CseGreen
 import com.controlself.edu.ui.theme.CseMuted
-import com.controlself.edu.ui.theme.CseSurface
+import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CsePrimary
 import com.controlself.edu.ui.theme.CseWhite
 import kotlinx.coroutines.launch
 
@@ -59,11 +62,11 @@ fun TeacherQuestionListScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CseSurface)
+            .background(CseBackground)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = CsePrimary)
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -102,7 +105,8 @@ fun TeacherQuestionListScreen(
                         .clickable { onEdit(question.id) },
                     shape = MaterialTheme.shapes.medium,
                     color = CseWhite,
-                    shadowElevation = 1.dp
+                    border = BorderStroke(1.dp, CseOutlineVariant),
+                    shadowElevation = 0.dp
                 ) {
                     Row(
                         modifier = Modifier.padding(12.dp),

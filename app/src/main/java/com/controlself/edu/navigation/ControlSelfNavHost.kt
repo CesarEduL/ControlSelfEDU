@@ -111,7 +111,12 @@ fun ControlSelfNavHost() {
     ) {
         composable(Routes.WELCOME) {
             WelcomeScreen(
-                onFinished = {
+                onStart = {
+                    navController.navigate(Routes.REGISTER) {
+                        popUpTo(Routes.WELCOME) { inclusive = true }
+                    }
+                },
+                onHaveAccount = {
                     navController.navigate(Routes.LOGIN) {
                         popUpTo(Routes.WELCOME) { inclusive = true }
                     }

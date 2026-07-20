@@ -2,15 +2,56 @@ package com.controlself.edu.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val CseBlue = Color(0xFF1565C0)
-val CseBlueDark = Color(0xFF0D47A1)
-val CseBlueLight = Color(0xFF42A5F5)
-val CseGreen = Color(0xFF2E7D32)
-val CseGreenLight = Color(0xFF66BB6A)
+/** Core Educational Minimalist — tokens del diseño Stitch. */
+
+// Foundation
+val CseBackground = Color(0xFFF7F9FB)
+val CseSurface = Color(0xFFF7F9FB)
+val CseSurfaceLow = Color(0xFFF2F4F6)
+val CseSurfaceContainer = Color(0xFFECEEF0)
+val CseSurfaceHigh = Color(0xFFE6E8EA)
+val CseSurfaceHighest = Color(0xFFE0E3E5)
 val CseWhite = Color(0xFFFFFFFF)
-val CseSurface = Color(0xFFF5F9FC)
-val CseOnSurface = Color(0xFF1A2332)
-val CseMuted = Color(0xFF5C6B7A)
+val CseOnSurface = Color(0xFF191C1E)
+val CseOnSurfaceVariant = Color(0xFF44474D)
+val CseOutline = Color(0xFF74777E)
+val CseOutlineVariant = Color(0xFFC4C6CE)
+
+// Primary (navy)
+val CsePrimary = Color(0xFF001126)
+val CsePrimaryContainer = Color(0xFF12263F)
+val CseOnPrimary = Color(0xFFFFFFFF)
+val CseOnPrimaryContainer = Color(0xFF7B8EAC)
+val CsePrimaryFixed = Color(0xFFD4E3FF)
+val CsePrimaryFixedDim = Color(0xFFB4C8E8)
+val CseOnPrimaryFixed = Color(0xFF061C35)
+val CseOnPrimaryFixedVariant = Color(0xFF354862)
+
+// Secondary (student green)
+val CseSecondary = Color(0xFF006C52)
+val CseOnSecondary = Color(0xFFFFFFFF)
+val CseSecondaryContainer = Color(0xFF7BF9CE)
+val CseOnSecondaryContainer = Color(0xFF007257)
+
+// Tertiary (warm)
+val CseTertiary = Color(0xFF1A0E00)
+val CseTertiaryContainer = Color(0xFF362100)
+val CseTertiaryFixed = Color(0xFFFFDDB3)
+val CseTertiaryFixedDim = Color(0xFFE6C08F)
+val CseOnTertiaryFixed = Color(0xFF291800)
+
+// Semantic
+val CseError = Color(0xFFBA1A1A)
+val CseOnError = Color(0xFFFFFFFF)
+val CseErrorContainer = Color(0xFFFFDAD6)
 val CseWarning = Color(0xFFF9A825)
-val CseDanger = Color(0xFFC62828)
+
+// Aliases de compatibilidad (código legado)
+val CseBlue = CsePrimaryContainer
+val CseBlueDark = CsePrimary
+val CseBlueLight = CsePrimaryFixedDim
+val CseGreen = CseSecondary
+val CseGreenLight = CseSecondaryContainer
+val CseMuted = CseOnSurfaceVariant
+val CseDanger = CseError
 val CseTeal = Color(0xFF00897B)

@@ -1,0 +1,259 @@
+<!DOCTYPE html><html class="light" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ControlSelf EDU - Iniciar Sesión</title>
+<!-- Tailwind CSS with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Nunito Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e0e3e5",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-container": "#eceef0",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary-container": "#7b8eac",
+                        "tertiary-fixed-dim": "#e6c08f",
+                        "on-secondary-fixed": "#002117",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#00513d",
+                        "secondary": "#006c52",
+                        "on-secondary-container": "#007257",
+                        "primary-fixed-dim": "#b4c8e8",
+                        "inverse-primary": "#b4c8e8",
+                        "tertiary-fixed": "#ffddb3",
+                        "outline": "#74777e",
+                        "on-tertiary-fixed-variant": "#5c421b",
+                        "surface-dim": "#d8dadc",
+                        "inverse-on-surface": "#eff1f3",
+                        "primary": "#001126",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#a8875a",
+                        "tertiary": "#1a0e00",
+                        "secondary-fixed": "#7bf9ce",
+                        "primary-fixed": "#d4e3ff",
+                        "on-background": "#191c1e",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#5ddcb3",
+                        "on-tertiary-fixed": "#291800",
+                        "background": "#f7f9fb",
+                        "surface": "#f7f9fb",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#061c35",
+                        "on-surface": "#191c1e",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#4d5f7b",
+                        "outline-variant": "#c4c6ce",
+                        "primary-container": "#12263f",
+                        "on-surface-variant": "#44474d",
+                        "inverse-surface": "#2d3133",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#7bf9ce",
+                        "on-primary-fixed-variant": "#354862",
+                        "surface-container-low": "#f2f4f6",
+                        "tertiary-container": "#362100"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1200px",
+                        "stack-lg": "32px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "label-bold": ["Nunito Sans"],
+                        "label-sm": ["Nunito Sans"],
+                        "headline-md": ["Nunito Sans"],
+                        "headline-xl": ["Nunito Sans"],
+                        "headline-lg": ["Nunito Sans"],
+                        "headline-lg-mobile": ["Nunito Sans"],
+                        "body-lg": ["Nunito Sans"],
+                        "body-md": ["Nunito Sans"]
+                    },
+                    "fontSize": {
+                        "label-bold": ["14px", { "lineHeight": "20px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom Micro-interactions */
+        .role-selector-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .role-selector-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface flex flex-col min-h-screen">
+<!-- Hero/Brand Section (Supressed Nav for Transactional Page) -->
+<header class="w-full flex flex-col items-center pt-16 pb-8 px-margin-mobile md:px-margin-desktop">
+<div class="mb-stack-lg flex flex-col items-center">
+<div class="relative w-24 h-24 mb-4">
+<!-- Abstract Logo Shape representing Care/Protection similar to the Kangaroo concept but minimalist corporate -->
+<div class="w-full h-full bg-primary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed-dim text-5xl" style="font-variation-settings: 'FILL' 1;">family_restroom</span>
+</div>
+</div>
+<h1 class="text-primary font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-center tracking-tight">
+                ControlSelf EDU
+            </h1>
+<p class="text-on-surface-variant font-body-md text-body-md text-center mt-2">
+                Gestión educativa segura para todos.
+            </p>
+</div>
+</header>
+<!-- Main Login Container -->
+<main class="flex-grow flex items-start justify-center px-margin-mobile md:px-margin-desktop">
+<div class="w-full max-w-[440px] bg-surface-container-lowest border border-outline-variant rounded-xl p-6 md:p-8">
+<!-- Role Selector -->
+<div class="mb-stack-lg">
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-4 text-center">Selecciona tu perfil</label>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low p-1 rounded-lg">
+<button class="role-selector-btn flex flex-col items-center justify-center py-3 rounded-lg bg-surface-container-lowest text-primary font-label-bold shadow-sm ring-1 ring-outline-variant" id="role-estudiante" onclick="setRole('estudiante')">
+<span class="material-symbols-outlined mb-1">school</span>
+<span class="text-label-sm">Estudiante</span>
+</button>
+<button class="role-selector-btn flex flex-col items-center justify-center py-3 rounded-lg text-on-surface-variant font-label-bold hover:bg-surface-variant" id="role-padre" onclick="setRole('padre')">
+<span class="material-symbols-outlined mb-1">family_restroom</span>
+<span class="text-label-sm">Padre</span>
+</button>
+<button class="role-selector-btn flex flex-col items-center justify-center py-3 rounded-lg text-on-surface-variant font-label-bold hover:bg-surface-variant" id="role-docente" onclick="setRole('docente')">
+<span class="material-symbols-outlined mb-1">co_present</span>
+<span class="text-label-sm">Docente</span>
+</button>
+</div>
+</div>
+<!-- Credentials Form -->
+<form action="#" class="space-y-stack-md">
+<div class="space-y-2">
+<label class="block font-label-bold text-label-bold text-on-surface" for="email">Correo Electrónico</label>
+<input class="w-full px-4 py-3 rounded-lg border-2 border-outline-variant focus:border-primary focus:ring-0 transition-colors font-body-md text-body-md outline-none bg-surface-bright" id="email" placeholder="nombre@ejemplo.com" required="" type="email">
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<label class="block font-label-bold text-label-bold text-on-surface" for="password">Contraseña</label>
+<a class="text-label-sm font-label-bold text-primary hover:underline" href="#">¿Olvidaste tu contraseña?</a>
+</div>
+<div class="relative">
+<input class="w-full px-4 py-3 rounded-lg border-2 border-outline-variant focus:border-primary focus:ring-0 transition-colors font-body-md text-body-md outline-none bg-surface-bright" id="password" placeholder="••••••••" required="" type="password">
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-headline-md text-headline-md py-4 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all mt-4" type="submit">
+                    Entrar
+                </button>
+</form>
+<!-- Divider -->
+<div class="relative my-8">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant"></div>
+</div>
+<div class="relative flex justify-center text-label-sm">
+<span class="px-2 bg-surface-container-lowest text-on-surface-variant font-label-bold">O continuar con</span>
+</div>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-2 py-3 rounded-lg border-2 border-outline-variant hover:bg-surface-variant transition-colors active:scale-[0.98]">
+<img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7x0BXxGSyu73tVQV_CR2rhASJl6va33MqEajVLVtiVixrhwLoBpThknubRm2tkBAJmYFB_SCnObPAPnJJGstFtwYapICiUZyHIEyWjYiJ_Wi79I7MZe5lwmWMpGiaX2AoIFNnCyPpofUubhCujI5nrR9t9J7dhFEDk1GnBvX1BWMJf3J06Sys793Gu9ATzdUJ7IjpYjcSBrrMfTrEb1z957bjxXxkbQK8vJ-yzx8B3nRbqhhFY4pfTw">
+<span class="font-label-bold text-on-surface">Google</span>
+</button>
+<button class="flex items-center justify-center gap-2 py-3 rounded-lg border-2 border-outline-variant hover:bg-surface-variant transition-colors active:scale-[0.98]">
+<img alt="Microsoft" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSMHoB2ZChW4cKUCo9-QhTea9NzlFHXUTWuPlLf4f1nxGVYQqvs9WMaWPGvKHI_tOO8WmKFtJID6L7Z1StmvZuiByZk6Ckl9DpdybZO_hif-pOQcozWA0KSqHwjbf_p33gWOZh-euUnBbwlOt6Bm4hHX96LghREnsHcNtCk73adB8bQi2FykLEySulvl0Om4hDDF0EeYoKW-7OnXbZAUcPLw6PUk3FmaYB8yvzDvmvaEMiRarjPdNW6Q">
+<span class="font-label-bold text-on-surface">Microsoft</span>
+</button>
+</div>
+<p class="mt-8 text-center text-label-sm text-on-surface-variant">
+                ¿No tienes una cuenta? <a class="text-primary font-label-bold hover:underline" href="#">Regístrate ahora</a>
+</p>
+</div>
+</main>
+<!-- Footer for App Store links or additional info -->
+<footer class="w-full py-8 px-margin-mobile flex flex-col items-center text-center">
+<div class="flex gap-4 mb-4">
+<div class="w-32 h-10 bg-on-background rounded flex items-center justify-center overflow-hidden">
+<img class="h-full object-contain" data-alt="A clean, minimalist white graphic icon of the Apple App Store badge on a solid dark navy background, reflecting a modern corporate educational brand aesthetic with precise lines and high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-8MNltJvORdB6pF4F9jFhbVWkXgZwnOOilJAjF3c-mnaBwU2IqeX5E8dqgv5RbMZCY5VOp4OBs-Q5fRK6RXXSSBfImKJ3XMssDao9bTbviVJh5fuI1K5ZDsBgFt-h_UKjAprUXjVZSysn7DjABR0xC2hMutW-IVtiqO2tYwV36Adshmou4nZuFNrfWnZToDPmaHBQC2uEwhviZrcmRbEGLYEFs5oS05TIPb7c8Mrm6SimbLgCQPmLWQ">
+</div>
+<div class="w-32 h-10 bg-on-background rounded flex items-center justify-center overflow-hidden">
+<img class="h-full object-contain" data-alt="A professional, flat graphic illustration of the Google Play Store badge with its signature vibrant triangle logo against a solid dark navy backdrop, designed to fit a minimalist corporate UI style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAChKFCLoW7T0YOQlhlovYgCvRZ53g0xNcT-NrhllZj95o0y3AqrLoXcghQBrAsnJzm-n-ViWE_HxftdHYZRWyQ4y6OOPaCwFIXXv666txhgZ9uKQH1ajrirQQgpgMeG3TGH5ew1pXWvtCjii1-eSFJJnGEo7hggT33OW_De48QgV7a5ZwxtJRuaOporMO30Fd4ZOChb8ltPZQ1lHGJOFjcYcc_L8HpfnpWT8dbeGRs0BWrlYRKvzzxQA">
+</div>
+</div>
+<p class="text-label-sm text-on-surface-variant opacity-60">
+            © 2024 ControlSelf EDU. Todos los derechos reservados.
+        </p>
+</footer>
+<script>
+        function setRole(role) {
+            const roles = ['estudiante', 'padre', 'docente'];
+            roles.forEach(r => {
+                const btn = document.getElementById(`role-${r}`);
+                if (r === role) {
+                    btn.classList.remove('text-on-surface-variant', 'hover:bg-surface-variant');
+                    btn.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-sm', 'ring-1', 'ring-outline-variant');
+                } else {
+                    btn.classList.add('text-on-surface-variant', 'hover:bg-surface-variant');
+                    btn.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-sm', 'ring-1', 'ring-outline-variant');
+                }
+            });
+            
+            // Interaction: Dynamic feedback based on role color
+            const submitBtn = document.querySelector('button[type="submit"]');
+            if (role === 'estudiante') {
+                submitBtn.className = "w-full bg-secondary text-on-secondary font-headline-md text-headline-md py-4 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all mt-4";
+            } else if (role === 'padre') {
+                submitBtn.className = "w-full bg-primary text-on-primary font-headline-md text-headline-md py-4 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all mt-4";
+            } else {
+                submitBtn.className = "w-full bg-on-primary-fixed-variant text-on-primary-fixed font-headline-md text-headline-md py-4 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all mt-4";
+            }
+        }
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            setRole('estudiante');
+        });
+    </script>
+</body></html>

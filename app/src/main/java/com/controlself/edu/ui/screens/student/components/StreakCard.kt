@@ -1,5 +1,6 @@
 package com.controlself.edu.ui.screens.student.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -18,9 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.domain.model.motivation.AchievementBadge
-import com.controlself.edu.ui.theme.CseBlue
-import com.controlself.edu.ui.theme.CseGreen
-import com.controlself.edu.ui.theme.CseMuted
+import com.controlself.edu.ui.theme.CseOnSurfaceVariant
+import com.controlself.edu.ui.theme.CseOutlineVariant
+import com.controlself.edu.ui.theme.CsePrimary
+import com.controlself.edu.ui.theme.CsePrimaryFixed
+import com.controlself.edu.ui.theme.CseSecondary
 import com.controlself.edu.ui.theme.CseWhite
 import java.time.Instant
 import java.time.ZoneId
@@ -42,13 +45,15 @@ fun StreakCard(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         color = CseWhite,
-        shadowElevation = 1.dp
+        border = BorderStroke(1.dp, CseOutlineVariant),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = "Mi racha",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.labelLarge,
+                color = CsePrimary,
+                fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -58,14 +63,14 @@ fun StreakCard(
                     "Sin racha activa — completa una evaluación hoy"
                 },
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (streakDays > 0) CseGreen else CseMuted,
+                color = if (streakDays > 0) CseSecondary else CseOnSurfaceVariant,
                 fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "Insignias",
-                style = MaterialTheme.typography.labelLarge,
-                color = CseMuted
+                style = MaterialTheme.typography.labelMedium,
+                color = CseOnSurfaceVariant
             )
             Spacer(modifier = Modifier.height(8.dp))
             FlowRow(
@@ -79,13 +84,13 @@ fun StreakCard(
                         label = { Text(badge.title) },
                         colors = AssistChipDefaults.assistChipColors(
                             containerColor = if (badge.unlocked) {
-                                CseBlue.copy(alpha = 0.12f)
+                                CsePrimaryFixed
                             } else {
-                                CseMuted.copy(alpha = 0.12f)
+                                CseOnSurfaceVariant.copy(alpha = 0.08f)
                             },
-                            labelColor = if (badge.unlocked) CseBlue else CseMuted,
-                            disabledContainerColor = CseMuted.copy(alpha = 0.08f),
-                            disabledLabelColor = CseMuted
+                            labelColor = if (badge.unlocked) CsePrimary else CseOnSurfaceVariant,
+                            disabledContainerColor = CseOnSurfaceVariant.copy(alpha = 0.08f),
+                            disabledLabelColor = CseOnSurfaceVariant
                         )
                     )
                 }
@@ -94,15 +99,15 @@ fun StreakCard(
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = "Historial de logros",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = CseMuted
+                    style = MaterialTheme.typography.labelMedium,
+                    color = CseOnSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 unlockedHistory.forEach { badge ->
                     Text(
                         text = "${badge.title} · ${formatUnlockDate(badge.unlockedAtMillis!!)}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = CseMuted,
+                        color = CseOnSurfaceVariant,
                         modifier = Modifier.padding(vertical = 2.dp)
                     )
                 }

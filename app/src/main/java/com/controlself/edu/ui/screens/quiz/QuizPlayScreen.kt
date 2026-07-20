@@ -1,22 +1,24 @@
 package com.controlself.edu.ui.screens.quiz
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -28,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,10 +41,17 @@ import com.controlself.edu.domain.model.Course
 import com.controlself.edu.domain.model.quiz.AnswerRecord
 import com.controlself.edu.domain.model.quiz.Question
 import com.controlself.edu.domain.model.quiz.QuizAttempt
+import com.controlself.edu.ui.components.PrimaryFlatButton
 import com.controlself.edu.ui.theme.ControlSelfEDUTheme
-import com.controlself.edu.ui.theme.CseBlue
-import com.controlself.edu.ui.theme.CseMuted
-import com.controlself.edu.ui.theme.CseSurface
+import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CseOnSurface
+import com.controlself.edu.ui.theme.CseOnSurfaceVariant
+import com.controlself.edu.ui.theme.CseOutlineVariant
+import com.controlself.edu.ui.theme.CsePrimary
+import com.controlself.edu.ui.theme.CseSecondary
+import com.controlself.edu.ui.theme.CseSecondaryContainer
+import com.controlself.edu.ui.theme.CseSurfaceContainer
+import com.controlself.edu.ui.theme.CseWhite
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -109,34 +119,41 @@ private fun QuizPlayContent(
                 TextButton(onClick = {
                     showExitDialog = false
                     onAbort()
-                }) { Text("Salir") }
+                }) { Text("Salir", color = CsePrimary) }
             },
             dismissButton = {
-                TextButton(onClick = { showExitDialog = false }) { Text("Continuar") }
-            }
+                TextButton(onClick = { showExitDialog = false }) {
+                    Text("Continuar", color = CseSecondary)
+                }
+            },
+            containerColor = CseWhite
         )
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CseSurface)
+            .background(CseBackground)
             .padding(16.dp)
     ) {
         IconButton(onClick = { requestExit() }) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Salir")
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Salir",
+                tint = CsePrimary
+            )
         }
         Text(
             text = course.title,
             style = MaterialTheme.typography.titleLarge,
-            color = CseBlue,
+            color = CsePrimary,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "Pregunta ${index + 1} de ${questions.size}",
             style = MaterialTheme.typography.bodyMedium,
-            color = CseMuted
+            color = CseOnSurfaceVariant
         )
         Spacer(modifier = Modifier.height(8.dp))
         LinearProgressIndicator(
@@ -144,38 +161,46 @@ private fun QuizPlayContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp),
-            color = CseBlue,
+            color = CseSecondary,
+            trackColor = CseSurfaceContainer,
             strokeCap = StrokeCap.Round
         )
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = current.prompt,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
-        )
         Spacer(modifier = Modifier.height(20.dp))
-        current.options.forEachIndexed { optIndex, label ->
-            val isSelected = selected == optIndex
-            if (isSelected) {
-                Button(
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .clip(RoundedCornerShape(16.dp))
+                .background(CseWhite)
+                .border(1.dp, CseOutlineVariant, RoundedCornerShape(16.dp))
+                .padding(20.dp)
+        ) {
+            Text(
+                text = current.prompt,
+                style = MaterialTheme.typography.titleMedium,
+                color = CseOnSurface,
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            current.options.forEachIndexed { optIndex, label ->
+                val isSelected = selected == optIndex
+                OptionChip(
+                    label = label,
+                    selected = isSelected,
                     onClick = { selections[index] = optIndex },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                ) { Text(label) }
-            } else {
-                OutlinedButton(
-                    onClick = { selections[index] = optIndex },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                ) { Text(label) }
+                        .padding(bottom = 10.dp)
+                )
             }
         }
-        Spacer(modifier = Modifier.weight(1f))
-        Button(
+
+        Spacer(modifier = Modifier.height(16.dp))
+        PrimaryFlatButton(
+            text = if (index < questions.lastIndex) "Siguiente" else "Finalizar",
             onClick = {
-                if (selected == null) return@Button
+                if (selected == null) return@PrimaryFlatButton
                 if (index < questions.lastIndex) {
                     index++
                 } else {
@@ -206,11 +231,34 @@ private fun QuizPlayContent(
                 }
             },
             enabled = selected != null,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(if (index < questions.lastIndex) "Siguiente" else "Finalizar")
-        }
+            containerColor = CseSecondary
+        )
     }
+}
+
+@Composable
+private fun OptionChip(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val bg = if (selected) CseSecondaryContainer else CseBackground
+    val border = if (selected) CseSecondary else CseOutlineVariant
+    val textColor = if (selected) CsePrimary else CseOnSurface
+
+    Text(
+        text = label,
+        style = MaterialTheme.typography.bodyLarge,
+        color = textColor,
+        fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(bg)
+            .border(BorderStroke(2.dp, border), RoundedCornerShape(12.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 14.dp)
+    )
 }
 
 @Preview(showBackground = true)
