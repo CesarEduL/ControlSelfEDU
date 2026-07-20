@@ -111,16 +111,8 @@ fun ControlSelfNavHost() {
     ) {
         composable(Routes.WELCOME) {
             WelcomeScreen(
-                onStart = {
-                    navController.navigate(Routes.REGISTER) {
-                        popUpTo(Routes.WELCOME) { inclusive = true }
-                    }
-                },
-                onHaveAccount = {
-                    navController.navigate(Routes.LOGIN) {
-                        popUpTo(Routes.WELCOME) { inclusive = true }
-                    }
-                }
+                onStart = { navController.navigate(Routes.REGISTER) },
+                onHaveAccount = { navController.navigate(Routes.LOGIN) }
             )
         }
         composable(Routes.LOGIN) {
@@ -143,6 +135,15 @@ fun ControlSelfNavHost() {
             LockScreen(
                 onStartLesson = {
                     navController.navigate(Routes.courseSelect(fromLock = true))
+                },
+                onUnlockDemo = {
+                    scope.launch {
+                        lockRepository.setLocked(false)
+                        navController.navigate(Routes.STUDENT_HOME) {
+                            launchSingleTop = true
+                            popUpTo(Routes.LOCK) { inclusive = true }
+                        }
+                    }
                 }
             )
         }
@@ -173,6 +174,9 @@ fun ControlSelfNavHost() {
                 },
                 onSimulateLock = {
                     scope.launch { lockRepository.setLocked(true) }
+                },
+                onClearLock = {
+                    scope.launch { lockRepository.setLocked(false) }
                 },
                 onLogout = {
                     scope.launch {

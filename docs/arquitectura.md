@@ -1,6 +1,6 @@
 # Arquitectura — ControlSelf EDU
 
-Implementación de [PRP-01](../prps/PRP-01-arquitectura-android.md).
+Estructura de la app Android: UI Compose, dominio, datos y acceso al sistema.
 
 ## Capas
 
@@ -33,16 +33,16 @@ system (UsageStats, overlay, Device Admin) — solo vía gateways
 | Ruta | Rol |
 |------|-----|
 | `welcome`, `login`, `register`, `forgot-password` | Públicas |
-| `student/home` | Estudiante → PRP-04 |
-| `teacher/home` | Docente → PRP-11 |
-| `parent/home` | Padre → PRP-12 |
+| `student/home` | Estudiante |
+| `teacher/home` | Docente |
+| `parent/home` | Padre/madre |
 
 Helper: `Routes.homeFor(UserRole)`.
 
 ## Permisos (mapa)
 
-| Capacidad | PRP | Estado en código |
-|-----------|-----|------------------|
-| Usage Access | 05 | `AndroidUsageStatsGateway` |
-| Overlay / bloqueo UI | 06 | `LockScreen` + `LockRepository` |
-| Device Admin | 13 | `AndroidDeviceAdminGateway` + receiver |
+| Capacidad | Implementación |
+|-----------|----------------|
+| Usage Access | `AndroidUsageStatsGateway` |
+| Overlay / bloqueo UI | `LockScreen` + `LockRepository` |
+| Device Admin | `AndroidDeviceAdminGateway` + receiver |

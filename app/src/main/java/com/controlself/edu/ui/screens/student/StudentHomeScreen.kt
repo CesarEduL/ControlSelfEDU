@@ -70,6 +70,7 @@ fun StudentHomeScreen(
     displayName: String,
     onCourseClick: (Course) -> Unit,
     onSimulateLock: () -> Unit,
+    onClearLock: () -> Unit,
     onLogout: () -> Unit
 ) {
     val container = LocalAppContainer.current
@@ -115,6 +116,7 @@ fun StudentHomeScreen(
         onOpenSettings = { usageGateway.openUsageAccessSettings() },
         onCourseClick = onCourseClick,
         onSimulateLock = onSimulateLock,
+        onClearLock = onClearLock,
         onLogout = onLogout
     )
 }
@@ -130,6 +132,7 @@ private fun StudentHomeContent(
     onOpenSettings: () -> Unit,
     onCourseClick: (Course) -> Unit,
     onSimulateLock: () -> Unit,
+    onClearLock: () -> Unit,
     onLogout: () -> Unit
 ) {
     var tab by remember { mutableStateOf(StudentTab.HOME) }
@@ -156,6 +159,7 @@ private fun StudentHomeContent(
                     hasPermission = hasPermission,
                     onOpenSettings = onOpenSettings,
                     onSimulateLock = onSimulateLock,
+                    onClearLock = onClearLock,
                     onSeeCourses = { tab = StudentTab.COURSES }
                 )
                 StudentTab.COURSES -> CoursesTab(onCourseClick = onCourseClick)
@@ -219,6 +223,7 @@ private fun HomeTab(
     hasPermission: Boolean,
     onOpenSettings: () -> Unit,
     onSimulateLock: () -> Unit,
+    onClearLock: () -> Unit,
     onSeeCourses: () -> Unit
 ) {
     Column(
@@ -262,6 +267,11 @@ private fun HomeTab(
         PrimaryFlatButton(
             text = "Simular bloqueo",
             onClick = onSimulateLock
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        SecondaryFlatButton(
+            text = "Quitar bloqueo (demo)",
+            onClick = onClearLock
         )
         Spacer(modifier = Modifier.height(12.dp))
         SecondaryFlatButton(
@@ -460,6 +470,7 @@ private fun StudentHomeScreenPreview() {
             onOpenSettings = {},
             onCourseClick = {},
             onSimulateLock = {},
+            onClearLock = {},
             onLogout = {}
         )
     }

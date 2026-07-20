@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.controlself.edu.ui.components.PrimaryFlatButton
+import com.controlself.edu.ui.components.SecondaryFlatButton
 import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBackground
 import com.controlself.edu.ui.theme.CseOnSecondary
@@ -47,7 +48,10 @@ import com.controlself.edu.ui.theme.CseSecondary
 import com.controlself.edu.ui.theme.CseWhite
 
 @Composable
-fun LockScreen(onStartLesson: () -> Unit) {
+fun LockScreen(
+    onStartLesson: () -> Unit,
+    onUnlockDemo: () -> Unit = {}
+) {
     val breath = rememberInfiniteTransition(label = "breath")
     val scale by breath.animateFloat(
         initialValue = 1f,
@@ -169,6 +173,11 @@ fun LockScreen(onStartLesson: () -> Unit) {
 
             Spacer(modifier = Modifier.weight(1f))
             PrimaryFlatButton(text = "Comenzar lección", onClick = onStartLesson)
+            Spacer(modifier = Modifier.height(12.dp))
+            SecondaryFlatButton(
+                text = "Quitar bloqueo (demo)",
+                onClick = onUnlockDemo
+            )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "Tu progreso se guardará automáticamente al finalizar.",

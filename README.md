@@ -1,37 +1,27 @@
 # ControlSelf EDU
 
-App Android de control parental educativo: monitorea tiempo en redes/videojuegos, bloquea tras 30 minutos y desbloquea al aprobar una lección (mín. 15/20).
+App Android de control parental educativo: monitorea tiempo en redes y videojuegos, bloquea tras 30 minutos y desbloquea al aprobar una lección (mínimo 15/20).
 
 ## Stack
 
-- Kotlin 1.9 + Jetpack Compose + Material 3
+- Kotlin 1.9 · Jetpack Compose · Material 3
 - Navigation Compose · SplashScreen API
 - AGP 8.6.1 · Gradle 8.7 · minSdk 26 · targetSdk 35
-- package `com.controlself.edu`
+- Paquete: `com.controlself.edu`
 
-## Documentación (PRPs)
+## Empezar
 
-Los requisitos se gestionan como **Product Requirement Prompts** en [`prps/`](prps/README.md).
+1. Abrir en Android Studio: **File → Open** → esta carpeta
+2. Esperar el sync de Gradle
+3. Ejecutar en emulador o dispositivo
 
-Orden de implementación: **PRP-00 → 01 → 02 → 03 → … → 13**.
+Credenciales de demo, flujo de prueba y detalles de build: [`docs/desarrollo.md`](docs/desarrollo.md).
 
-## Abrir en Android Studio
+## Documentación
 
-1. File → Open → esta carpeta
-2. Espera el sync de Gradle
-3. Run en emulador o dispositivo
+Índice en [`docs/README.md`](docs/README.md):
 
-## Estado actual
-
-- **PRP-01** arquitectura ✅
-- **PRP-02** bienvenida + tema ✅
-- **PRP-03** autenticación y roles ✅
-- **PRP-04** panel estudiante ✅
-- **PRP-05** monitoreo de uso ✅
-- **PRP-06** bloqueo automático ✅
-- **PRP-07** evaluaciones ✅
-- Siguiente: **[PRP-08 — Resultados y feedback](prps/PRP-08-resultados-feedback.md)** (pulir copy/detalle)
-
-Demo: `estudiante` / `123456` → Simular tiempo agotado → Comenzar lección → quiz (≥15 para desbloquear).
-
-Detalle de capas: [`docs/arquitectura.md`](docs/arquitectura.md)
+- [Arquitectura](docs/arquitectura.md) — capas, paquetes, rutas y permisos
+- [Diseño UI](docs/design/README.md) — referencias Stitch y mapeo a pantallas Compose
+- [Estado funcional](docs/estado.md) — capacidades implementadas
+- [Desarrollo local](docs/desarrollo.md) — entorno y pruebas manuales
