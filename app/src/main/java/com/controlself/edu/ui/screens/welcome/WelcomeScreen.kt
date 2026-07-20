@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FamilyRestroom
 import androidx.compose.material.icons.filled.School
@@ -28,7 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -42,7 +40,6 @@ import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBackground
 import com.controlself.edu.ui.theme.CseOnSurfaceVariant
 import com.controlself.edu.ui.theme.CsePrimary
-import com.controlself.edu.ui.theme.CsePrimaryContainer
 
 /**
  * Welcome minimalista (Stitch a.1): marca + CTAs Empezar / Tengo una cuenta.
@@ -66,19 +63,12 @@ fun WelcomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(0.35f))
-        Box(
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-                .background(CsePrimaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_logo_placeholder),
-                contentDescription = "Logo ControlSelf EDU",
-                modifier = Modifier.size(64.dp)
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.ic_logo),
+            contentDescription = "Logo ControlSelf EDU",
+            modifier = Modifier.size(120.dp),
+            contentScale = ContentScale.Fit
+        )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "ControlSelf EDU",
