@@ -175,9 +175,6 @@ fun ControlSelfNavHost() {
                 onSimulateLock = {
                     scope.launch { lockRepository.setLocked(true) }
                 },
-                onClearLock = {
-                    scope.launch { lockRepository.setLocked(false) }
-                },
                 onLogout = {
                     scope.launch {
                         auth.logout()

@@ -32,7 +32,7 @@ Cuentas demo embebidas (rol elegido en **Iniciar sesión** debe coincidir con el
 
 1. Iniciar sesión con `estudiante` / `123456` (rol **Estudiante**).
 2. En Inicio → **Simular bloqueo** (herramienta demo).
-3. En la pantalla de bloqueo → **Comenzar lección** o, para salir del modo bloqueado sin quiz → **Quitar bloqueo (demo)**.
+3. En la pantalla de bloqueo → **Comenzar lección** o **Quitar bloqueo (demo)** para volver al inicio sin hacer el quiz.
 4. Completar el quiz con **≥ 15 aciertos** para desbloquear de forma “real” en el flujo de lección.
 
 ### Docente
