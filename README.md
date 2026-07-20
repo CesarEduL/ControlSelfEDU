@@ -22,6 +22,5 @@ Credenciales de demo, flujo de prueba y detalles de build: [`docs/desarrollo.md`
 Índice en [`docs/README.md`](docs/README.md):
 
 - [Arquitectura](docs/arquitectura.md) — capas, paquetes, rutas y permisos
-- [Diseño UI](docs/design/README.md) — referencias Stitch y mapeo a pantallas Compose
 - [Estado funcional](docs/estado.md) — capacidades implementadas
 - [Desarrollo local](docs/desarrollo.md) — entorno y pruebas manuales

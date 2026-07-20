@@ -22,8 +22,8 @@ Resumen orientado a producto (no sustituye el código ni los tests). Actualizar 
 
 ## Mejoras conocidas (no bloqueantes)
 
-- Fuente **Nunito Sans** embebida: hoy se usa SansSerif del sistema con pesos equivalentes ([design/README.md](design/README.md)).
+- Fuente **Nunito Sans** embebida: hoy se usa SansSerif del sistema con pesos equivalentes.
 
 ## Ampliaciones futuras
 
-Nuevas capacidades deberían reflejarse aquí y, si aplica, en arquitectura y diseño. La planificación con PRPs vive fuera de `docs/` (ver [README.md](README.md)).
+Nuevas capacidades deberían reflejarse aquí y, si aplica, en [arquitectura.md](arquitectura.md). La planificación con PRPs vive fuera de `docs/` (ver [README.md](README.md)).

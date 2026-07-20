@@ -42,7 +42,7 @@ import com.controlself.edu.ui.theme.CseOnSurfaceVariant
 import com.controlself.edu.ui.theme.CsePrimary
 
 /**
- * Welcome minimalista (Stitch a.1): marca + CTAs Empezar / Tengo una cuenta.
+ * Pantalla de bienvenida: marca + CTAs Empezar / Tengo una cuenta.
  */
 @Composable
 fun WelcomeScreen(

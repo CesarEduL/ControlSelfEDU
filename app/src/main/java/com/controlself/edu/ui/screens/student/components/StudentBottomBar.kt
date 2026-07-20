@@ -40,7 +40,7 @@ enum class StudentTab(val label: String) {
     PROFILE("Perfil")
 }
 
-/** Bottom nav flat estilo Stitch: pill verde en el tab activo. */
+/** Bottom nav flat: pill verde en el tab activo. */
 @Composable
 fun StudentBottomBar(
     selected: StudentTab,

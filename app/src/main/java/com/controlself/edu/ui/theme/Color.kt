@@ -2,7 +2,7 @@ package com.controlself.edu.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-/** Core Educational Minimalist — tokens del diseño Stitch. */
+/** Tokens de color del design system (Core Educational Minimalist). */
 
 // Foundation
 val CseBackground = Color(0xFFF7F9FB)
