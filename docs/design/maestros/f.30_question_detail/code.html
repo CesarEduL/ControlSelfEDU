@@ -1,0 +1,358 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Question Detail - Question Bank</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e0e3e5",
+                    "surface-bright": "#f7f9fb",
+                    "on-secondary-fixed": "#002117",
+                    "inverse-primary": "#b4c8e8",
+                    "tertiary": "#1a0e00",
+                    "tertiary-fixed-dim": "#e6c08f",
+                    "on-tertiary-fixed-variant": "#5c421b",
+                    "on-surface": "#191c1e",
+                    "secondary-fixed": "#7bf9ce",
+                    "outline-variant": "#c4c6ce",
+                    "on-surface-variant": "#44474d",
+                    "on-secondary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary-container": "#007257",
+                    "outline": "#74777e",
+                    "surface-container-high": "#e6e8ea",
+                    "on-secondary-fixed-variant": "#00513d",
+                    "inverse-surface": "#2d3133",
+                    "secondary-container": "#7bf9ce",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "primary-fixed-dim": "#b4c8e8",
+                    "tertiary-fixed": "#ffddb3",
+                    "primary-fixed": "#d4e3ff",
+                    "surface-container": "#eceef0",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#362100",
+                    "secondary-fixed-dim": "#5ddcb3",
+                    "secondary": "#006c52",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-primary-container": "#7b8eac",
+                    "primary-container": "#12263f",
+                    "on-tertiary-fixed": "#291800",
+                    "background": "#f7f9fb",
+                    "surface-tint": "#4d5f7b",
+                    "on-tertiary-container": "#a8875a",
+                    "on-error": "#ffffff",
+                    "on-background": "#191c1e",
+                    "error-container": "#ffdad6",
+                    "primary": "#001126",
+                    "error": "#ba1a1a",
+                    "surface": "#f7f9fb",
+                    "on-primary-fixed": "#061c35",
+                    "surface-dim": "#d8dadc",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#354862"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "stack-lg": "32px",
+                    "margin-desktop": "40px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "unit": "8px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Nunito Sans"],
+                    "headline-lg-mobile": ["Nunito Sans"],
+                    "label-sm": ["Nunito Sans"],
+                    "label-bold": ["Nunito Sans"],
+                    "headline-lg": ["Nunito Sans"],
+                    "headline-xl": ["Nunito Sans"],
+                    "body-md": ["Nunito Sans"],
+                    "body-lg": ["Nunito Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "800"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "800"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Nunito Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .bento-card {
+            background-color: #ffffff;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+        .bento-card:hover {
+            border-color: #74777e;
+        }
+        .accent-strip {
+            height: 4px;
+            width: 100%;
+            border-radius: 16px 16px 0 0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen">
+<!-- Navigation Drawer (Desktop) -->
+<aside class="hidden md:flex flex-col h-screen w-80 fixed left-0 top-0 z-40 bg-surface-container-low p-stack-md gap-stack-sm border-r border-outline-variant">
+<div class="flex items-center gap-stack-sm mb-stack-lg">
+<span class="material-symbols-outlined text-primary text-headline-md">database</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">Question Bank</span>
+</div>
+<nav class="flex flex-col gap-unit flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-bold text-label-bold">Question Bank</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-bold text-label-bold">Classes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-bold text-label-bold">Assignments</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-bold text-label-bold">Reports</span>
+</a>
+</nav>
+<div class="mt-auto p-4 bg-surface-container rounded-xl flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A professional headshot of a senior male educator with grey hair, wearing a navy blazer and a friendly expression, set against a blurred academic background. The lighting is warm and natural, creating a trustworthy and experienced atmosphere in a corporate minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD607vVYEGNUsLs62OQBJlYRLGOoEGTw_NweXu3YmOkCS1MTXApCpr1NTLkf9Mx6-wgFhcsRvAQdOm_pSwAVpXWK3nf-b-IebB2Lee-8O6SKewIC40vxbz9q4Ywrxel3GaR_wN_-Ekruq3EIvwuPMj-9ZxctijfBbZUbGD0-Vjop3iYAcTdLPJ_vREboZE9WFvkBx5PZp-OYPkVokswYU-LLSzMVZqrwycKMpicbgmaK1fEWip48aV1Vw">
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Prof. Henderson</p>
+<p class="text-xs text-on-surface-variant">Senior Educator</p>
+</div>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="w-full sticky top-0 z-50 bg-surface border-b border-outline-variant flex items-center justify-between px-margin-mobile md:px-margin-desktop md:ml-80 md:w-[calc(100%-320px)] h-16">
+<div class="flex items-center gap-stack-sm">
+<button class="md:hidden p-2">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary">Question Detail</h1>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="flex items-center gap-2 border-2 border-primary px-4 py-1.5 rounded-lg text-primary font-label-bold hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+<span>Edit</span>
+</button>
+<button class="flex items-center gap-2 bg-error text-on-error px-4 py-1.5 rounded-lg font-label-bold hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+<span>Delete</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="md:ml-80 p-margin-mobile md:p-margin-desktop pb-32">
+<div class="max-w-container-max mx-auto space-y-stack-lg">
+<!-- Question & Choices Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Primary Question Card -->
+<div class="lg:col-span-8 flex flex-col gap-stack-md">
+<div class="bento-card p-stack-lg relative overflow-hidden">
+<div class="accent-strip bg-primary absolute top-0 left-0"></div>
+<div class="flex items-center gap-2 mb-stack-md">
+<span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-pill text-xs font-label-bold">Multiple Choice</span>
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-pill text-xs font-label-bold">Biology</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-stack-lg leading-tight">
+                            What is the primary function of the hippocampus?
+                        </h2>
+<div class="space-y-stack-sm">
+<!-- Choice A -->
+<div class="flex items-center p-4 border-2 border-outline-variant rounded-xl gap-4 hover:border-primary transition-colors cursor-pointer group">
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center text-label-bold group-hover:border-primary">A</div>
+<p class="font-body-lg text-on-surface">Regulating basic life functions like breathing and heart rate.</p>
+</div>
+<!-- Choice B (Correct) -->
+<div class="flex items-center p-4 border-2 border-secondary bg-secondary-container/10 rounded-xl gap-4 transition-colors cursor-default">
+<div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center text-label-bold">B</div>
+<div class="flex-grow">
+<p class="font-body-lg text-on-surface">The formation and consolidation of new memories.</p>
+</div>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<!-- Choice C -->
+<div class="flex items-center p-4 border-2 border-outline-variant rounded-xl gap-4 hover:border-primary transition-colors cursor-pointer group">
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center text-label-bold group-hover:border-primary">C</div>
+<p class="font-body-lg text-on-surface">Coordinating voluntary muscle movements and balance.</p>
+</div>
+<!-- Choice D -->
+<div class="flex items-center p-4 border-2 border-outline-variant rounded-xl gap-4 hover:border-primary transition-colors cursor-pointer group">
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center text-label-bold group-hover:border-primary">D</div>
+<p class="font-body-lg text-on-surface">Processing visual information from the optic nerves.</p>
+</div>
+</div>
+</div>
+<!-- Teacher Insights -->
+<div class="bento-card p-stack-lg">
+<div class="flex items-center gap-3 mb-stack-md">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant">lightbulb</span>
+<h3 class="font-label-bold text-label-bold text-primary">Teacher Explanation &amp; Insight</h3>
+</div>
+<div class="bg-surface-container-low p-stack-md rounded-xl border border-outline-variant">
+<p class="font-body-md text-on-surface-variant italic">
+                                "Students often confuse the hippocampus with the hypothalamus. Emphasize the 'campus' analogy—like a university campus where new memories are created and stored. This question typically appears in the mid-term assessment and correlates strongly with overall performance in the Neurobiology unit."
+                            </p>
+</div>
+</div>
+</div>
+<!-- Sidebar Content -->
+<div class="lg:col-span-4 space-y-gutter">
+<!-- Usage Stats -->
+<div class="bento-card p-stack-lg">
+<h3 class="font-label-bold text-label-bold text-primary mb-stack-md">Usage History</h3>
+<div class="space-y-stack-md">
+<div class="flex justify-between items-end">
+<span class="text-xs font-label-bold text-on-surface-variant uppercase tracking-wider">Avg. Score</span>
+<span class="font-headline-lg text-headline-lg text-secondary">84%</span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 84%"></div>
+</div>
+<hr class="border-outline-variant">
+<div class="space-y-stack-sm">
+<p class="text-xs font-label-bold text-on-surface-variant uppercase tracking-wider">Assigned Classes</p>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">school</span>
+<span class="font-label-bold text-label-bold">AP Bio - Period 2</span>
+</div>
+<span class="text-xs font-bold text-secondary">92%</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">school</span>
+<span class="font-label-bold text-label-bold">Honors Bio - Sec 4</span>
+</div>
+<span class="text-xs font-bold text-on-tertiary-container">76%</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">school</span>
+<span class="font-label-bold text-label-bold">General Bio - A</span>
+</div>
+<span class="text-xs font-bold text-primary">84%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Meta Data -->
+<div class="bento-card p-stack-lg bg-primary text-on-primary">
+<h3 class="font-label-bold text-label-bold mb-stack-md opacity-80 uppercase tracking-widest">Question Metadata</h3>
+<div class="grid grid-cols-2 gap-stack-md">
+<div>
+<p class="text-[10px] opacity-70 uppercase font-bold">Difficulty</p>
+<p class="font-label-bold text-label-bold">Medium-High</p>
+</div>
+<div>
+<p class="text-[10px] opacity-70 uppercase font-bold">Time Limit</p>
+<p class="font-label-bold text-label-bold">45 Seconds</p>
+</div>
+<div>
+<p class="text-[10px] opacity-70 uppercase font-bold">Created</p>
+<p class="font-label-bold text-label-bold">Oct 12, 2023</p>
+</div>
+<div>
+<p class="text-[10px] opacity-70 uppercase font-bold">Last Used</p>
+<p class="font-label-bold text-label-bold">2 Days ago</p>
+</div>
+</div>
+</div>
+<!-- Visual Context Asset -->
+<div class="bento-card overflow-hidden h-48 relative">
+<img class="w-full h-full object-cover" data-alt="A clean, scientific illustration of the human brain with the hippocampus highlighted in a vibrant teal color. The overall style is minimalist and corporate, utilizing a light mode background with high-contrast outlines and clear anatomical labeling. The lighting is bright and clinically focused, creating a sense of clarity and educational reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDunsfWVfqgbQxezSyaPUB7f4sCSt_Qgy9YiJjrh76qLGJpSkGPXcdBMj4fs6XE5L4rqRprPKw7W6wCiu3qYG7lwwnvFkgaElQ984djvQu6mcL9gi-GD9pQ7-CW0oNh3h5cyyKjltuMBYlgQHgzNza8vecq9M1q7YPP6asHh3qSJwpRx4S41Gm6zwUUX4y-NuXRJaJlM--JlFBUMvVH9KoncITjmesbFRQamYqFNe6lGZ-mtGxyA5nuVA">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex items-end p-4">
+<span class="text-white font-label-bold text-xs">Reference Diagram: BR-204</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 border-t border-outline-variant bg-surface flex justify-around items-center h-20 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="font-label-sm text-label-sm">Bank</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1" href="#">
+<span class="material-symbols-outlined">add_box</span>
+<span class="font-label-sm text-label-sm">Create</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-sm text-label-sm">Classes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Subtle hover effect logic if needed
+            });
+        });
+
+        // Simple choice selection simulation
+        const choices = document.querySelectorAll('.group');
+        choices.forEach(choice => {
+            choice.addEventListener('click', function() {
+                // In a real app, this would handle selection state
+                console.log('Choice clicked');
+            });
+        });
+    </script>
+</body></html>

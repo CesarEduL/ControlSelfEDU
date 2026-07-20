@@ -2,6 +2,7 @@ package com.controlself.edu.ui.screens.teacher
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,16 +11,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,21 +32,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.Course
+import com.controlself.edu.domain.model.quiz.Question
 import com.controlself.edu.domain.model.quiz.QuestionType
 import com.controlself.edu.domain.model.quiz.QuizAttempt
 import com.controlself.edu.domain.model.teacher.CourseBankStatus
-import com.controlself.edu.ui.theme.CseBlue
-import com.controlself.edu.ui.theme.CseOutlineVariant
-import com.controlself.edu.ui.theme.CseDanger
-import com.controlself.edu.ui.theme.CseGreen
-import com.controlself.edu.ui.theme.CseMuted
+import com.controlself.edu.ui.components.SecondaryFlatButton
 import com.controlself.edu.ui.theme.CseBackground
+import com.controlself.edu.ui.theme.CseError
+import com.controlself.edu.ui.theme.CseOnSecondaryContainer
+import com.controlself.edu.ui.theme.CseOnSurfaceVariant
+import com.controlself.edu.ui.theme.CseOutlineVariant
 import com.controlself.edu.ui.theme.CsePrimary
+import com.controlself.edu.ui.theme.CseSecondary
+import com.controlself.edu.ui.theme.CseSecondaryContainer
 import com.controlself.edu.ui.theme.CseWhite
 import kotlinx.coroutines.launch
 
@@ -59,101 +68,173 @@ fun TeacherQuestionListScreen(
     val courseTitle = Course.fromId(courseId)?.title ?: courseId
     val ready = questions.size == QuizAttempt.TOTAL_QUESTIONS
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(CseBackground)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = CsePrimary)
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = courseTitle,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = "${questions.size} / ${CourseBankStatus.REQUIRED}" +
-                        if (ready) " · Publicado" else " · Borrador",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (ready) CseGreen else CseMuted
+    Scaffold(
+        containerColor = CseBackground,
+        floatingActionButton = {
+            if (questions.size < 40) {
+                ExtendedFloatingActionButton(
+                    onClick = onAdd,
+                    containerColor = CsePrimary,
+                    contentColor = CseWhite,
+                    icon = { Icon(Icons.Filled.Add, contentDescription = null) },
+                    text = { Text("Crear pregunta", fontWeight = FontWeight.Bold) }
                 )
             }
         }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp)
-                .padding(bottom = 24.dp)
+                .padding(padding)
         ) {
-            Button(
-                onClick = onAdd,
-                modifier = Modifier.fillMaxWidth(),
-                enabled = questions.size < 40
-            ) {
-                Text("Agregar pregunta")
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            questions.forEachIndexed { index, question ->
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                        .clickable { onEdit(question.id) },
-                    shape = MaterialTheme.shapes.medium,
-                    color = CseWhite,
-                    border = BorderStroke(1.dp, CseOutlineVariant),
-                    shadowElevation = 0.dp
-                ) {
-                    Row(
-                        modifier = Modifier.padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = "${index + 1}. ${question.prompt}",
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Medium
-                            )
-                            Text(
-                                text = when (question.type) {
-                                    QuestionType.MULTIPLE_CHOICE -> "Opción múltiple"
-                                    QuestionType.TRUE_FALSE -> "Verdadero / Falso"
-                                },
-                                style = MaterialTheme.typography.bodySmall,
-                                color = CseMuted
-                            )
-                        }
-                        IconButton(
-                            onClick = {
-                                scope.launch {
-                                    container.quizRepository.deleteQuestion(courseId, question.id)
-                                }
-                            }
-                        ) {
-                            Icon(
-                                Icons.Filled.Delete,
-                                contentDescription = "Eliminar",
-                                tint = CseDanger
-                            )
-                        }
-                    }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Volver",
+                        tint = CsePrimary
+                    )
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = courseTitle,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = CsePrimary
+                    )
+                    Text(
+                        text = "${questions.size} / ${CourseBankStatus.REQUIRED}" +
+                            if (ready) " · Publicado" else " · Borrador",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = if (ready) CseSecondary else CseOnSurfaceVariant
+                    )
                 }
             }
-            if (!ready) {
-                Spacer(modifier = Modifier.height(8.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 88.dp)
+            ) {
                 Text(
-                    text = "Para publicar, el curso debe tener exactamente ${CourseBankStatus.REQUIRED} preguntas.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = CseMuted
+                    text = "Preguntas del curso",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = CsePrimary,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(
+                    text = "Toca una pregunta para editarla.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = CseOnSurfaceVariant,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
+                )
+
+                questions.forEachIndexed { index, question ->
+                    QuestionBankItem(
+                        index = index + 1,
+                        courseTitle = courseTitle,
+                        question = question,
+                        onEdit = { onEdit(question.id) },
+                        onDelete = {
+                            scope.launch {
+                                container.quizRepository.deleteQuestion(courseId, question.id)
+                            }
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+
+                if (!ready) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Para publicar, el curso debe tener exactamente ${CourseBankStatus.REQUIRED} preguntas.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = CseOnSurfaceVariant
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                SecondaryFlatButton(text = "Volver al banco", onClick = onBack)
+            }
+        }
+    }
+}
+
+@Composable
+private fun QuestionBankItem(
+    index: Int,
+    courseTitle: String,
+    question: Question,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onEdit),
+        shape = RoundedCornerShape(16.dp),
+        color = CseWhite,
+        border = BorderStroke(1.dp, CseOutlineVariant),
+        shadowElevation = 0.dp
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = courseTitle.take(12),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = CseOnSecondaryContainer,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50))
+                        .background(CseSecondaryContainer)
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+                Text(
+                    text = when (question.type) {
+                        QuestionType.MULTIPLE_CHOICE -> "Opción múltiple"
+                        QuestionType.TRUE_FALSE -> "V / F"
+                    },
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = CseOnSurfaceVariant,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50))
+                        .background(CseBackground)
+                        .border(1.dp, CseOutlineVariant, RoundedCornerShape(50))
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "#$index",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = CseOnSurfaceVariant,
+                    fontWeight = FontWeight.Bold
                 )
             }
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = question.prompt,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = CsePrimary,
+                maxLines = 3
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = question.options.joinToString(" · ") { it.take(24) },
+                style = MaterialTheme.typography.bodySmall,
+                color = CseOnSurfaceVariant,
+                maxLines = 2
+            )
             Spacer(modifier = Modifier.height(12.dp))
-            OutlinedButton(onClick = onBack, modifier = Modifier.fillMaxWidth()) {
-                Text("Volver al banco")
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = onEdit, modifier = Modifier.size(36.dp)) {
+                    Icon(Icons.Outlined.Edit, contentDescription = "Editar", tint = CseSecondary)
+                }
+                IconButton(onClick = onDelete, modifier = Modifier.size(36.dp)) {
+                    Icon(Icons.Filled.Delete, contentDescription = "Eliminar", tint = CseError)
+                }
             }
         }
     }

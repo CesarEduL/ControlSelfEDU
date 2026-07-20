@@ -16,11 +16,11 @@ Fuente: `Downloads/stich/inicio` (Core Educational Minimalist).
 | `b.11_lock_screen_animated_v2` | `LockScreen` |
 | Paneles | `ParentHome`, `ParentAttemptDetail`, `TeacherHome` + subpantallas, `AdminProtection` |
 | Pack `padres` | Ver `docs/design/padres/README.md` |
+| Pack `maestros` | Ver `docs/design/maestros/README.md` |
 
 ## Pendiente
 
 - Fuente Nunito Sans embebida (ahora SansSerif del sistema con mismos pesos).
-- Pack de diseños docente (si llega).
 
 ## Tokens clave
 
