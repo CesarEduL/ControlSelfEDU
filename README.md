@@ -15,7 +15,8 @@ App Android de control parental educativo: monitorea tiempo en redes y videojueg
 2. Esperar el sync de Gradle
 3. Ejecutar en emulador o dispositivo
 
-Credenciales de demo, flujo de prueba y detalles de build: [`docs/desarrollo.md`](docs/desarrollo.md).
+Credenciales de demo y pruebas manuales: [`docs/desarrollo.md`](docs/desarrollo.md).  
+Generar e instalar un APK: [`docs/apk.md`](docs/apk.md).
 
 ## Documentación
 
@@ -24,3 +25,4 @@ Credenciales de demo, flujo de prueba y detalles de build: [`docs/desarrollo.md`
 - [Arquitectura](docs/arquitectura.md) — capas, paquetes, rutas y permisos
 - [Estado funcional](docs/estado.md) — capacidades implementadas
 - [Desarrollo local](docs/desarrollo.md) — entorno y pruebas manuales
+- [Generar APK](docs/apk.md) — `assembleDebug` / Studio e instalación con ADB

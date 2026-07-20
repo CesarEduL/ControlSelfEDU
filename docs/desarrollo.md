@@ -12,11 +12,7 @@
 2. Dejar terminar **Gradle Sync**
 3. Variante **debug** → Run
 
-Build por línea de comandos (desde la raíz):
-
-```bash
-./gradlew assembleDebug
-```
+Para compilar un APK e instalarlo fuera de Run, ver [apk.md](apk.md).
 
 ## Prueba manual rápida
 
