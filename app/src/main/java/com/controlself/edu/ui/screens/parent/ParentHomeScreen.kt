@@ -68,6 +68,7 @@ import com.controlself.edu.domain.model.parent.DayUsagePoint
 import com.controlself.edu.domain.model.parent.ParentDashboard
 import com.controlself.edu.domain.model.stats.AttemptStat
 import com.controlself.edu.domain.model.stats.CourseStatBar
+import com.controlself.edu.domain.model.quiz.QuizAttempt
 import com.controlself.edu.domain.repository.ScreenTimeRepository
 import com.controlself.edu.ui.components.PrimaryFlatButton
 import com.controlself.edu.ui.components.SecondaryFlatButton
@@ -340,7 +341,12 @@ private fun StatsOverview(dashboard: ParentDashboard) {
             MetricLine(
                 "Promedio",
                 stats.averageScore?.let {
-                    String.format(Locale.getDefault(), "%.1f / 20", it)
+                    String.format(
+                        Locale.getDefault(),
+                        "%.1f / %d",
+                        it,
+                        QuizAttempt.TOTAL_QUESTIONS
+                    )
                 } ?: "—"
             )
             MetricLine("Evaluaciones", stats.evaluationsCount.toString())

@@ -1,5 +1,7 @@
 package com.controlself.edu.domain.model.stats
 
+import com.controlself.edu.domain.model.quiz.QuizAttempt
+
 /**
  * Resumen de progreso del estudiante (PRP-10).
  * Agregado desde intentos, screen time y motivación — no es una segunda verdad.
@@ -28,7 +30,7 @@ data class CourseStatBar(
 data class ScorePoint(
     val label: String,
     val score: Int,
-    val maxScore: Int = 20
+    val maxScore: Int = QuizAttempt.TOTAL_QUESTIONS
 )
 
 data class StudentStatsDashboard(

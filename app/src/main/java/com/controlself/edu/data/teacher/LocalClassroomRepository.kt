@@ -29,24 +29,24 @@ class LocalClassroomRepository(
         ClassroomStudent(
             id = "mock-ana",
             displayName = "Ana Pérez",
-            lastScores = listOf(18, 16, 15),
-            averageScore = 16.3,
+            lastScores = listOf(4, 3, 3),
+            averageScore = 3.3,
             evaluationsCount = 3,
             isLocked = false
         ),
         ClassroomStudent(
             id = "mock-luis",
             displayName = "Luis Gómez",
-            lastScores = listOf(12, 14, 11),
-            averageScore = 12.3,
+            lastScores = listOf(2, 3, 2),
+            averageScore = 2.3,
             evaluationsCount = 3,
             isLocked = true
         ),
         ClassroomStudent(
             id = "mock-maria",
             displayName = "María Ruiz",
-            lastScores = listOf(19, 17),
-            averageScore = 18.0,
+            lastScores = listOf(4, 3),
+            averageScore = 3.5,
             evaluationsCount = 2,
             isLocked = false
         )

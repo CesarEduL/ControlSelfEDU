@@ -1,6 +1,6 @@
 # ControlSelf EDU
 
-App Android de control parental educativo: monitorea tiempo en redes y videojuegos, bloquea tras 30 minutos y desbloquea al aprobar una lección (mínimo 15/20).
+App Android de control parental educativo: monitorea tiempo en redes y videojuegos, bloquea tras 30 minutos y desbloquea al aprobar una lección (mínimo 3/4).
 
 ## Stack
 

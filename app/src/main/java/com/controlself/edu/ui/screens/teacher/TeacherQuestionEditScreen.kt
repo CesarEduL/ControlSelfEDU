@@ -28,6 +28,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -38,15 +42,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.controlself.edu.data.quiz.QuestionImageStorage
 import com.controlself.edu.di.LocalAppContainer
 import com.controlself.edu.domain.model.Course
 import com.controlself.edu.domain.model.quiz.Question
 import com.controlself.edu.domain.model.quiz.QuestionType
 import com.controlself.edu.ui.components.PrimaryFlatButton
+import com.controlself.edu.ui.components.QuestionPromptMedia
 import com.controlself.edu.ui.components.SecondaryFlatButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.controlself.edu.ui.theme.CseBackground
 import com.controlself.edu.ui.theme.CseError
 import com.controlself.edu.ui.theme.CseOnSecondaryContainer
@@ -72,6 +82,10 @@ fun TeacherQuestionEditScreen(
         .collectAsStateWithLifecycle(initialValue = emptyList())
     val existing = questionId?.let { id -> questions.find { it.id == id } }
     val isNew = questionId == null || questionId == "new"
+    val stableQuestionId = remember(questionId) {
+        if (isNew) UUID.randomUUID().toString() else questionId!!
+    }
+    val context = LocalContext.current
     val courseTitle = Course.fromId(courseId)?.title ?: courseId
 
     var type by remember(existing?.id) {
@@ -93,8 +107,22 @@ fun TeacherQuestionEditScreen(
     var correctIndex by remember(existing?.id) {
         mutableIntStateOf(existing?.correctIndex ?: 0)
     }
+    var imagePath by remember(existing?.id) { mutableStateOf(existing?.imagePath) }
+    var pendingImageUri by remember { mutableStateOf<Uri?>(null) }
+    var imageRemoved by remember(existing?.id) { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+
+    val pickImage = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) {
+            pendingImageUri = uri
+            imageRemoved = false
+        }
+    }
+
+    val hasImagePreview = pendingImageUri != null || (!imageRemoved && !imagePath.isNullOrBlank())
 
     val fieldColors = OutlinedTextFieldDefaults.colors(
         focusedBorderColor = CseSecondary,
@@ -161,6 +189,36 @@ fun TeacherQuestionEditScreen(
                     shape = RoundedCornerShape(12.dp),
                     colors = fieldColors
                 )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "Imagen (opcional)",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = CseOnSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    SecondaryFlatButton(
+                        text = if (hasImagePreview) "Cambiar imagen" else "Añadir imagen",
+                        onClick = {
+                            pickImage.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                    if (hasImagePreview) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        SecondaryFlatButton(
+                            text = "Quitar",
+                            onClick = {
+                                pendingImageUri = null
+                                imageRemoved = true
+                            },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -271,11 +329,12 @@ fun TeacherQuestionEditScreen(
                     fontWeight = FontWeight.Bold,
                     color = CsePrimary
                 )
-                Text(
-                    text = prompt.ifBlank { "El enunciado aparecerá aquí" },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = CseOnSurfaceVariant,
-                    modifier = Modifier.padding(top = 6.dp)
+                Spacer(modifier = Modifier.height(8.dp))
+                QuestionPromptMedia(
+                    prompt = prompt,
+                    imagePath = if (imageRemoved) null else imagePath,
+                    pendingImageUri = pendingImageUri,
+                    promptPlaceholder = "El enunciado aparecerá aquí"
                 )
             }
 
@@ -301,14 +360,36 @@ fun TeacherQuestionEditScreen(
                         correctIndex !in options.indices -> error = "Marca una opción correcta válida"
                         else -> {
                             error = null
-                            val question = Question(
-                                id = if (isNew) UUID.randomUUID().toString() else (questionId ?: UUID.randomUUID().toString()),
-                                prompt = prompt.trim(),
-                                type = type,
-                                options = options,
-                                correctIndex = correctIndex
-                            )
                             scope.launch {
+                                var finalImagePath: String? = if (imageRemoved) {
+                                    null
+                                } else {
+                                    imagePath
+                                }
+                                if (imageRemoved || pendingImageUri != null) {
+                                    QuestionImageStorage.delete(context, imagePath)
+                                }
+                                pendingImageUri?.let { uri ->
+                                    finalImagePath = withContext(Dispatchers.IO) {
+                                        QuestionImageStorage.importFromUri(
+                                            context,
+                                            stableQuestionId,
+                                            uri
+                                        )
+                                    }
+                                    if (finalImagePath == null) {
+                                        error = "No se pudo guardar la imagen"
+                                        return@launch
+                                    }
+                                }
+                                val question = Question(
+                                    id = stableQuestionId,
+                                    prompt = prompt.trim(),
+                                    type = type,
+                                    options = options,
+                                    correctIndex = correctIndex,
+                                    imagePath = finalImagePath
+                                )
                                 container.quizRepository.upsertQuestion(courseId, question)
                                 onDone()
                             }

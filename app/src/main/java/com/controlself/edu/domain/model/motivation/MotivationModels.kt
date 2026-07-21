@@ -17,7 +17,7 @@ enum class AchievementId(
     ),
     OUTSTANDING(
         title = "Estudiante destacado",
-        description = "Racha ≥ 7 o promedio ≥ 16/20"
+        description = "Racha ≥ 7 o promedio ≥ 80%"
     ),
     MASTER(
         title = "Maestro del aprendizaje",

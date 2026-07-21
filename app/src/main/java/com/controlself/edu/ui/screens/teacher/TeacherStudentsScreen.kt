@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.controlself.edu.di.LocalAppContainer
+import com.controlself.edu.domain.model.quiz.QuizAttempt
 import com.controlself.edu.domain.model.teacher.ClassroomStudent
 import com.controlself.edu.ui.theme.CseDanger
 import com.controlself.edu.ui.theme.CseOutlineVariant
@@ -115,7 +116,12 @@ fun TeacherStudentDetailScreen(
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "Promedio: " + (student.averageScore?.let {
-                    String.format(Locale.getDefault(), "%.1f / 20", it)
+                    String.format(
+                        Locale.getDefault(),
+                        "%.1f / %d",
+                        it,
+                        QuizAttempt.TOTAL_QUESTIONS
+                    )
                 } ?: "—")
             )
             Text(text = "Evaluaciones: ${student.evaluationsCount}")
@@ -125,7 +131,11 @@ fun TeacherStudentDetailScreen(
             if (student.lastScores.isEmpty()) {
                 Text("Sin intentos registrados", color = CseMuted)
             } else {
-                Text(student.lastScores.joinToString(" · ") { "$it/20" })
+                Text(
+                    student.lastScores.joinToString(" · ") {
+                        "$it/${QuizAttempt.TOTAL_QUESTIONS}"
+                    }
+                )
             }
             if (student.isLocalDemo) {
                 Spacer(modifier = Modifier.height(16.dp))

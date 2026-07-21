@@ -1,6 +1,7 @@
 package com.controlself.edu.domain.model.teacher
 
 import com.controlself.edu.domain.model.quiz.Question
+import com.controlself.edu.domain.model.quiz.QuizAttempt
 
 data class ClassroomStudent(
     val id: String,
@@ -42,7 +43,7 @@ data class CourseBankStatus(
     val isReady: Boolean
 ) {
     companion object {
-        const val REQUIRED = 20
+        val REQUIRED: Int get() = QuizAttempt.TOTAL_QUESTIONS
     }
 }
 

@@ -44,6 +44,7 @@ import com.controlself.edu.domain.model.motivation.MotivationSnapshot
 import com.controlself.edu.domain.model.stats.CourseStatBar
 import com.controlself.edu.domain.model.stats.ScorePoint
 import com.controlself.edu.domain.model.stats.StudentStatsDashboard
+import com.controlself.edu.domain.model.quiz.QuizAttempt
 import com.controlself.edu.domain.repository.ScreenTimeRepository
 import com.controlself.edu.ui.components.PrimaryFlatButton
 import com.controlself.edu.ui.components.SecondaryFlatButton
@@ -384,7 +385,9 @@ private fun ProfileTab(
             Spacer(modifier = Modifier.height(10.dp))
             ProfileMetric(
                 "Promedio",
-                stats.averageScore?.let { String.format("%.1f / 20", it) } ?: "—"
+                stats.averageScore?.let {
+                    String.format("%.1f / %d", it, QuizAttempt.TOTAL_QUESTIONS)
+                } ?: "—"
             )
             Spacer(modifier = Modifier.height(10.dp))
             ProfileMetric("Evaluaciones", stats.evaluationsCount.toString())
@@ -437,7 +440,7 @@ private fun StudentHomeScreenPreview() {
             },
             stats = StudentStatsDashboard(
                 evaluationsCount = 4,
-                averageScore = 16.5,
+                averageScore = 3.5,
                 studyMinutesTotal = 42,
                 entertainmentMinutesToday = 18,
                 coursesPassedDistinct = 2,
@@ -446,9 +449,9 @@ private fun StudentHomeScreenPreview() {
                 currentStreak = 3,
                 maxStreak = 5,
                 recentScores = listOf(
-                    ScorePoint("1", 14),
-                    ScorePoint("2", 16),
-                    ScorePoint("3", 18)
+                    ScorePoint("1", 2),
+                    ScorePoint("2", 3),
+                    ScorePoint("3", 4)
                 ),
                 courseBars = listOf(
                     CourseStatBar("math", "Mate", 2, 3),

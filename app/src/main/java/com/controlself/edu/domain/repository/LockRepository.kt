@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Bloqueo de entretenimiento (PRP-06 / PRP-08).
  *
- * Política de desbloqueo (PRP-08): al aprobar (≥15/20) se concede un **pase el resto del día**.
+ * Política de desbloqueo (PRP-08): al aprobar (≥ PASS_THRESHOLD) se concede un **pase el resto del día**.
  * UsageStats no vuelve a bloquear hasta el día siguiente, aunque el contador siga ≥ 30 min.
  */
 interface LockRepository {

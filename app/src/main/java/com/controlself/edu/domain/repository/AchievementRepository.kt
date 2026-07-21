@@ -26,7 +26,8 @@ interface AchievementRepository {
     companion object {
         const val RESPONSIBLE_DAYS_REQUIRED = 3
         const val OUTSTANDING_STREAK = 7
-        const val OUTSTANDING_AVERAGE = 16.0
+        /** ~80% del total de preguntas (antes 16/20). */
+        val OUTSTANDING_AVERAGE: Double get() = QuizAttempt.TOTAL_QUESTIONS * 0.8
         const val MASTER_STREAK = 30
         const val MASTER_PASSED = 20
         const val CONSISTENT_STREAK = 3

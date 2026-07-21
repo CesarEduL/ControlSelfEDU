@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.controlself.edu.domain.model.stats.CourseStatBar
 import com.controlself.edu.domain.model.stats.ScorePoint
 import com.controlself.edu.domain.model.stats.StudentStatsDashboard
+import com.controlself.edu.domain.model.quiz.QuizAttempt
 import com.controlself.edu.ui.theme.CseBlue
 import com.controlself.edu.ui.theme.CseMuted
 import com.controlself.edu.ui.theme.CseOutlineVariant
@@ -59,7 +60,12 @@ fun ProgressSection(
                 EmptyStatsState()
             } else {
                 val avgText = stats.averageScore?.let {
-                    String.format(Locale.getDefault(), "%.1f / 20", it)
+                    String.format(
+                        Locale.getDefault(),
+                        "%.1f / %d",
+                        it,
+                        QuizAttempt.TOTAL_QUESTIONS
+                    )
                 } ?: "—"
                 ProgressRow("Promedio de notas", avgText)
                 ProgressRow("Evaluaciones", stats.evaluationsCount.toString())
@@ -153,7 +159,7 @@ private fun ScoreBarsChart(points: List<ScorePoint>) {
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Puntaje sobre 20",
+            text = "Puntaje sobre ${QuizAttempt.TOTAL_QUESTIONS}",
             style = MaterialTheme.typography.bodySmall,
             color = CseMuted
         )

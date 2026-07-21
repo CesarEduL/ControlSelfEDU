@@ -28,7 +28,8 @@ class EditableQuizRepository(
     context: Context
 ) : QuizRepository {
 
-    private val dataStore = context.applicationContext.quizBankDataStore
+    private val appContext = context.applicationContext
+    private val dataStore = appContext.quizBankDataStore
     private val cache = MutableStateFlow<Map<String, List<Question>>>(emptyMap())
 
     suspend fun restore() {
@@ -75,7 +76,11 @@ class EditableQuizRepository(
     }
 
     override suspend fun deleteQuestion(courseId: String, questionId: String) {
-        val current = questionsFor(courseId).filterNot { it.id == questionId }
+        val before = questionsFor(courseId)
+        before.find { it.id == questionId }?.imagePath?.let {
+            QuestionImageStorage.delete(appContext, it)
+        }
+        val current = before.filterNot { it.id == questionId }
         persist(courseId, current)
     }
 
@@ -98,7 +103,8 @@ class EditableQuizRepository(
             q.type.name,
             escape(q.prompt),
             q.options.joinToString(";") { escape(it) },
-            q.correctIndex.toString()
+            q.correctIndex.toString(),
+            escape(q.imagePath.orEmpty())
         ).joinToString(SEP)
 
     private fun decode(raw: String): Question? {
@@ -106,12 +112,14 @@ class EditableQuizRepository(
         if (parts.size < 5) return null
         val type = runCatching { QuestionType.valueOf(parts[1]) }.getOrNull() ?: return null
         val options = parts[3].split(";").map { unescape(it) }
+        val imagePath = parts.getOrNull(5)?.let { unescape(it).takeIf { path -> path.isNotBlank() } }
         return Question(
             id = parts[0],
             prompt = unescape(parts[2]),
             type = type,
             options = options,
-            correctIndex = parts[4].toIntOrNull() ?: return null
+            correctIndex = parts[4].toIntOrNull() ?: return null,
+            imagePath = imagePath
         )
     }
 

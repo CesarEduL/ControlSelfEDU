@@ -20,6 +20,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -190,6 +191,15 @@ private fun QuestionBankItem(
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 )
                 Spacer(modifier = Modifier.size(8.dp))
+                if (!question.imagePath.isNullOrBlank()) {
+                    Icon(
+                        Icons.Outlined.Image,
+                        contentDescription = "Con imagen",
+                        tint = CseSecondary,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.size(4.dp))
+                }
                 Text(
                     text = when (question.type) {
                         QuestionType.MULTIPLE_CHOICE -> "Opción múltiple"

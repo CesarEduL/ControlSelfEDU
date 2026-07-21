@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.controlself.edu.di.LocalAppContainer
+import com.controlself.edu.domain.model.quiz.QuizAttempt
 import com.controlself.edu.domain.model.teacher.ClassroomStudent
 import com.controlself.edu.domain.model.teacher.QuestionDifficulty
 import com.controlself.edu.domain.model.teacher.TeacherDashboard
@@ -408,7 +409,11 @@ private fun InsightsCard(dashboard: TeacherDashboard) {
             )
             Text(
                 text = dashboard.classroomAverage?.let {
-                    String.format(Locale.getDefault(), "%.0f%%", it / 20.0 * 100)
+                    String.format(
+                        Locale.getDefault(),
+                        "%.0f%%",
+                        it / QuizAttempt.TOTAL_QUESTIONS.toDouble() * 100
+                    )
                 } ?: "—",
                 style = MaterialTheme.typography.displayMedium,
                 color = CsePrimary,
@@ -424,7 +429,12 @@ private fun InsightsCard(dashboard: TeacherDashboard) {
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = dashboard.classroomAverage?.let {
-                        String.format(Locale.getDefault(), "%.1f / 20", it)
+                        String.format(
+                            Locale.getDefault(),
+                            "%.1f / %d",
+                            it,
+                            QuizAttempt.TOTAL_QUESTIONS
+                        )
                     } ?: "Sin datos aún",
                     style = MaterialTheme.typography.labelMedium,
                     color = CseSecondary,
@@ -598,8 +608,9 @@ private fun StudentAttentionRow(student: ClassroomStudent) {
                     student.averageScore == null -> "Sin evaluaciones"
                     else -> String.format(
                         Locale.getDefault(),
-                        "Promedio %.1f / 20",
-                        student.averageScore
+                        "Promedio %.1f / %d",
+                        student.averageScore,
+                        QuizAttempt.TOTAL_QUESTIONS
                     )
                 },
                 style = MaterialTheme.typography.labelSmall,

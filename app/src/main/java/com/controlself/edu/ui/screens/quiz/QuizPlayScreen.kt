@@ -42,6 +42,7 @@ import com.controlself.edu.domain.model.quiz.AnswerRecord
 import com.controlself.edu.domain.model.quiz.Question
 import com.controlself.edu.domain.model.quiz.QuizAttempt
 import com.controlself.edu.ui.components.PrimaryFlatButton
+import com.controlself.edu.ui.components.QuestionPromptMedia
 import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBackground
 import com.controlself.edu.ui.theme.CseOnSurface
@@ -176,11 +177,10 @@ private fun QuizPlayContent(
                 .border(1.dp, CseOutlineVariant, RoundedCornerShape(16.dp))
                 .padding(20.dp)
         ) {
-            Text(
-                text = current.prompt,
-                style = MaterialTheme.typography.titleMedium,
-                color = CseOnSurface,
-                fontWeight = FontWeight.SemiBold
+            QuestionPromptMedia(
+                prompt = current.prompt,
+                imagePath = current.imagePath,
+                promptPlaceholder = current.prompt
             )
             Spacer(modifier = Modifier.height(20.dp))
             current.options.forEachIndexed { optIndex, label ->

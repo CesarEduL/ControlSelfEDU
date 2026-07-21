@@ -12,7 +12,9 @@ data class Question(
     /** Opciones en orden; para V/F: ["Verdadero", "Falso"]. */
     val options: List<String>,
     /** Índice de la opción correcta (0-based). */
-    val correctIndex: Int
+    val correctIndex: Int,
+    /** Ruta relativa en almacenamiento interno; ver [com.controlself.edu.data.quiz.QuestionImageStorage]. */
+    val imagePath: String? = null
 )
 
 data class AnswerRecord(
@@ -40,7 +42,9 @@ data class QuizAttempt(
         get() = ((durationMillis + 59_999L) / 60_000L).toInt().coerceAtLeast(0)
 
     companion object {
-        const val TOTAL_QUESTIONS = 20
-        const val PASS_THRESHOLD = 15
+        /** Preguntas por lección (semilla + banco publicado del docente). */
+        const val TOTAL_QUESTIONS = 4
+        /** Umbral de aprobación (~75%, equivalente al antiguo 15/20). */
+        const val PASS_THRESHOLD = 3
     }
 }
