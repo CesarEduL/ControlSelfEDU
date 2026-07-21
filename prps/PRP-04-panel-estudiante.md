@@ -2,9 +2,14 @@
 
 ## Objetivo
 
-Menú principal del estudiante tras el login: tiempo en pantalla, cursos, racha e progreso (datos mock hasta PRP-05/09/10; lecciones reales en PRP-07).
+Menú principal del estudiante tras el login: tiempo en pantalla, cursos, racha e progreso (datos mock hasta PRP-05/09/10; lecciones reales en PRP-07). La cuenta del estudiante la crea el padre ([PRP-03](PRP-03-autenticacion-roles.md) / [PRP-12](PRP-12-panel-padre.md)); aquí solo se usa tras iniciar sesión.
 
 ## Alcance
+
+### Identidad
+
+- El estudiante **no** crea su cuenta desde este panel ni desde el registro público.
+- Entra con usuario/contraseña definidos por su padre; el saludo usa el `displayName` de esa cuenta.
 
 ### Encabezado
 
@@ -49,12 +54,14 @@ Filas/métricas simples (no charts Vico — PRP-10):
 
 - UsageStats real (PRP-05), evaluación (PRP-07), logros reales (PRP-09), gráficos (PRP-10).
 - Perfil editable, push.
+- Auto-registro del estudiante (prohibido por producto; ver PRP-03 / PRP-12).
 
 ## Dependencias con otros PRPs
 
 | PRP | Relación |
 |-----|----------|
-| 03 | Login estudiante |
+| 03 | Login estudiante (cuenta creada por padre) |
+| 12 | Alta y vínculo padre → este estudiante |
 | 05 | Minutos reales |
 | 07 | Destino real de cursos |
 | 09–10 | Racha/logros/gráficos reales |
@@ -77,5 +84,5 @@ Filas/métricas simples (no charts Vico — PRP-10):
 
 ## Notas técnicas
 
-- Demo: login `estudiante` / `123456`.
+- Demo: login `estudiante` / `123456` (seed: hijo de `padre`, no auto-registrado).
 - Siguiente: [PRP-05](PRP-05-monitoreo-uso.md) o [PRP-07](PRP-07-evaluaciones.md) según prioridad de bloqueo.

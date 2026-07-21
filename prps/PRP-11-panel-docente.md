@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Dar a los profesores un panel exclusivo para administrar el banco de preguntas por curso, revisar resultados del salón, ver estadísticas, identificar temas difíciles y exportar un reporte básico.
+Dar a los profesores un panel exclusivo para administrar el banco de preguntas por curso (aporte comunitario de ejercicios), revisar resultados del salón, ver estadísticas, identificar temas difíciles y exportar un reporte básico. El docente es un **ente separado**: se auto-registra ([PRP-03](PRP-03-autenticacion-roles.md)) y **no** crea cuentas de estudiante (eso es del padre).
 
 ## Alcance
 
@@ -45,7 +45,7 @@ En este MVP la “evaluación” publicada es el banco de **20 preguntas** por c
 
 | PRP | Relación |
 |-----|----------|
-| 03 | Rol docente (`docente` / `123456`) |
+| 03 | Rol docente auto-registrable (`docente` / `123456`); independiente de la jerarquía padre→hijo |
 | 07–08 | Estudiante lee el mismo banco |
 | 10 | Historial de intentos / promedios |
 | 13 | Contraseña admin institucional |

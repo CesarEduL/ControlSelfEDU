@@ -23,7 +23,7 @@ PRP-00 → PRP-01 → PRP-02 → PRP-03 → PRP-04
 | 1 | [PRP-00](PRP-00-vision-y-alcance.md) | Visión y alcance | — | 📄 |
 | 2 | [PRP-01](PRP-01-arquitectura-android.md) | Arquitectura Android | 00 | ✅ |
 | 3 | [PRP-02](PRP-02-bienvenida-tema.md) | Bienvenida y tema visual | 00, 01 | ✅ |
-| 4 | [PRP-03](PRP-03-autenticacion-roles.md) | Login, registro, roles | 00–02 | ✅ |
+| 4 | [PRP-03](PRP-03-autenticacion-roles.md) | Login, registro (Padre/Docente), roles | 00–02 | ⏳ |
 | 5 | [PRP-04](PRP-04-panel-estudiante.md) | Dashboard estudiante | 03 | ✅ |
 | 6 | [PRP-05](PRP-05-monitoreo-uso.md) | Tiempo en redes/juegos | 01, 04 | ✅ |
 | 7 | [PRP-06](PRP-06-bloqueo-automatico.md) | Overlay a los 30 min | 05, 07 | ✅ |
@@ -31,17 +31,28 @@ PRP-00 → PRP-01 → PRP-02 → PRP-03 → PRP-04
 | 9 | [PRP-08](PRP-08-resultados-feedback.md) | Éxito / reintento | 07 | ✅ |
 | 10 | [PRP-09](PRP-09-motivacion.md) | Rachas, logros, medallas | 04, 08 | ✅ |
 | 11 | [PRP-10](PRP-10-estadisticas.md) | Gráficos y métricas | 05, 08, 09 | ✅ |
-| 12 | [PRP-11](PRP-11-panel-docente.md) | Panel profesor | 03, 07 | ✅ |
-| 13 | [PRP-12](PRP-12-panel-padre.md) | Panel padre/madre | 03, 05, 09 | ✅ |
+| 12 | [PRP-11](PRP-11-panel-docente.md) | Panel profesor (aporte comunitario) | 03, 07 | ✅ |
+| 13 | [PRP-12](PRP-12-panel-padre.md) | Panel padre + alta de hijos | 03, 05, 09 | ⏳ |
 | 14 | [PRP-13](PRP-13-anti-desinstalacion.md) | Protección desinstalación | 03, 11, 12 | ✅ |
 
 Leyenda: ✅ hecho · ⏳ parcial · 📄 solo spec (visión)
 
 ## Estado del ciclo
 
-El orden recomendado **PRP-00 → PRP-13** está cubierto en código (01–13).  
-**PRP-00** es visión/alcance (documento de producto, no un módulo a implementar).  
-No hay PRP siguiente en el índice; cualquier ampliación sería un PRP-14+ nuevo.
+El orden **PRP-00 → PRP-13** está cubierto en código base (01–13), con **excepciones parciales**:
+
+- **PRP-03 / PRP-12**: la jerarquía padre → N estudiantes (registro sin auto-alta de estudiante, `createChildAccount`, seed vinculado) está **especificada** y pendiente de alinear el código.
+- **PRP-00** es visión/alcance (documento de producto).
+
+**Siguiente a implementar:** cerrar criterios abiertos de [PRP-03](PRP-03-autenticacion-roles.md) y [PRP-12](PRP-12-panel-padre.md) (jerarquía de cuentas).
+
+### Jerarquía de identidad (resumen)
+
+| Rol | Registro público | Quién crea la cuenta |
+|-----|------------------|----------------------|
+| Padre | Sí | Él mismo |
+| Docente | Sí | Él mismo (ente separado; aporta ejercicios) |
+| Estudiante | No | Solo el padre (credenciales que él define; 1→N) |
 
 ## Convención de cada PRP
 

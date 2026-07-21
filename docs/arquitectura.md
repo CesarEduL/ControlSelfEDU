@@ -39,6 +39,15 @@ system (UsageStats, overlay, Device Admin) — solo vía gateways
 
 Helper: `Routes.homeFor(UserRole)`.
 
+## Identidad (jerarquía)
+
+| Rol | Registro en `register` | Origen de la cuenta |
+|-----|------------------------|---------------------|
+| Padre / Docente | Sí | Auto-registro |
+| Estudiante | No | Creada por el padre (`createChildAccount` / panel padre); 1 padre → N hijos |
+
+Detalle de producto: [PRP-03](../prps/PRP-03-autenticacion-roles.md), [PRP-12](../prps/PRP-12-panel-padre.md).
+
 ## Permisos (mapa)
 
 | Capacidad | Implementación |
