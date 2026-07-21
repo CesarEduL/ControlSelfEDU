@@ -23,7 +23,7 @@ PRP-00 → PRP-01 → PRP-02 → PRP-03 → PRP-04
 | 1 | [PRP-00](PRP-00-vision-y-alcance.md) | Visión y alcance | — | 📄 |
 | 2 | [PRP-01](PRP-01-arquitectura-android.md) | Arquitectura Android | 00 | ✅ |
 | 3 | [PRP-02](PRP-02-bienvenida-tema.md) | Bienvenida y tema visual | 00, 01 | ✅ |
-| 4 | [PRP-03](PRP-03-autenticacion-roles.md) | Login, registro (Padre/Docente), roles | 00–02 | ⏳ |
+| 4 | [PRP-03](PRP-03-autenticacion-roles.md) | Login, registro (Padre/Docente), roles | 00–02 | ✅ |
 | 5 | [PRP-04](PRP-04-panel-estudiante.md) | Dashboard estudiante | 03 | ✅ |
 | 6 | [PRP-05](PRP-05-monitoreo-uso.md) | Tiempo en redes/juegos | 01, 04 | ✅ |
 | 7 | [PRP-06](PRP-06-bloqueo-automatico.md) | Overlay a los 30 min | 05, 07 | ✅ |
@@ -39,12 +39,12 @@ Leyenda: ✅ hecho · ⏳ parcial · 📄 solo spec (visión)
 
 ## Estado del ciclo
 
-El orden **PRP-00 → PRP-13** está cubierto en código base (01–13), con **excepciones parciales**:
+El orden **PRP-00 → PRP-13** está cubierto en código base (01–13), con **excepción parcial**:
 
-- **PRP-03 / PRP-12**: la jerarquía padre → N estudiantes (registro sin auto-alta de estudiante, `createChildAccount`, seed vinculado) está **especificada** y pendiente de alinear el código.
+- **PRP-12**: UI de alta/listado/selección de N hijos sobre la API de [PRP-03](PRP-03-autenticacion-roles.md) pendiente de cerrar.
 - **PRP-00** es visión/alcance (documento de producto).
 
-**Siguiente a implementar:** cerrar criterios abiertos de [PRP-03](PRP-03-autenticacion-roles.md) y [PRP-12](PRP-12-panel-padre.md) (jerarquía de cuentas).
+**Siguiente a implementar:** [PRP-12](PRP-12-panel-padre.md) (alta multi-hijo en panel padre).
 
 ### Jerarquía de identidad (resumen)
 

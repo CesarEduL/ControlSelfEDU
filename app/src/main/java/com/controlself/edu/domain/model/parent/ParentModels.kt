@@ -12,7 +12,7 @@ data class LinkedChild(
 ) {
     companion object {
         val DEMO = LinkedChild(
-            id = "local-demo-student",
+            id = "estudiante",
             displayName = "Estudiante Demo",
             linkCode = "DEMO-001"
         )

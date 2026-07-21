@@ -18,7 +18,7 @@ system (UsageStats, overlay, Device Admin) — solo vía gateways
 |---------|------------------|
 | `ui.theme` / `ui.screens.*` | Compose |
 | `navigation` | `Routes`, `ControlSelfNavHost` |
-| `domain.model` | `UserRole`, `Session` |
+| `domain.model` | `UserRole`, `Session`, `ChildAccount` |
 | `domain.repository` | `AuthRepository`, `ScreenTimeRepository`, `LockRepository` |
 | `data.*` | Implementaciones in-memory / fake |
 | `system.*` | UsageStats, Device Admin, lock gateways |

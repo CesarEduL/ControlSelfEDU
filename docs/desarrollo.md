@@ -46,6 +46,6 @@ Cuentas demo embebidas (seed con la misma lógica; el rol en **Iniciar sesión**
 
 1. Iniciar sesión con `padre` / `123456` (rol **Padre**), o registrarse como padre.
 2. Revisar progreso del hijo vinculado (demo: `estudiante`) e intentos recientes.
-3. Cuando esté implementado el alta multi-hijo: crear más estudiantes desde el panel y seleccionar el hijo activo.
+3. Cuando esté la UI de PRP-12: crear más estudiantes desde el panel y seleccionar el hijo activo (la API `createChildAccount` ya está en auth).
 
 Para permisos reales (Usage Access, overlay, administrador de dispositivo), concederlos cuando la app lo solicite; el mapa está en [arquitectura.md](arquitectura.md).

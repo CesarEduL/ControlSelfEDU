@@ -33,15 +33,27 @@ import com.controlself.edu.ui.theme.CsePrimary
 import com.controlself.edu.ui.theme.CseSurfaceLow
 import com.controlself.edu.ui.theme.CseWhite
 
+/** Roles permitidos en el registro público (PRP-03). */
+val RegisterAllowedRoles: List<UserRole> = listOf(UserRole.PARENT, UserRole.TEACHER)
+
+/** Roles en login (incluye estudiante creado por el padre). */
+val LoginAllowedRoles: List<UserRole> = listOf(
+    UserRole.STUDENT,
+    UserRole.PARENT,
+    UserRole.TEACHER
+)
+
 @Composable
 fun RoleSelector(
     selected: UserRole,
     onSelected: (UserRole) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    allowedRoles: List<UserRole> = LoginAllowedRoles,
+    title: String = "Selecciona tu perfil"
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = "Selecciona tu perfil",
+            text = title,
             style = MaterialTheme.typography.labelLarge,
             color = CseOnSurfaceVariant,
             fontWeight = FontWeight.Bold,
@@ -58,29 +70,29 @@ fun RoleSelector(
                 .padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            RoleChip(
-                label = "Estudiante",
-                icon = Icons.Filled.School,
-                selected = selected == UserRole.STUDENT,
-                onClick = { onSelected(UserRole.STUDENT) },
-                modifier = Modifier.weight(1f)
-            )
-            RoleChip(
-                label = "Padre",
-                icon = Icons.Filled.FamilyRestroom,
-                selected = selected == UserRole.PARENT,
-                onClick = { onSelected(UserRole.PARENT) },
-                modifier = Modifier.weight(1f)
-            )
-            RoleChip(
-                label = "Docente",
-                icon = Icons.Outlined.Person,
-                selected = selected == UserRole.TEACHER,
-                onClick = { onSelected(UserRole.TEACHER) },
-                modifier = Modifier.weight(1f)
-            )
+            allowedRoles.forEach { role ->
+                RoleChip(
+                    label = roleChipLabel(role),
+                    icon = roleChipIcon(role),
+                    selected = selected == role,
+                    onClick = { onSelected(role) },
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
+}
+
+private fun roleChipLabel(role: UserRole): String = when (role) {
+    UserRole.STUDENT -> "Estudiante"
+    UserRole.PARENT -> "Padre"
+    UserRole.TEACHER -> "Docente"
+}
+
+private fun roleChipIcon(role: UserRole): ImageVector = when (role) {
+    UserRole.STUDENT -> Icons.Filled.School
+    UserRole.PARENT -> Icons.Filled.FamilyRestroom
+    UserRole.TEACHER -> Icons.Outlined.Person
 }
 
 @Composable

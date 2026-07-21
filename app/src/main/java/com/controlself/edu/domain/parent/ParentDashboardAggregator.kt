@@ -17,7 +17,8 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 /**
- * Vista padre del hijo vinculado (MVP: Estudiante Demo en este dispositivo).
+ * Vista padre del hijo vinculado (MVP local: datos del dispositivo;
+ * identidad demo alineada con seed auth `padre` → `estudiante`).
  */
 class ParentDashboardAggregator(
     private val statsRepository: StatsRepository,

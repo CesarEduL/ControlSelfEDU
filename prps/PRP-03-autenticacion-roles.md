@@ -30,14 +30,15 @@ El login sí admite rol **Estudiante**: el hijo entra con las credenciales que l
 ### Alta de estudiante (jerarquía)
 
 - El estudiante **no** se auto-registra.
-- Un padre autenticado crea cuentas hijas (usuario + contraseña definidos por el padre) → ver [PRP-12](PRP-12-panel-padre.md).
-- Relación: un padre → **N** estudiantes (`parentId` / vínculo local en MVP).
+- API: `AuthRepository.createChildAccount` + `listChildren` (UI de alta multi-hijo en [PRP-12](PRP-12-panel-padre.md)).
+- Relación: un padre → **N** estudiantes (vínculos en DataStore).
 
 ### Auth local (MVP)
 
 - Usuarios + sesión + vínculos padre→hijo en **DataStore** (sin backend).
 - Contraseñas en claro solo en mock local (documentado; no producción).
-- Cuentas demo seed al primer arranque (ver notas); el seed debe respetar la jerarquía.
+- Cuentas demo seed al primer arranque (ver notas); el seed respeta la jerarquía.
+- Migración: installs ya seeded sin vínculos reciben `padre` → `estudiante`.
 
 ### Guard de navegación
 
@@ -50,6 +51,7 @@ El login sí admite rol **Estudiante**: el hijo entra con las credenciales que l
 - OAuth, backend, verificación email, 2FA.
 - Vinculación docente↔salón institucional (IDs mock en panel docente).
 - Contraseña admin anti-desinstalación → PRP-13 (distinta de la de login).
+- UI completa de crear/listar/seleccionar hijos en panel padre → PRP-12.
 
 ## Dependencias con otros PRPs
 
@@ -58,28 +60,31 @@ El login sí admite rol **Estudiante**: el hijo entra con las credenciales que l
 | 02 | Sustituye placeholder de login |
 | 01 | Rutas y `AppContainer` |
 | 00 | Jerarquía padre → hijo; docente autónomo |
-| 04, 11, 12 | Homes reales; 12 crea estudiantes |
+| 04, 11, 12 | Homes reales; 12 UI alta de estudiantes |
 | 13 | Password admin ≠ sesión |
 
 ## Criterios de aceptación
 
 - [x] UI login con campos y botones del brief.
 - [x] Selector de rol en login (incluye Estudiante para entrar).
-- [ ] Registro público **sin** rol Estudiante (solo Padre / Docente).
-- [ ] Crear cuenta Padre o Docente y luego entrar (o auto-login post-registro).
-- [ ] No existe flujo de auto-registro de estudiante.
+- [x] Registro público **sin** rol Estudiante (solo Padre / Docente).
+- [x] Crear cuenta Padre o Docente y luego entrar (o auto-login post-registro).
+- [x] No existe flujo de auto-registro de estudiante (`register` rechaza `STUDENT`).
 - [x] Recordar sesión restaura al reabrir.
 - [x] Cada rol navega a su panel.
 - [x] Forgot-password muestra flujo mock sin servidor.
-- [ ] Seed demo: `estudiante` creado bajo `padre` (no cuenta huérfana).
+- [x] Seed demo: `estudiante` creado bajo `padre` (vínculo local + migración).
+- [x] API `createChildAccount` / `listChildren` disponible para PRP-12.
 
 ## Implementación
 
 | Área | Ubicación |
 |------|-----------|
 | Contrato | `domain/repository/AuthRepository.kt` |
+| Modelo hijo | `domain/model/ChildAccount.kt` |
 | DataStore | `data/auth/LocalAuthRepository.kt` |
 | UI | `ui/screens/login/*`, `register/*`, `forgot/*` |
+| Roles UI | `ui/screens/auth/RoleSelector.kt` (`RegisterAllowedRoles` / `LoginAllowedRoles`) |
 | Nav | `ControlSelfNavHost` + restore de sesión |
 
 ## Notas técnicas
@@ -94,4 +99,3 @@ El login sí admite rol **Estudiante**: el hijo entra con las credenciales que l
 
 - Rutas: `login`, `register`, `forgot-password`
 - Alta de hijos UI: [PRP-12](PRP-12-panel-padre.md)
-- Siguiente implementación pendiente: restringir registro + seed jerárquico + API `createChildAccount`

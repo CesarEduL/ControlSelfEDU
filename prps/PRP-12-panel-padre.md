@@ -70,7 +70,7 @@ Permitir al padre/madre **crear y gestionar cuentas de sus hijos** y visualizar 
 - [x] Evolución semanal visible (estudio desde intentos; redes desde historial diario).
 - [x] Solo lectura sobre evaluaciones (sin editar banco).
 - [x] No expone la contraseña admin en pantallas del estudiante.
-- [ ] Seed: `padre` → `estudiante` vinculados (sin hijo “huérfano”).
+- [x] Seed: `padre` → `estudiante` vinculados en auth (API); UI multi-hijo pendiente.
 
 ## Implementación
 

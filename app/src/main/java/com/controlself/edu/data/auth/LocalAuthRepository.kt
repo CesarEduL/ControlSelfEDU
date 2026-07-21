@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.controlself.edu.domain.model.ChildAccount
 import com.controlself.edu.domain.model.Session
 import com.controlself.edu.domain.model.UserRole
 import com.controlself.edu.domain.repository.AuthRepository
@@ -21,6 +22,7 @@ private val Context.authDataStore: DataStore<Preferences> by preferencesDataStor
 
 /**
  * Auth local con DataStore (PRP-03). Mock: contraseñas en claro — no usar en producción.
+ * Jerarquía: padre → N estudiantes; registro público solo Padre/Docente.
  */
 class LocalAuthRepository(
     private val context: Context
@@ -37,6 +39,7 @@ class LocalAuthRepository(
     suspend fun restore() {
         val prefs = dataStore.data.first()
         seedDemoUsersIfNeeded(prefs)
+        ensureDemoHierarchyLinks()
         val remember = prefs[KEY_REMEMBER] == true
         if (remember) {
             val id = prefs[KEY_SESSION_ID]
@@ -85,6 +88,16 @@ class LocalAuthRepository(
         password: String,
         role: UserRole
     ): Result<Session> {
+        if (role == UserRole.STUDENT) {
+            return Result.failure(
+                IllegalArgumentException(
+                    "Las cuentas de estudiante las crea un padre; no puedes registrarte como estudiante"
+                )
+            )
+        }
+        if (role != UserRole.PARENT && role != UserRole.TEACHER) {
+            return Result.failure(IllegalArgumentException("Rol no permitido en el registro"))
+        }
         val name = displayName.trim()
         val user = usernameOrEmail.trim()
         if (name.isEmpty() || user.isEmpty()) {
@@ -116,6 +129,60 @@ class LocalAuthRepository(
         persistSession(session, remember = true)
         _session.value = session
         return Result.success(session)
+    }
+
+    override suspend fun createChildAccount(
+        parentUsername: String,
+        displayName: String,
+        usernameOrEmail: String,
+        password: String
+    ): Result<ChildAccount> {
+        val parentId = parentUsername.trim().lowercase()
+        val name = displayName.trim()
+        val user = usernameOrEmail.trim()
+        if (parentId.isEmpty()) {
+            return Result.failure(IllegalArgumentException("Padre requerido"))
+        }
+        if (name.isEmpty() || user.isEmpty()) {
+            return Result.failure(IllegalArgumentException("Nombre y usuario del hijo requeridos"))
+        }
+        if (password.length < MIN_PASSWORD_LENGTH) {
+            return Result.failure(
+                IllegalArgumentException("La contraseña debe tener al menos $MIN_PASSWORD_LENGTH caracteres")
+            )
+        }
+        val users = readUsers().toMutableList()
+        val parent = users.find {
+            it.username == parentId && it.role == UserRole.PARENT
+        } ?: return Result.failure(IllegalArgumentException("La cuenta padre no existe"))
+
+        if (users.any { it.username.equals(user, ignoreCase = true) }) {
+            return Result.failure(IllegalArgumentException("Ese usuario ya existe"))
+        }
+        val childUsername = user.lowercase()
+        users.add(
+            StoredUser(
+                username = childUsername,
+                password = password,
+                role = UserRole.STUDENT,
+                displayName = name
+            )
+        )
+        writeUsers(users)
+        addParentChildLink(parent.username, childUsername)
+        return Result.success(ChildAccount(userId = childUsername, displayName = name))
+    }
+
+    override suspend fun listChildren(parentUsername: String): List<ChildAccount> {
+        val parentId = parentUsername.trim().lowercase()
+        val childIds = readLinks()[parentId].orEmpty()
+        if (childIds.isEmpty()) return emptyList()
+        val users = readUsers().associateBy { it.username }
+        return childIds.mapNotNull { id ->
+            val u = users[id] ?: return@mapNotNull null
+            if (u.role != UserRole.STUDENT) return@mapNotNull null
+            ChildAccount(userId = u.username, displayName = u.displayName)
+        }
     }
 
     override suspend fun requestPasswordReset(usernameOrEmail: String): Result<Unit> {
@@ -160,12 +227,56 @@ class LocalAuthRepository(
         if (prefs[KEY_SEEDED] == true) return
         writeUsers(
             listOf(
+                StoredUser("padre", "123456", UserRole.PARENT, "Padre Demo"),
                 StoredUser("estudiante", "123456", UserRole.STUDENT, "Estudiante Demo"),
-                StoredUser("docente", "123456", UserRole.TEACHER, "Docente Demo"),
-                StoredUser("padre", "123456", UserRole.PARENT, "Padre Demo")
+                StoredUser("docente", "123456", UserRole.TEACHER, "Docente Demo")
             )
         )
+        writeLinks(mapOf("padre" to setOf("estudiante")))
         dataStore.edit { it[KEY_SEEDED] = true }
+    }
+
+    /**
+     * Migración: installs ya seeded sin vínculos reciben padre→estudiante demo.
+     */
+    private suspend fun ensureDemoHierarchyLinks() {
+        val links = readLinks()
+        if (links.isNotEmpty()) return
+        val users = readUsers()
+        val hasPadre = users.any { it.username == "padre" && it.role == UserRole.PARENT }
+        val hasEstudiante = users.any { it.username == "estudiante" && it.role == UserRole.STUDENT }
+        if (hasPadre && hasEstudiante) {
+            writeLinks(mapOf("padre" to setOf("estudiante")))
+        }
+    }
+
+    private suspend fun addParentChildLink(parentId: String, childId: String) {
+        val links = readLinks().toMutableMap()
+        val children = links[parentId].orEmpty().toMutableSet()
+        children.add(childId)
+        links[parentId] = children
+        writeLinks(links)
+    }
+
+    private suspend fun readLinks(): Map<String, Set<String>> {
+        val set = dataStore.data.map { it[KEY_PARENT_LINKS] ?: emptySet() }.first()
+        val map = mutableMapOf<String, MutableSet<String>>()
+        set.forEach { raw ->
+            val p = raw.split(SEP)
+            if (p.size >= 2) {
+                map.getOrPut(p[0]) { mutableSetOf() }.add(p[1])
+            }
+        }
+        return map
+    }
+
+    private suspend fun writeLinks(links: Map<String, Set<String>>) {
+        val encoded = links.flatMap { (parent, children) ->
+            children.map { "$parent$SEP$it" }
+        }.toSet()
+        dataStore.edit { prefs ->
+            prefs[KEY_PARENT_LINKS] = encoded
+        }
     }
 
     private suspend fun readUsers(): List<StoredUser> {
@@ -189,7 +300,6 @@ class LocalAuthRepository(
             .joinToString(SEP)
 
         companion object {
-            private const val SEP = "\u001F"
             fun decode(raw: String): StoredUser? {
                 val p = raw.split(SEP)
                 if (p.size < 4) return null
@@ -201,7 +311,9 @@ class LocalAuthRepository(
 
     companion object {
         const val MIN_PASSWORD_LENGTH = 6
+        private const val SEP = "\u001F"
         private val KEY_USERS = stringSetPreferencesKey("users")
+        private val KEY_PARENT_LINKS = stringSetPreferencesKey("parent_child_links")
         private val KEY_SEEDED = booleanPreferencesKey("seeded")
         private val KEY_REMEMBER = booleanPreferencesKey("remember")
         private val KEY_SESSION_ID = stringPreferencesKey("session_id")

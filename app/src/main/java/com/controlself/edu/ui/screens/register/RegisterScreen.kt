@@ -47,6 +47,7 @@ import com.controlself.edu.domain.model.Session
 import com.controlself.edu.domain.model.UserRole
 import com.controlself.edu.ui.components.PrimaryFlatButton
 import com.controlself.edu.ui.components.roleActionColor
+import com.controlself.edu.ui.screens.auth.RegisterAllowedRoles
 import com.controlself.edu.ui.screens.auth.RoleSelector
 import com.controlself.edu.ui.theme.ControlSelfEDUTheme
 import com.controlself.edu.ui.theme.CseBackground
@@ -68,7 +69,7 @@ fun RegisterScreen(
     var displayName by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var role by remember { mutableStateOf(UserRole.STUDENT) }
+    var role by remember { mutableStateOf(UserRole.PARENT) }
     var passwordVisible by remember { mutableStateOf(false) }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
@@ -153,7 +154,7 @@ private fun RegisterContent(
             modifier = Modifier.padding(horizontal = 8.dp)
         )
         Text(
-            text = "Elige tu rol y completa tus datos.",
+            text = "Regístrate como padre o docente. Las cuentas de estudiante las crea el padre.",
             style = MaterialTheme.typography.bodyMedium,
             color = CseOnSurfaceVariant,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp)
@@ -168,7 +169,12 @@ private fun RegisterContent(
                 .border(1.dp, CseOutlineVariant, RoundedCornerShape(16.dp))
                 .padding(20.dp)
         ) {
-            RoleSelector(selected = role, onSelected = onRoleChange)
+            RoleSelector(
+                selected = role,
+                onSelected = onRoleChange,
+                allowedRoles = RegisterAllowedRoles,
+                title = "Selecciona tu perfil (Padre o Docente)"
+            )
             Spacer(modifier = Modifier.height(20.dp))
 
             FieldLabel("Nombre")
@@ -282,7 +288,7 @@ private fun RegisterScreenPreview() {
             onUsernameChange = {},
             password = "",
             onPasswordChange = {},
-            role = UserRole.STUDENT,
+            role = UserRole.PARENT,
             onRoleChange = {},
             passwordVisible = false,
             onPasswordVisibleChange = {},
